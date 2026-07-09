@@ -1,0 +1,39 @@
+[
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_specific/printer_03/go_to_door_scan_pose.json",
+    "sequence_file": "printer_specific/printer_03/go_to_door_scan_pose.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Cabinet3_scanningpose",
+    "joints": [
+      -22.241,
+      -82.943,
+      75.225,
+      4.769,
+      21.556,
+      47.38
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: localization/localize_printer_door_tag.json",
+    "sequence_file": "localization/localize_printer_door_tag.json"
+  },
+  {
+    "type": "localize",
+    "name": "localize_on_printer_door_tag_25h9",
+    "tag_id": 0,
+    "tag_family": "tag25h9",
+    "require_tag_family": false,
+    "target_distance_mm": 300,
+    "target_u": 640,
+    "target_v": 360,
+    "target_roll_deg": 0,
+    "max_iters": 30
+  }
+]

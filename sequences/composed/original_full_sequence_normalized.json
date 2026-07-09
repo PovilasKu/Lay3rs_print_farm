@@ -1,0 +1,855 @@
+[
+  {
+    "type": "move_joint",
+    "name": "Home_pose",
+    "joints": [
+      51.873,
+      -112.709,
+      153.232,
+      -41.223,
+      94.624,
+      44.017
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "move_joint",
+    "name": "Cabinet3_scanningpose",
+    "joints": [
+      -22.241,
+      -83.371,
+      84.507,
+      -4.085,
+      21.556,
+      47.38
+    ],
+    "vel": 80,
+    "acc": 70,
+    "ovl": 100
+  },
+  {
+    "type": "localize",
+    "name": "align_to_printer_tag",
+    "tag_id": 2,
+    "target_distance_mm": 500,
+    "target_u": 640,
+    "target_v": 360,
+    "target_roll_deg": 0,
+    "max_iters": 30
+  },
+  {
+    "type": "local_cart",
+    "name": "get_ready_to_cling_to_door",
+    "delta": [
+      66,
+      266,
+      215,
+      0,
+      0,
+      0
+    ],
+    "vel": 50,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "door_cling",
+    "delta": [
+      0,
+      0,
+      -20,
+      0,
+      0,
+      0
+    ],
+    "vel": 40,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "door_pull",
+    "delta": [
+      -7,
+      -50,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 40,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "door_uncling",
+    "delta": [
+      0,
+      0,
+      30,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "go__lower_to_get_ready_to_open_door",
+    "delta": [
+      0,
+      -20,
+      -150,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "scooch_to_side_to_get_ready_to_open_door",
+    "delta": [
+      110,
+      50,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_joint",
+    "name": "turn_J5_to_get_ready_to_open_door",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      -22,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "open_door",
+    "delta": [
+      -340,
+      -150,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "step_back_to_clear_door",
+    "delta": [
+      0,
+      -200,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_joint",
+    "name": "unturn_J5",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      22,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "move_joint",
+    "name": "Cabinet3_scanningpose",
+    "joints": [
+      -22.241,
+      -83.371,
+      84.507,
+      -4.085,
+      21.556,
+      47.38
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "localize",
+    "name": "align_to_printer_tag",
+    "tag_id": 2,
+    "target_distance_mm": 500,
+    "target_u": 640,
+    "target_v": 360,
+    "target_roll_deg": 0,
+    "max_iters": 30
+  },
+  {
+    "type": "local_cart",
+    "name": "line_up_with_buildplate",
+    "delta": [
+      -4,
+      270,
+      4,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "gripper_activate",
+    "name": "Activate gripper",
+    "device_id": 2
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position_34",
+    "device_id": 2,
+    "position": 34,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "local_cart",
+    "name": "go_to_buildplate",
+    "delta": [
+      0,
+      160,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "twist_to_get_good_grip_on_buildplate",
+    "delta": [
+      0,
+      0,
+      0,
+      -2,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "move_gripper_into_position_to_get_good_grip_on_buildplate",
+    "delta": [
+      0,
+      9,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 100",
+    "device_id": 2,
+    "position": 100,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "local_cart",
+    "name": "lift_buildplate_up",
+    "delta": [
+      0,
+      0,
+      40,
+      0,
+      0,
+      0
+    ],
+    "vel": 40,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "twist_to_get_good_grip_on_buildplate_again",
+    "delta": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "extract_buildplate",
+    "delta": [
+      0,
+      -300,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "move_farther_back_to_rack",
+    "delta": [
+      0,
+      -200,
+      100,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "move_joint",
+    "name": "Rack_scanningpose",
+    "joints": [
+      -36.391,
+      -107.859,
+      87.998,
+      18.854,
+      96.946,
+      43.731
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "localize",
+    "name": "align_to_rack_tag",
+    "tag_id": 1,
+    "target_distance_mm": 450,
+    "target_u": 640,
+    "target_v": 360,
+    "target_roll_deg": 0,
+    "max_iters": 50
+  },
+  {
+    "type": "local_cart",
+    "name": "go_down_to_dispose_buildplate",
+    "delta": [
+      0,
+      0,
+      -390,
+      0,
+      0,
+      0
+    ],
+    "vel": 50,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "go_into_rack_to_dispose_buildplate",
+    "delta": [
+      0,
+      400,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 50,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "prepare_to_release_buildplate",
+    "delta": [
+      0,
+      0,
+      -38,
+      8,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 0",
+    "device_id": 2,
+    "position": 0,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "line_tcp",
+    "name": "clear_griper_from_buildplate",
+    "delta": [
+      0,
+      -70,
+      -35,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "pull_out_of_rack",
+    "delta": [
+      0,
+      -300,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "move_joint",
+    "name": "Rack_scanningpose",
+    "joints": [
+      -36.391,
+      -107.859,
+      87.998,
+      18.854,
+      96.946,
+      43.731
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "localize",
+    "name": "align_to_rack_tag",
+    "tag_id": 1,
+    "target_distance_mm": 450,
+    "target_u": 640,
+    "target_v": 360,
+    "target_roll_deg": 0,
+    "max_iters": 50
+  },
+  {
+    "type": "local_cart",
+    "name": "lower_to_pick_up_new_buildplate",
+    "delta": [
+      0,
+      0,
+      -275,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "go_into_rack_to_pick_up_new_buildplate",
+    "delta": [
+      0,
+      370,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "prepare_to_grip_new_buildplate",
+    "delta": [
+      0,
+      0,
+      30,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position",
+    "device_id": 2,
+    "position": 100,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 2 seconds",
+    "seconds": 1.0
+  },
+  {
+    "type": "line_tcp",
+    "name": "pull_out_of_rack_with_new_buildplate",
+    "delta": [
+      0,
+      -400,
+      30,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "move_joint",
+    "name": "Cabinet3_scanningpose",
+    "joints": [
+      -22.241,
+      -83.371,
+      84.507,
+      -4.085,
+      21.556,
+      47.38
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "localize",
+    "name": "align_to_printer_tag",
+    "tag_id": 2,
+    "target_distance_mm": 500,
+    "target_u": 640,
+    "target_v": 360,
+    "target_roll_deg": 0,
+    "max_iters": 30
+  },
+  {
+    "type": "line_tcp",
+    "name": "allign_for_buildplate_placement",
+    "delta": [
+      -15,
+      0,
+      50,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "move_gripper_into_printer_to_place_buildplate",
+    "delta": [
+      0,
+      370,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "twist z",
+    "delta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      -0.5
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt_to_place_buildplate",
+    "delta": [
+      0,
+      0,
+      0,
+      -10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 95",
+    "device_id": 2,
+    "position": 97,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "local_cart",
+    "name": "push_buildplate_into_printer_back",
+    "delta": [
+      0,
+      82,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt_to_release_buildplate",
+    "delta": [
+      0,
+      0,
+      -15,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 0",
+    "device_id": 2,
+    "position": 0,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "local_cart",
+    "name": "untiwist z",
+    "delta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.5
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "pull_out_of_printer",
+    "delta": [
+      0,
+      -504,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt_back",
+    "delta": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_joint",
+    "name": "twist J5 to get to closing door position",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      -45,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "Go forward to prepare to close door",
+    "delta": [
+      0,
+      100,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "Move sideways to close door",
+    "delta": [
+      320,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 20,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_joint",
+    "name": "Twist J5 to close door",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      45,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "move_joint",
+    "name": "Cabinet3_scanningpose",
+    "joints": [
+      -27.319,
+      -78.066,
+      65.957,
+      39.516,
+      16.658,
+      17.768
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "move_joint",
+    "name": "Home_pose",
+    "joints": [
+      51.873,
+      -112.709,
+      153.232,
+      -41.223,
+      94.624,
+      44.017
+    ],
+    "vel": 80,
+    "acc": 70,
+    "ovl": 100
+  }
+]

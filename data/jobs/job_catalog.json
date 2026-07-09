@@ -1,0 +1,130 @@
+{
+  "jobs": {
+    "trial_full_swap_legacy": {
+      "description": "Runs the old tested single-printer JSON sequence as one file. Use this first to confirm the modular runner works.",
+      "requires_printer": false,
+      "steps": [
+        "composed/original_full_sequence_normalized.json"
+      ]
+    },
+    "trial_full_swap_split": {
+      "description": "Runs the old tested sequence split into reusable multi-printer-style files for printer_03.",
+      "requires_printer": true,
+      "requires_drop_slot": true,
+      "requires_pick_slot": true,
+      "steps": [
+        "common/go_home.json",
+        "${printer.sequences.door_scan_pose}",
+        "localization/localize_printer_door_tag.json",
+        "printer_family/${printer.family}/open_door_from_door_tag_localized.json",
+        "${printer.sequences.outside_tag_scan_pose}",
+        "localization/localize_printer_outside_front_tag.json",
+        "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json",
+        "rack/go_to_rack_scanning_pose.json",
+        "localization/localize_buildplate_rack_tag.json",
+        "rack/move_to_drop_slot_from_rack_localized.json",
+        "rack/drop_buildplate_in_slot_from_localized.json",
+        "rack/go_to_rack_scanning_pose.json",
+        "localization/localize_buildplate_rack_tag.json",
+        "rack/move_to_pick_slot_from_rack_localized.json",
+        "rack/pick_buildplate_from_slot_from_localized.json",
+        "${printer.sequences.outside_tag_scan_pose}",
+        "localization/localize_printer_outside_front_tag.json",
+        "printer_family/${printer.family}/bring_buildplate_into_enclosure_from_outside_localized.json",
+        "printer_family/${printer.family}/place_buildplate_on_heatbed_from_inside_localized.json",
+        "printer_family/${printer.family}/back_out_of_printer_after_placing_plate.json",
+        "printer_family/${printer.family}/close_door_from_outside_localized.json",
+        "${printer.sequences.final_scan_pose}",
+        "common/go_home.json"
+      ]
+    },
+    "localize_printer_door_only": {
+      "description": "Move to selected printer door scan pose and localize on the 25h9 door tag.",
+      "requires_printer": true,
+      "steps": [
+        "${printer.sequences.door_scan_pose}",
+        "localization/localize_printer_door_tag.json"
+      ]
+    },
+    "localize_printer_outer_only": {
+      "description": "Move to selected printer outside-front scan pose and localize on the 36h11 outside tag.",
+      "requires_printer": true,
+      "steps": [
+        "${printer.sequences.outside_tag_scan_pose}",
+        "localization/localize_printer_outside_front_tag.json"
+      ]
+    },
+    "open_door_with_verification": {
+      "description": "Try to open the door and verify that the 25h9 door tag disappears. Retries before failing.",
+      "requires_printer": true,
+      "steps": [
+        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/open_door_with_verification.json"
+      ]
+    },
+    "remove_buildplate_only": {
+      "description": "Assumes the printer door is already open. Localizes on the outside 36h11 tag and removes the old buildplate.",
+      "requires_printer": true,
+      "steps": [
+        "${printer.sequences.outside_tag_scan_pose}",
+        "localization/localize_printer_outside_front_tag.json",
+        "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json"
+      ]
+    },
+    "rack_drop_only": {
+      "description": "Move to the buildplate rack, localize on the rack tag, move to the selected drop slot, and drop the held buildplate.",
+      "requires_drop_slot": true,
+      "steps": [
+        "rack/go_to_rack_scanning_pose.json",
+        "localization/localize_buildplate_rack_tag.json",
+        "rack/move_to_drop_slot_from_rack_localized.json",
+        "rack/drop_buildplate_in_slot_from_localized.json"
+      ]
+    },
+    "rack_pick_only": {
+      "description": "Move to the buildplate rack, localize on the rack tag, move to the selected pick slot, and pick up a clean buildplate.",
+      "requires_pick_slot": true,
+      "steps": [
+        "rack/go_to_rack_scanning_pose.json",
+        "localization/localize_buildplate_rack_tag.json",
+        "rack/move_to_pick_slot_from_rack_localized.json",
+        "rack/pick_buildplate_from_slot_from_localized.json"
+      ]
+    },
+    "full_buildplate_change": {
+      "description": "Target future process: door tag open/verify, outside tag removal, rack drop/pick by slot IDs, outside tag insertion, inside tag heatbed placement, back out, close door, home.",
+      "requires_printer": true,
+      "requires_drop_slot": true,
+      "requires_pick_slot": true,
+      "steps": [
+        "common/go_home.json",
+        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/open_door_with_verification.json",
+        "${printer.sequences.outside_tag_scan_pose}",
+        "localization/localize_printer_outside_front_tag.json",
+        "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json",
+        "${printer.sequences.door_scan_pose}",
+        "rack/go_to_rack_scanning_pose.json",
+        "localization/localize_buildplate_rack_tag.json",
+        "rack/move_to_drop_slot_from_rack_localized.json",
+        "rack/drop_buildplate_in_slot_from_localized.json",
+        "rack/go_to_rack_scanning_pose.json",
+        "localization/localize_buildplate_rack_tag.json",
+        "rack/move_to_pick_slot_from_rack_localized.json",
+        "rack/pick_buildplate_from_slot_from_localized.json",
+        "${printer.sequences.door_scan_pose}",
+        "${printer.sequences.outside_tag_scan_pose}",
+        "localization/localize_printer_outside_front_tag.json",
+        "printer_family/${printer.family}/bring_buildplate_into_enclosure_from_outside_localized.json",
+        "localization/localize_printer_inside_heatbed_tag.json",
+        "printer_family/${printer.family}/place_buildplate_on_heatbed_from_inside_localized.json",
+        "printer_family/${printer.family}/back_out_of_printer_after_placing_plate.json",
+        "${printer.sequences.outside_tag_scan_pose}",
+        "localization/localize_printer_outside_front_tag.json",
+        "printer_family/${printer.family}/close_door_from_outside_localized.json",
+        "${printer.sequences.door_scan_pose}",
+        "common/go_home.json"
+      ]
+    }
+  }
+}

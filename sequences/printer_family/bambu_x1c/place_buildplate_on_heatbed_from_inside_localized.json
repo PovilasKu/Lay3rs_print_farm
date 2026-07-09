@@ -1,0 +1,88 @@
+[
+  {
+    "type": "local_cart",
+    "name": "twist z",
+    "delta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      -0.5
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt_to_place_buildplate",
+    "delta": [
+      0,
+      0,
+      0,
+      -10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 95",
+    "device_id": 2,
+    "position": 97,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "local_cart",
+    "name": "push_buildplate_into_printer_back",
+    "delta": [
+      0,
+      82,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt_to_release_buildplate",
+    "delta": [
+      0,
+      0,
+      -15,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 0",
+    "device_id": 2,
+    "position": 0,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  }
+]

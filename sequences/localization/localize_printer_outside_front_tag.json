@@ -1,0 +1,14 @@
+[
+  {
+    "type": "localize",
+    "name": "localize_on_printer_outside_front_tag_36h11",
+    "tag_id": "${printer.tags.outside_front.id}",
+    "tag_family": "${printer.tags.outside_front.family}",
+    "require_tag_family": "${printer.tags.outside_front.require_family}",
+    "target_distance_mm": "${printer.tags.outside_front.target_distance_mm}",
+    "target_u": "${printer.tags.outside_front.target_u}",
+    "target_v": "${printer.tags.outside_front.target_v}",
+    "target_roll_deg": 0,
+    "max_iters": 30
+  }
+]

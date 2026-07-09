@@ -1,0 +1,14 @@
+[
+  {
+    "type": "localize",
+    "name": "localize_on_inside_heatbed_tag_36h11",
+    "tag_id": "${printer.tags.inside_heatbed.id}",
+    "tag_family": "${printer.tags.inside_heatbed.family}",
+    "require_tag_family": "${printer.tags.inside_heatbed.require_family}",
+    "target_distance_mm": "${printer.tags.inside_heatbed.target_distance_mm}",
+    "target_u": "${printer.tags.inside_heatbed.target_u}",
+    "target_v": "${printer.tags.inside_heatbed.target_v}",
+    "target_roll_deg": 0,
+    "max_iters": 30
+  }
+]

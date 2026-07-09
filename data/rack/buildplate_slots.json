@@ -1,0 +1,26 @@
+{
+  "rack": {
+    "display_name": "Buildplate rack",
+    "tag": {
+      "id": 1,
+      "family": "tag36h11",
+      "target_distance_mm": 450,
+      "target_u": 640,
+      "target_v": 360,
+      "require_family": false
+    },
+    "scanning_pose_joints": [-36.391, -107.859, 87.998, 18.854, 96.946, 43.731]
+  },
+  "slots": {
+    "slot_01": {
+      "display_name": "Rack slot 01 - test drop-off/pick-up slot",
+      "status": "test",
+      "local_target_delta": [0, 0, 0, 0, 0, 0]
+    },
+    "slot_02": {
+      "display_name": "Rack slot 02 - placeholder",
+      "status": "placeholder",
+      "local_target_delta": [0, 0, 0, 0, 0, 0]
+    }
+  }
+}

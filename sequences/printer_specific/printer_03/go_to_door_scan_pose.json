@@ -1,0 +1,10 @@
+[
+  {
+    "type": "move_joint",
+    "name": "Cabinet3_scanningpose",
+    "joints": "${printer.joints.door_scan_pose}",
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  }
+]

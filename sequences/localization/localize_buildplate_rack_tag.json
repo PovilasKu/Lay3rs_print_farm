@@ -1,0 +1,14 @@
+[
+  {
+    "type": "localize",
+    "name": "localize_on_buildplate_rack_tag_36h11",
+    "tag_id": "${rack.tag.id}",
+    "tag_family": "${rack.tag.family}",
+    "require_tag_family": "${rack.tag.require_family}",
+    "target_distance_mm": "${rack.tag.target_distance_mm}",
+    "target_u": "${rack.tag.target_u}",
+    "target_v": "${rack.tag.target_v}",
+    "target_roll_deg": 0,
+    "max_iters": 50
+  }
+]

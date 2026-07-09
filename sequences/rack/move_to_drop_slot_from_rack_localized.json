@@ -1,0 +1,12 @@
+[
+  {
+    "type": "local_cart",
+    "name": "move_from_rack_tag_to_drop_slot",
+    "delta": "${drop_slot.local_target_delta}",
+    "frame": "tcp",
+    "motion": "line",
+    "vel": 50,
+    "acc": 50,
+    "ovl": 100
+  }
+]

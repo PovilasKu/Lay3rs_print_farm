@@ -1,0 +1,186 @@
+[
+  {
+    "type": "retry_until_tag_absent",
+    "name": "open_door_and_verify_door_tag_disappears",
+    "max_attempts": 2,
+    "check": {
+      "tag_id": "${printer.tags.door.id}",
+      "tag_family": "${printer.tags.door.family}",
+      "require_tag_family": "${printer.tags.door.require_family}",
+      "timeout_s": 2.0,
+      "require_stereo": false
+    },
+    "commands": [
+      {
+        "type": "localize",
+        "name": "localize_on_printer_door_tag_25h9",
+        "tag_id": "${printer.tags.door.id}",
+        "tag_family": "${printer.tags.door.family}",
+        "require_tag_family": "${printer.tags.door.require_family}",
+        "target_distance_mm": "${printer.tags.door.target_distance_mm}",
+        "target_u": "${printer.tags.door.target_u}",
+        "target_v": "${printer.tags.door.target_v}",
+        "target_roll_deg": 0,
+        "max_iters": 30
+      },
+      {
+        "type": "local_cart",
+        "name": "get_ready_to_cling_to_door",
+        "delta": [
+          66,
+          266,
+          215,
+          0,
+          0,
+          0
+        ],
+        "vel": 50,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "door_cling",
+        "delta": [
+          0,
+          0,
+          -20,
+          0,
+          0,
+          0
+        ],
+        "vel": 40,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "door_pull",
+        "delta": [
+          -7,
+          -50,
+          0,
+          0,
+          0,
+          0
+        ],
+        "vel": 40,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "door_uncling",
+        "delta": [
+          0,
+          0,
+          30,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "go__lower_to_get_ready_to_open_door",
+        "delta": [
+          0,
+          -20,
+          -150,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "scooch_to_side_to_get_ready_to_open_door",
+        "delta": [
+          110,
+          50,
+          0,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_joint",
+        "name": "turn_J5_to_get_ready_to_open_door",
+        "delta_joints": [
+          0,
+          0,
+          0,
+          0,
+          -22,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "open_door",
+        "delta": [
+          -340,
+          -150,
+          0,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "step_back_to_clear_door",
+        "delta": [
+          0,
+          -200,
+          0,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_joint",
+        "name": "unturn_J5",
+        "delta_joints": [
+          0,
+          0,
+          0,
+          0,
+          22,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "move_joint",
+        "name": "Go to printer outside-front tag scan pose",
+        "joints": "${printer.joints.outside_tag_scan_pose}",
+        "vel": 50,
+        "acc": 30,
+        "ovl": 100
+      }
+    ]
+  }
+]

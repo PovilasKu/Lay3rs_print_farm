@@ -1,0 +1,152 @@
+[
+  {
+    "type": "local_cart",
+    "name": "get_ready_to_cling_to_door",
+    "delta": [
+      66,
+      266,
+      215,
+      0,
+      0,
+      0
+    ],
+    "vel": 50,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "door_cling",
+    "delta": [
+      0,
+      0,
+      -20,
+      0,
+      0,
+      0
+    ],
+    "vel": 40,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "door_pull",
+    "delta": [
+      -7,
+      -50,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 40,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "door_uncling",
+    "delta": [
+      0,
+      0,
+      30,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "go__lower_to_get_ready_to_open_door",
+    "delta": [
+      0,
+      -20,
+      -150,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "scooch_to_side_to_get_ready_to_open_door",
+    "delta": [
+      110,
+      50,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_joint",
+    "name": "turn_J5_to_get_ready_to_open_door",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      -22,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "open_door",
+    "delta": [
+      -340,
+      -150,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "step_back_to_clear_door",
+    "delta": [
+      0,
+      -200,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_joint",
+    "name": "unturn_J5",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      22,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  }
+]

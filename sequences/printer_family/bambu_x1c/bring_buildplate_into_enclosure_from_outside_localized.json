@@ -1,0 +1,30 @@
+[
+  {
+    "type": "line_tcp",
+    "name": "allign_for_buildplate_placement",
+    "delta": [
+      -15,
+      0,
+      50,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "move_gripper_into_printer_to_place_buildplate",
+    "delta": [
+      0,
+      370,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  }
+]

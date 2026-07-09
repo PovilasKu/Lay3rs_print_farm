@@ -1,0 +1,92 @@
+[
+  {
+    "type": "local_cart",
+    "name": "go_down_to_dispose_buildplate",
+    "delta": [
+      0,
+      0,
+      -390,
+      0,
+      0,
+      0
+    ],
+    "vel": 50,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "go_into_rack_to_dispose_buildplate",
+    "delta": [
+      0,
+      400,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 50,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "prepare_to_release_buildplate",
+    "delta": [
+      0,
+      0,
+      -38,
+      8,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 0",
+    "device_id": 2,
+    "position": 0,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "line_tcp",
+    "name": "clear_griper_from_buildplate",
+    "delta": [
+      0,
+      -70,
+      -35,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "pull_out_of_rack",
+    "delta": [
+      0,
+      -300,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 50,
+    "ovl": 100
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "type": "local_joint",
+    "name": "twist J5 to get to closing door position",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      -45,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "Go forward to prepare to close door",
+    "delta": [
+      0,
+      100,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "Move sideways to close door",
+    "delta": [
+      320,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 20,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_joint",
+    "name": "Twist J5 to close door",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      45,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  }
+]

@@ -1,0 +1,77 @@
+[
+  {
+    "type": "local_cart",
+    "name": "lower_to_pick_up_new_buildplate",
+    "delta": [
+      0,
+      0,
+      -275,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "go_into_rack_to_pick_up_new_buildplate",
+    "delta": [
+      0,
+      370,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "prepare_to_grip_new_buildplate",
+    "delta": [
+      0,
+      0,
+      30,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position",
+    "device_id": 2,
+    "position": 100,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 2 seconds",
+    "seconds": 1.0
+  },
+  {
+    "type": "line_tcp",
+    "name": "pull_out_of_rack_with_new_buildplate",
+    "delta": [
+      0,
+      -400,
+      30,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  }
+]

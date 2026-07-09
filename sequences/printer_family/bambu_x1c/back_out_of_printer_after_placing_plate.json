@@ -1,0 +1,46 @@
+[
+  {
+    "type": "local_cart",
+    "name": "untiwist z",
+    "delta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.5
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "pull_out_of_printer",
+    "delta": [
+      0,
+      -504,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt_back",
+    "delta": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100,
+    "ovl": 100
+  }
+]

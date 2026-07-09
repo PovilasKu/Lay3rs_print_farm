@@ -1,0 +1,152 @@
+[
+  {
+    "type": "local_cart",
+    "name": "line_up_with_buildplate",
+    "delta": [
+      -4,
+      270,
+      4,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "gripper_activate",
+    "name": "Activate gripper",
+    "device_id": 2
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position_34",
+    "device_id": 2,
+    "position": 34,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "local_cart",
+    "name": "go_to_buildplate",
+    "delta": [
+      0,
+      160,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "twist_to_get_good_grip_on_buildplate",
+    "delta": [
+      0,
+      0,
+      0,
+      -2,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "move_gripper_into_position_to_get_good_grip_on_buildplate",
+    "delta": [
+      0,
+      9,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 100",
+    "device_id": 2,
+    "position": 100,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "local_cart",
+    "name": "lift_buildplate_up",
+    "delta": [
+      0,
+      0,
+      40,
+      0,
+      0,
+      0
+    ],
+    "vel": 40,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "twist_to_get_good_grip_on_buildplate_again",
+    "delta": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "extract_buildplate",
+    "delta": [
+      0,
+      -300,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "move_farther_back_to_rack",
+    "delta": [
+      0,
+      -200,
+      100,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  }
+]

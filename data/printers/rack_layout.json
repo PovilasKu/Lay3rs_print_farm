@@ -1,0 +1,14 @@
+{
+  "racks": {
+    "main_printer_rack": {
+      "description": "Nine-printer 3x3 rack in front of the robot arm.",
+      "rows": 3,
+      "columns": 3,
+      "printer_ids": [
+        ["printer_01", "printer_02", "printer_03"],
+        ["printer_04", "printer_05", "printer_06"],
+        ["printer_07", "printer_08", "printer_09"]
+      ]
+    }
+  }
+}

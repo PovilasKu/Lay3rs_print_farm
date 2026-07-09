@@ -1,0 +1,14 @@
+[
+  {
+    "type": "localize",
+    "name": "localize_on_printer_door_tag_25h9",
+    "tag_id": "${printer.tags.door.id}",
+    "tag_family": "${printer.tags.door.family}",
+    "require_tag_family": "${printer.tags.door.require_family}",
+    "target_distance_mm": "${printer.tags.door.target_distance_mm}",
+    "target_u": "${printer.tags.door.target_u}",
+    "target_v": "${printer.tags.door.target_v}",
+    "target_roll_deg": 0,
+    "max_iters": 30
+  }
+]
