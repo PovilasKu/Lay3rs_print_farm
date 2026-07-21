@@ -71,6 +71,18 @@
         "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json"
       ]
     },
+    "open_door_and_take_out_buildplate":{
+      "description": "its in the name",
+      "requires_printer": true,
+      "steps": [
+        "common/go_home.json",
+        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/open_door_with_verification.json",
+        "${printer.sequences.outside_tag_scan_pose}",
+        "localization/localize_printer_outside_front_tag.json",
+        "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json"
+      ]
+    },
     "rack_drop_only": {
       "description": "Move to the buildplate rack, localize on the rack tag, move to the selected drop slot, and drop the held buildplate.",
       "requires_drop_slot": true,

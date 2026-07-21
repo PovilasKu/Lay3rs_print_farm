@@ -8,9 +8,10 @@
       "rack_position": {"row": 1, "column": 3},
       "notes": "Initial printer using the previously tested JSON sequence. Tag family checking is disabled until the Vision Pi outputs tag_family.",
       "joints": {
-        "home": [51.873, -112.709, 153.232, -41.223, 94.624, 44.017],
+        "home": [-46.693, -117.918, 150.791, -35.677, 90.199, 44.388],
+        "neutral": [-46.693, -117.918, 150.791, -35.677, 90.199, 44.388],
         "door_scan_pose": [-7.718, -63.084, 29.769, 32.471, 36.837, 44.814],
-        "outside_tag_scan_pose": [-6.533, -70.142, 72.032, -3.678, 37.251, 46.061],
+        "outside_tag_scan_pose": [-7.967, -71.324, 69.759, 0.317, 35.801, 45.656],
         "final_scan_pose": [-27.319, -78.066, 65.957, 39.516, 16.658, 17.768]
       },
       "tags": {

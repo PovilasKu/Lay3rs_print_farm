@@ -1,0 +1,452 @@
+[
+  {
+    "type": "_marker",
+    "name": "Starting sequence: common/go_home.json",
+    "sequence_file": "common/go_home.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Home_pose",
+    "joints": [
+      -46.693,
+      -117.918,
+      150.791,
+      -35.677,
+      90.199,
+      44.388
+    ],
+    "vel": 80,
+    "acc": 70,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_specific/printer_03/go_to_door_scan_pose.json",
+    "sequence_file": "printer_specific/printer_03/go_to_door_scan_pose.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Cabinet3_scanningpose",
+    "joints": [
+      -7.718,
+      -63.084,
+      29.769,
+      32.471,
+      36.837,
+      44.814
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_family/bambu_x1c/open_door_with_verification.json",
+    "sequence_file": "printer_family/bambu_x1c/open_door_with_verification.json"
+  },
+  {
+    "type": "retry_until_tag_absent",
+    "name": "open_door_and_verify_door_tag_disappears",
+    "max_attempts": 2,
+    "check": {
+      "tag_id": 0,
+      "tag_family": "tag25h9",
+      "require_tag_family": false,
+      "timeout_s": 2.0,
+      "require_stereo": false
+    },
+    "commands": [
+      {
+        "type": "move_joint",
+        "name": "Go to check if door is open (move to door scan pose)",
+        "joints": [
+          -7.718,
+          -63.084,
+          29.769,
+          32.471,
+          36.837,
+          44.814
+        ],
+        "vel": 50,
+        "acc": 30,
+        "ovl": 100
+      },
+      {
+        "type": "localize",
+        "name": "localize_on_printer_door_tag_25h9",
+        "tag_id": 0,
+        "tag_family": "tag25h9",
+        "require_tag_family": false,
+        "target_distance_mm": 250,
+        "target_x_mm": 0.0,
+        "target_y_mm": 0.0,
+        "target_roll_deg": 0,
+        "max_iters": 30
+      },
+      {
+        "type": "local_cart",
+        "name": "get_ready_to_cling_to_door",
+        "frame": "tcp",
+        "delta": [
+          60,
+          50,
+          -45,
+          0,
+          0,
+          0
+        ],
+        "vel": 50,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "door_cling",
+        "frame": "tcp",
+        "delta": [
+          0,
+          0,
+          -20,
+          0,
+          0,
+          0
+        ],
+        "vel": 40,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "door_pull",
+        "frame": "tcp",
+        "delta": [
+          -7,
+          -50,
+          0,
+          0,
+          0,
+          0
+        ],
+        "vel": 40,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "door_uncling",
+        "frame": "tcp",
+        "delta": [
+          0,
+          0,
+          30,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "go__lower_to_get_ready_to_open_door",
+        "frame": "tcp",
+        "delta": [
+          0,
+          -20,
+          -150,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "scooch_to_side_to_get_ready_to_open_door",
+        "frame": "tcp",
+        "delta": [
+          110,
+          50,
+          0,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_joint",
+        "name": "turn_J5_to_get_ready_to_open_door",
+        "delta_joints": [
+          0,
+          0,
+          0,
+          0,
+          -22,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "open_door",
+        "frame": "tcp",
+        "delta": [
+          -340,
+          -150,
+          0,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_cart",
+        "name": "step_back_to_clear_door",
+        "delta": [
+          0,
+          -200,
+          0,
+          0,
+          0,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "local_joint",
+        "name": "unturn_J5",
+        "delta_joints": [
+          0,
+          0,
+          0,
+          0,
+          22,
+          0
+        ],
+        "vel": 80,
+        "acc": 20,
+        "ovl": 100
+      },
+      {
+        "type": "move_joint",
+        "name": "Go to check if door is open (move to door scan pose)",
+        "joints": [
+          -7.718,
+          -63.084,
+          29.769,
+          32.471,
+          36.837,
+          44.814
+        ],
+        "vel": 50,
+        "acc": 30,
+        "ovl": 100
+      }
+    ]
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_specific/printer_03/go_to_outside_tag_scan_pose.json",
+    "sequence_file": "printer_specific/printer_03/go_to_outside_tag_scan_pose.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Go to printer outside-front tag scan pose",
+    "joints": [
+      -7.967,
+      -71.324,
+      69.759,
+      0.317,
+      35.801,
+      45.656
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: localization/localize_printer_outside_front_tag.json",
+    "sequence_file": "localization/localize_printer_outside_front_tag.json"
+  },
+  {
+    "type": "localize",
+    "name": "localize_on_printer_outside_front_tag_36h11",
+    "tag_id": 3,
+    "tag_family": "tag36h11",
+    "require_tag_family": false,
+    "target_distance_mm": 250,
+    "target_x_mm": 0.0,
+    "target_y_mm": 0.0,
+    "target_roll_deg": 0,
+    "max_iters": 30
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_family/bambu_x1c/remove_buildplate_from_outside_localized.json",
+    "sequence_file": "printer_family/bambu_x1c/remove_buildplate_from_outside_localized.json"
+  },
+  {
+    "type": "local_cart",
+    "name": "line_up_with_buildplate",
+    "delta": [
+      -10,
+      80,
+      25,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "gripper_activate",
+    "name": "Activate gripper",
+    "device_id": 2
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position_34",
+    "device_id": 2,
+    "position": 34,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "local_cart",
+    "name": "go_into_buildplates_deep_end",
+    "delta": [
+      0,
+      140,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "twist_to_get_good_grip_on_buildplate",
+    "delta": [
+      0,
+      0,
+      0,
+      -2,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "move_gripper_into_position_to_get_good_grip_on_buildplate",
+    "delta": [
+      0,
+      9,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 100",
+    "device_id": 2,
+    "position": 100,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "local_cart",
+    "name": "lift_buildplate_up",
+    "delta": [
+      0,
+      0,
+      10,
+      0,
+      0,
+      0
+    ],
+    "vel": 40,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "twist_to_get_good_grip_on_buildplate_again",
+    "delta": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "extract_buildplate",
+    "delta": [
+      0,
+      -300,
+      10,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "move_farther_back_to_rack",
+    "delta": [
+      0,
+      -200,
+      100,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  }
+]
