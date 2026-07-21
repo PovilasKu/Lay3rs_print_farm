@@ -54,9 +54,9 @@ VEL = 80.0
 ACC = 60.0
 OVL = 20.0
 
-LOCALIZE_VEL = 20.0
+LOCALIZE_VEL = 50.0
 LOCALIZE_ACC = 30.0
-LOCALIZE_OVL = 20.0
+LOCALIZE_OVL = 100.0
 
 POSE_XYZ_REACHED_TOL_MM = 2.0
 POSE_ROT_REACHED_TOL_DEG = 2.0
@@ -126,7 +126,7 @@ YAW_TO_ROBOT_ROT_AXIS = 5
 ROLL_TO_ROBOT_ROT_AXIS = 4
 
 PITCH_SIGN = +1.0
-YAW_SIGN = +1.0
+YAW_SIGN = -1.0
 ROLL_SIGN = +1.0
 
 # -----------------------------------------------------------------------------

@@ -5,8 +5,8 @@
       "id": 1,
       "family": "tag36h11",
       "target_distance_mm": 450,
-      "target_u": 640,
-      "target_v": 360,
+      "target_x_mm": 0.0,
+      "target_y_mm": 0.0,
       "require_family": false
     },
     "scanning_pose_joints": [-36.391, -107.859, 87.998, 18.854, 96.946, 43.731]

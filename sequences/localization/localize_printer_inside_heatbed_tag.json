@@ -6,8 +6,8 @@
     "tag_family": "${printer.tags.inside_heatbed.family}",
     "require_tag_family": "${printer.tags.inside_heatbed.require_family}",
     "target_distance_mm": "${printer.tags.inside_heatbed.target_distance_mm}",
-    "target_u": "${printer.tags.inside_heatbed.target_u}",
-    "target_v": "${printer.tags.inside_heatbed.target_v}",
+    "target_x_mm": "${printer.tags.inside_heatbed.target_x_mm}",
+    "target_y_mm": "${printer.tags.inside_heatbed.target_y_mm}",
     "target_roll_deg": 0,
     "max_iters": 30
   }

@@ -8,12 +8,12 @@
     "type": "move_joint",
     "name": "Go to printer outside-front tag scan pose",
     "joints": [
-      -22.241,
-      -82.943,
-      75.225,
-      4.769,
-      21.556,
-      47.38
+      -6.533,
+      -70.142,
+      72.032,
+      -3.678,
+      37.251,
+      46.061
     ],
     "vel": 50,
     "acc": 30,
@@ -27,10 +27,10 @@
   {
     "type": "localize",
     "name": "localize_on_printer_outside_front_tag_36h11",
-    "tag_id": 2,
+    "tag_id": 3,
     "tag_family": "tag36h11",
     "require_tag_family": false,
-    "target_distance_mm": 500,
+    "target_distance_mm": 250,
     "target_u": 640,
     "target_v": 360,
     "target_roll_deg": 0,

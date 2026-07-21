@@ -6,8 +6,8 @@
     "tag_family": "${printer.tags.outside_front.family}",
     "require_tag_family": "${printer.tags.outside_front.require_family}",
     "target_distance_mm": "${printer.tags.outside_front.target_distance_mm}",
-    "target_u": "${printer.tags.outside_front.target_u}",
-    "target_v": "${printer.tags.outside_front.target_v}",
+    "target_x_mm": "${printer.tags.outside_front.target_x_mm}",
+    "target_y_mm": "${printer.tags.outside_front.target_y_mm}",
     "target_roll_deg": 0,
     "max_iters": 30
   }

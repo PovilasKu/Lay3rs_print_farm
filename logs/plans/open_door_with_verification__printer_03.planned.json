@@ -1,12 +1,37 @@
 [
   {
+    "type": "_marker",
+    "name": "Starting sequence: printer_specific/printer_03/go_to_door_scan_pose.json",
+    "sequence_file": "printer_specific/printer_03/go_to_door_scan_pose.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Cabinet3_scanningpose",
+    "joints": [
+      -7.718,
+      -63.084,
+      29.769,
+      32.471,
+      36.837,
+      44.814
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_family/bambu_x1c/open_door_with_verification.json",
+    "sequence_file": "printer_family/bambu_x1c/open_door_with_verification.json"
+  },
+  {
     "type": "retry_until_tag_absent",
     "name": "open_door_and_verify_door_tag_disappears",
     "max_attempts": 2,
     "check": {
-      "tag_id": "${printer.tags.door.id}",
-      "tag_family": "${printer.tags.door.family}",
-      "require_tag_family": "${printer.tags.door.require_family}",
+      "tag_id": 0,
+      "tag_family": "tag25h9",
+      "require_tag_family": false,
       "timeout_s": 2.0,
       "require_stereo": false
     },
@@ -14,7 +39,14 @@
       {
         "type": "move_joint",
         "name": "Go to check if door is open (move to door scan pose)",
-        "joints": "${printer.joints.door_scan_pose}",
+        "joints": [
+          -7.718,
+          -63.084,
+          29.769,
+          32.471,
+          36.837,
+          44.814
+        ],
         "vel": 50,
         "acc": 30,
         "ovl": 100
@@ -22,12 +54,12 @@
       {
         "type": "localize",
         "name": "localize_on_printer_door_tag_25h9",
-        "tag_id": "${printer.tags.door.id}",
-        "tag_family": "${printer.tags.door.family}",
-        "require_tag_family": "${printer.tags.door.require_family}",
-        "target_distance_mm": "${printer.tags.door.target_distance_mm}",
-        "target_x_mm": "${printer.tags.door.target_x_mm}",
-        "target_y_mm": "${printer.tags.door.target_y_mm}",
+        "tag_id": 0,
+        "tag_family": "tag25h9",
+        "require_tag_family": false,
+        "target_distance_mm": 250,
+        "target_x_mm": 0.0,
+        "target_y_mm": 0.0,
         "target_roll_deg": 0,
         "max_iters": 30
       },
@@ -191,7 +223,14 @@
       {
         "type": "move_joint",
         "name": "Go to check if door is open (move to door scan pose)",
-        "joints": "${printer.joints.door_scan_pose}",
+        "joints": [
+          -7.718,
+          -63.084,
+          29.769,
+          32.471,
+          36.837,
+          44.814
+        ],
         "vel": 50,
         "acc": 30,
         "ovl": 100

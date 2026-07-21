@@ -1,0 +1,50 @@
+[
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_specific/printer_03/go_to_door_scan_pose.json",
+    "sequence_file": "printer_specific/printer_03/go_to_door_scan_pose.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Cabinet3_scanningpose",
+    "joints": [
+      -7.828,
+      -69.614,
+      54.801,
+      13.698,
+      35.946,
+      45.535
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "localize",
+    "name": "Localize printer_03 using door tag",
+    "tag_id": 0,
+    "tag_family": "tag25h9",
+    "require_family": false,
+    "target_distance_mm": 250,
+    "target_u": 640,
+    "target_v": 360,
+    "target_roll_deg": 0
+  },
+  {
+    "type": "local_cart",
+    "name": "Apply printer_03 door 6-axis offset after localization",
+    "delta": [
+      0,
+      0,
+      0,
+      0,
+      90,
+      0
+    ],
+    "frame": "tcp",
+    "motion": "line",
+    "vel": 20,
+    "acc": 30,
+    "ovl": 20
+  }
+]

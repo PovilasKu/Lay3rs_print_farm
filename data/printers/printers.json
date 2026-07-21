@@ -9,33 +9,33 @@
       "notes": "Initial printer using the previously tested JSON sequence. Tag family checking is disabled until the Vision Pi outputs tag_family.",
       "joints": {
         "home": [51.873, -112.709, 153.232, -41.223, 94.624, 44.017],
-        "door_scan_pose": [-22.241, -82.943, 75.225, 4.769, 21.556, 47.38],
-        "outside_tag_scan_pose": [-22.241, -82.943, 75.225, 4.769, 21.556, 47.38],
+        "door_scan_pose": [-7.718, -63.084, 29.769, 32.471, 36.837, 44.814],
+        "outside_tag_scan_pose": [-6.533, -70.142, 72.032, -3.678, 37.251, 46.061],
         "final_scan_pose": [-27.319, -78.066, 65.957, 39.516, 16.658, 17.768]
       },
       "tags": {
         "door": {
           "id": 0,
           "family": "tag25h9",
-          "target_distance_mm": 300,
-          "target_u": 640,
-          "target_v": 360,
+          "target_distance_mm": 250,
+          "target_x_mm": 0.0,
+          "target_y_mm": 0.0,
           "require_family": false
         },
         "outside_front": {
-          "id": 2,
+          "id": 3,
           "family": "tag36h11",
-          "target_distance_mm": 500,
-          "target_u": 640,
-          "target_v": 360,
+          "target_distance_mm": 250,
+          "target_x_mm": 0.0,
+          "target_y_mm": 0.0,
           "require_family": false
         },
         "inside_heatbed": {
-          "id": 102,
+          "id": 12,
           "family": "tag36h11",
-          "target_distance_mm": 420,
-          "target_u": 640,
-          "target_v": 360,
+          "target_distance_mm":400 ,
+          "target_x_mm": 0.0,
+          "target_y_mm": 0.0,
           "require_family": false
         }
       },

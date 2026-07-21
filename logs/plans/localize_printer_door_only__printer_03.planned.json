@@ -8,12 +8,12 @@
     "type": "move_joint",
     "name": "Cabinet3_scanningpose",
     "joints": [
-      -22.241,
-      -82.943,
-      75.225,
-      4.769,
-      21.556,
-      47.38
+      -10.781,
+      -67.83,
+      37.317,
+      29.601,
+      33.771,
+      44.901
     ],
     "vel": 50,
     "acc": 30,
@@ -30,9 +30,9 @@
     "tag_id": 0,
     "tag_family": "tag25h9",
     "require_tag_family": false,
-    "target_distance_mm": 300,
-    "target_u": 640,
-    "target_v": 360,
+    "target_distance_mm": 250,
+    "target_x_mm": 0.0,
+    "target_y_mm": 0.0,
     "target_roll_deg": 0,
     "max_iters": 30
   }
