@@ -15,12 +15,32 @@
     "slot_01": {
       "display_name": "Rack slot 01 - test drop-off/pick-up slot",
       "status": "test",
-      "local_target_delta": [0, 0, 0, 0, 0, 0]
+      "local_target_delta": [0, 0, -140, 0, 0, 0]
     },
     "slot_02": {
-      "display_name": "Rack slot 02 - placeholder",
+      "display_name": "Rack slot 02",
       "status": "placeholder",
-      "local_target_delta": [0, 0, 0, 0, 0, 0]
+      "local_target_delta": [0, 0, -220, 0, 0, 0]
+    },
+    "slot_03": {
+      "display_name": "Rack slot 03",
+      "status": "placeholder",
+      "local_target_delta": [0, 0, -300, 0, 0, 0]
+    },
+    "slot_04": {
+      "display_name": "Rack slot 04",
+      "status": "placeholder",
+      "local_target_delta": [0, 0, -380, 0, 0, 0]
+    },
+    "slot_05": {
+      "display_name": "Rack slot 05",
+      "status": "placeholder",
+      "local_target_delta": [0, 0, -460, 0, 0, 0]
+    },
+    "slot_06": {
+      "display_name": "Rack slot 06",
+      "status": "placeholder",
+      "local_target_delta": [0, 0, -540, 0, 0, 0]
     }
   }
 }

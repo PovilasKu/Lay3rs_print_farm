@@ -83,6 +83,13 @@
         "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json"
       ]
     },
+    "localize_rack_only": {
+      "description": "",
+      "requires_drop_slot": false,
+      "steps": [
+        "localization/localize_buildplate_rack_tag.json"
+      ]
+    },
     "rack_drop_only": {
       "description": "Move to the buildplate rack, localize on the rack tag, move to the selected drop slot, and drop the held buildplate.",
       "requires_drop_slot": true,
