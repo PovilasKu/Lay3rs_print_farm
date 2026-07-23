@@ -266,12 +266,12 @@
     "type": "move_joint",
     "name": "Go to printer outside-front tag scan pose",
     "joints": [
-      -7.967,
-      -71.324,
-      69.759,
-      0.317,
-      35.801,
-      45.656
+      -1.334,
+      -57.034,
+      19.36,
+      36.943,
+      84.814,
+      43.647
     ],
     "vel": 50,
     "acc": 30,
@@ -288,7 +288,7 @@
     "tag_id": 3,
     "tag_family": "tag36h11",
     "require_tag_family": false,
-    "target_distance_mm": 250,
+    "target_distance_mm": 225,
     "target_x_mm": 0.0,
     "target_y_mm": 0.0,
     "target_roll_deg": 0,
@@ -301,11 +301,26 @@
   },
   {
     "type": "local_cart",
+    "name": "untiwst_tcp",
+    "delta": [
+      0,
+      -80,
+      0,
+      0,
+      0,
+      46
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
     "name": "line_up_with_buildplate",
     "delta": [
-      -10,
-      80,
-      25,
+      -43,
+      105,
+      -240,
       0,
       0,
       0

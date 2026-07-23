@@ -100,6 +100,15 @@
         "rack/drop_buildplate_in_slot_from_localized.json"
       ]
     },
+    "test_rack_slot_position": {
+    "description": "Localize on the rack tag and move slowly to the selected slot approach position, without entering the rack or using the gripper.",
+    "requires_drop_slot": true,
+    "steps": [
+     "rack/go_to_rack_scanning_pose.json",
+     "localization/localize_buildplate_rack_tag.json",
+     "rack/move_to_drop_slot_from_rack_localized.json"
+    ]
+    },
     "rack_pick_only": {
       "description": "Move to the buildplate rack, localize on the rack tag, move to the selected pick slot, and pick up a clean buildplate.",
       "requires_pick_slot": true,

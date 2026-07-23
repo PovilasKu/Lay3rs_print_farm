@@ -1,0 +1,61 @@
+[
+  {
+    "type": "_marker",
+    "name": "Starting sequence: rack/go_to_rack_scanning_pose.json",
+    "sequence_file": "rack/go_to_rack_scanning_pose.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Rack_scanningpose",
+    "joints": [
+      -33.671,
+      -110.219,
+      89.153,
+      21.045,
+      102.225,
+      44.245
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: localization/localize_buildplate_rack_tag.json",
+    "sequence_file": "localization/localize_buildplate_rack_tag.json"
+  },
+  {
+    "type": "localize",
+    "name": "localize_on_buildplate_rack_tag_36h11",
+    "tag_id": 1,
+    "tag_family": "tag36h11",
+    "require_tag_family": false,
+    "target_distance_mm": 450,
+    "target_x_mm": 0.0,
+    "target_y_mm": 0.0,
+    "target_roll_deg": 0,
+    "max_iters": 50
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: rack/move_to_drop_slot_from_rack_localized.json",
+    "sequence_file": "rack/move_to_drop_slot_from_rack_localized.json"
+  },
+  {
+    "type": "local_cart",
+    "name": "move_from_rack_tag_to_drop_slot",
+    "delta": [
+      0,
+      0,
+      -220,
+      0,
+      0,
+      0
+    ],
+    "frame": "tcp",
+    "motion": "line",
+    "vel": 50,
+    "acc": 50,
+    "ovl": 100
+  }
+]

@@ -6,8 +6,8 @@
     "tag_family": "${rack.tag.family}",
     "require_tag_family": "${rack.tag.require_family}",
     "target_distance_mm": "${rack.tag.target_distance_mm}",
-    "target_x_mm": "${printer.tags.door.target_x_mm}",
-    "target_y_mm": "${printer.tags.door.target_y_mm}",
+    "target_x_mm": "${rack.tag.target_x_mm}",
+    "target_y_mm": "${rack.tag.target_y_mm}",
     "target_roll_deg": 0,
     "max_iters": 50
   }

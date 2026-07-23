@@ -1,20 +1,5 @@
 [
   {
-    "type": "local_cart",
-    "name": "go_down_to_dispose_buildplate",
-    "delta": [
-      0,
-      0,
-      -390,
-      0,
-      0,
-      0
-    ],
-    "vel": 50,
-    "acc": 50,
-    "ovl": 100
-  },
-  {
     "type": "line_tcp",
     "name": "go_into_rack_to_dispose_buildplate",
     "delta": [

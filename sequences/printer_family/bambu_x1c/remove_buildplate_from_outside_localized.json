@@ -1,11 +1,26 @@
 [
   {
     "type": "local_cart",
+    "name": "untiwst_tcp",
+    "delta": [
+      0,
+      -80,
+      0,
+      0,
+      0,
+      46
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
     "name": "line_up_with_buildplate",
     "delta": [
-      -10,
-      80,
-      25,
+      -43,
+      105,
+      -240,
       0,
       0,
       0
