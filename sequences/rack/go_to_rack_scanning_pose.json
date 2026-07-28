@@ -1,6 +1,14 @@
 [
   {
     "type": "move_joint",
+    "name": "Rack_pre-scanningpose",
+    "joints": "${rack.prescanning_pose_joints}",
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "move_joint",
     "name": "Rack_scanningpose",
     "joints": "${rack.scanning_pose_joints}",
     "vel": 50,

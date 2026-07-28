@@ -4,9 +4,10 @@ Interactive FAIRINO robot test utility.
 
 Functions:
     1. Put the robot into manual mode.
-    2. Move to absolute Cartesian or joint coordinates.
-    3. Move the configured gripper to a requested position.
-    4. Read the current TCP pose and joint coordinates.
+    2. Make relative movements in the current local TCP/tool frame.
+    3. Move to absolute joint coordinates.
+    4. Move the configured gripper to a requested position.
+    5. Read the current TCP pose and joint coordinates.
 
 This script is intended to be placed in the ROOT of fairino_farm_framework,
 next to config.py and run_job.py.
@@ -32,6 +33,7 @@ from core.gripper import (
     move_gripper,
     print_gripper_status,
 )
+from core.math_utils import tcp_delta_to_pose
 from core.motion import move_cart, move_joint, move_line
 from core.robot_client import (
     connect_robot,
@@ -45,9 +47,9 @@ from core.robot_client import (
 # ---------------------------------------------------------------------------
 
 # Deliberately low test speeds.
-TEST_VEL = 10.0
-TEST_ACC = 10.0
-TEST_OVL = 10.0
+TEST_VEL = 50.0
+TEST_ACC = 30.0
+TEST_OVL = 50.0
 
 # Return to controller manual mode after each programmed robot move.
 RETURN_TO_MANUAL_AFTER_MOVE = True
@@ -179,16 +181,14 @@ def print_current_position(robot) -> None:
     print("Current absolute TCP pose")
     print("-------------------------")
     print(
-        "X={:.3f}, Y={:.3f}, Z={:.3f}, "
-        "RX={:.3f}, RY={:.3f}, RZ={:.3f}".format(*pose)
+        "{:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}".format(*pose)
     )
 
     print()
     print("Current joint coordinates")
     print("-------------------------")
     print(
-        "J1={:.3f}, J2={:.3f}, J3={:.3f}, "
-        "J4={:.3f}, J5={:.3f}, J6={:.3f}".format(*joints)
+        "{:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}".format(*joints)
     )
 
 
@@ -231,27 +231,51 @@ def execute_programmed_move(
                 )
 
 
-def move_absolute_cartesian(robot, linear: bool) -> None:
+def move_local_tcp(robot, linear: bool) -> None:
     """
-    Move to an absolute Cartesian TCP pose.
+    Move by a relative offset in the CURRENT TCP/tool coordinate frame.
 
     Input order:
-        X Y Z RX RY RZ
+        dX dY dZ dRX dRY dRZ
+
     Units:
         millimetres and degrees
+
+    Translation behaviour:
+        dX, dY and dZ follow the TCP axes at the moment this command starts.
+        For example, positive dZ moves along the tool's positive Z axis,
+        regardless of how the robot is oriented in the world/base frame.
+
+    Rotation behaviour:
+        dRX, dRY and dRZ are added to the current TCP orientation values,
+        matching the existing fairino_farm_framework TCP-delta helper.
+
+    Movement type:
+        linear=False -> MoveCart point-to-point movement
+        linear=True  -> MoveL straight-line movement
     """
     current = get_actual_pose(robot)
+    print()
     print(f"Current TCP pose: {[round(v, 3) for v in current]}")
-
-    target = read_six_values(
-        "Enter X Y Z RX RY RZ (or 'q' to cancel): ",
-        "Cartesian pose",
+    print(
+        "Enter a RELATIVE movement in the current TCP/tool frame.\n"
+        "Example: 0 0 10 0 0 0 moves +10 mm along local TCP Z."
     )
+
+    delta = read_six_values(
+        "Enter dX dY dZ dRX dRY dRZ (or 'q' to cancel): ",
+        "Local TCP delta",
+    )
+
+    target = tcp_delta_to_pose(current, delta)
+
+    print(f"Requested local TCP delta: {[round(v, 3) for v in delta]}")
+    print(f"Calculated robot target pose: {[round(v, 3) for v in target]}")
 
     if linear:
         execute_programmed_move(
             robot,
-            "Absolute Cartesian straight-line MoveL",
+            "Local TCP straight-line movement (MoveL)",
             target,
             lambda: move_line(
                 robot,
@@ -264,7 +288,7 @@ def move_absolute_cartesian(robot, linear: bool) -> None:
     else:
         execute_programmed_move(
             robot,
-            "Absolute Cartesian point-to-point MoveCart",
+            "Local TCP point-to-point movement (MoveCart)",
             target,
             lambda: move_cart(
                 robot,
@@ -372,8 +396,8 @@ def print_menu() -> None:
     print("1. Set controller MANUAL mode")
     print("2. Set controller AUTOMATIC mode")
     print("3. Show current TCP pose and joints")
-    print("4. Move to absolute Cartesian pose (MoveCart/PTP)")
-    print("5. Move to absolute Cartesian pose (MoveL/straight)")
+    print("4. Move relative in LOCAL TCP frame (MoveCart/PTP)")
+    print("5. Move relative in LOCAL TCP frame (MoveL/straight)")
     print("6. Move to absolute joint coordinates (MoveJ)")
     print("7. Move gripper to position 0-100")
     print("8. Show gripper status")
@@ -411,10 +435,10 @@ def main() -> int:
                     print_current_position(robot)
 
                 elif choice == "4":
-                    move_absolute_cartesian(robot, linear=False)
+                    move_local_tcp(robot, linear=False)
 
                 elif choice == "5":
-                    move_absolute_cartesian(robot, linear=True)
+                    move_local_tcp(robot, linear=True)
 
                 elif choice == "6":
                     move_absolute_joints(robot)

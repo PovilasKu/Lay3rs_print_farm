@@ -1,0 +1,10 @@
+[
+  {
+    "type": "move_joint",
+    "name": "Home_pose",
+    "joints": "${printer.joints.home}",
+    "vel": 80,
+    "acc": 70,
+    "ovl": 100
+  }
+]

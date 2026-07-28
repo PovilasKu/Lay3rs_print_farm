@@ -151,11 +151,56 @@
   },
   {
     "type": "local_cart",
-    "name": "move_farther_back_to_rack",
+    "name": "move_farther_back",
     "delta": [
       0,
       -200,
       100,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "move_farther_back_again_in_line",
+    "delta": [
+      0,
+      -100,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "move_farther_back_again_in_line2",
+    "delta": [
+      0,
+      -100,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "move_farther_back_again_in_line3",
+    "delta": [
+      0,
+      -30,
+      0,
       0,
       0,
       0

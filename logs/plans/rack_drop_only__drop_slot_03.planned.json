@@ -6,6 +6,21 @@
   },
   {
     "type": "move_joint",
+    "name": "Rack_pre-scanningpose",
+    "joints": [
+      -20.812,
+      -137.239,
+      116.776,
+      -1.105,
+      24.351,
+      64.171
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "move_joint",
     "name": "Rack_scanningpose",
     "joints": [
       -33.671,

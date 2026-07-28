@@ -9,38 +9,169 @@
       "target_y_mm": 0.0,
       "require_family": false
     },
-    "scanning_pose_joints": [-33.671, -110.219, 89.153, 21.045, 102.225, 44.245]
+    "prescanning_pose_joints": [-20.812, -137.239, 116.776, -1.105, 24.351, 64.171],
+    "scanning_pose_joints": [-34.546, -108.172, 78.662, 29.108, 100.403, 44.542]
   },
   "slots": {
-    "slot_01": {
-      "display_name": "Rack slot 01 - test drop-off/pick-up slot",
+    "slot_01d": {
+      "display_name": "Drop-off slot 1",
       "status": "active",
-      "local_target_delta": [0, 0, -140, 0, 0, 0]
+      "local_target_delta": [0, 0, -150.0, 0, 0, 0]
     },
-    "slot_02": {
-      "display_name": "Rack slot 02",
+    "slot_01p": {
+      "display_name": "Pick-up slot 1",
       "status": "active",
-      "local_target_delta": [0, 0, -220, 0, 0, 0]
+      "local_target_delta": [0, 0, -185.0, 0, 0, 0]
     },
-    "slot_03": {
-      "display_name": "Rack slot 03",
+    "slot_02d": {
+      "display_name": "Drop-off slot 2",
       "status": "active",
-      "local_target_delta": [0, 0, -300, 0, 0, 0]
+      "local_target_delta": [0, 0, -229.8, 0, 0, 0]
     },
-    "slot_04": {
-      "display_name": "Rack slot 04",
+    "slot_02p": {
+      "display_name": "Pick-up slot 2",
       "status": "active",
-      "local_target_delta": [0, 0, -380, 0, 0, 0]
+      "local_target_delta": [0, 0, -264.8, 0, 0, 0]
     },
-    "slot_05": {
-      "display_name": "Rack slot 05",
+    "slot_03d": {
+      "display_name": "Drop-off slot 3",
       "status": "active",
-      "local_target_delta": [0, 0, -460, 0, 0, 0]
+      "local_target_delta": [0, 0, -309.6, 0, 0, 0]
     },
-    "slot_06": {
-      "display_name": "Rack slot 06",
+    "slot_03p": {
+      "display_name": "Pick-up slot 3",
       "status": "active",
-      "local_target_delta": [0, 0, -540, 0, 0, 0]
+      "local_target_delta": [0, 0, -344.6, 0, 0, 0]
+    },
+    "slot_04d": {
+      "display_name": "Drop-off slot 4",
+      "status": "active",
+      "local_target_delta": [0, 0, -389.4, 0, 0, 0]
+    },
+    "slot_04p": {
+      "display_name": "Pick-up slot 4",
+      "status": "active",
+      "local_target_delta": [0, 0, -424.4, 0, 0, 0]
+    },
+    "slot_05d": {
+      "display_name": "Drop-off slot 5",
+      "status": "active",
+      "local_target_delta": [0, 0, -469.2, 0, 0, 0]
+    },
+    "slot_05p": {
+      "display_name": "Pick-up slot 5",
+      "status": "active",
+      "local_target_delta": [0, 0, -504.2, 0, 0, 0]
+    },
+    "slot_06d": {
+      "display_name": "Drop-off slot 6",
+      "status": "active",
+      "local_target_delta": [0, 0, -549.0, 0, 0, 0]
+    },
+    "slot_06p": {
+      "display_name": "Pick-up slot 6",
+      "status": "active",
+      "local_target_delta": [0, 0, -584.0, 0, 0, 0]
+    },
+    "slot_07d": {
+      "display_name": "Drop-off slot 7",
+      "status": "active",
+      "local_target_delta": [0, 0, -628.8, 0, 0, 0]
+    },
+    "slot_07p": {
+      "display_name": "Pick-up slot 7",
+      "status": "active",
+      "local_target_delta": [0, 0, -663.8, 0, 0, 0]
+    },
+    "slot_08d": {
+      "display_name": "Drop-off slot 8",
+      "status": "active",
+      "local_target_delta": [0, 0, -708.6, 0, 0, 0]
+    },
+    "slot_08p": {
+      "display_name": "Pick-up slot 8",
+      "status": "active",
+      "local_target_delta": [0, 0, -743.6, 0, 0, 0]
+    },
+    "slot_09d": {
+      "display_name": "Drop-off slot 9",
+      "status": "active",
+      "local_target_delta": [0, 0, -788.4, 0, 0, 0]
+    },
+    "slot_09p": {
+      "display_name": "Pick-up slot 9",
+      "status": "active",
+      "local_target_delta": [0, 0, -823.4, 0, 0, 0]
+    },
+    "slot_10d": {
+      "display_name": "Drop-off slot 10",
+      "status": "active",
+      "local_target_delta": [0, 0, -868.2, 0, 0, 0]
+    },
+    "slot_10p": {
+      "display_name": "Pick-up slot 10",
+      "status": "active",
+      "local_target_delta": [0, 0, -903.2, 0, 0, 0]
+    },
+    "slot_11d": {
+      "display_name": "Drop-off slot 11",
+      "status": "active",
+      "local_target_delta": [0, 0, -948.0, 0, 0, 0]
+    },
+    "slot_11p": {
+      "display_name": "Pick-up slot 11",
+      "status": "active",
+      "local_target_delta": [0, 0, -983.0, 0, 0, 0]
+    },
+    "slot_12d": {
+      "display_name": "Drop-off slot 12",
+      "status": "active",
+      "local_target_delta": [0, 0, -1027.8, 0, 0, 0]
+    },
+    "slot_12p": {
+      "display_name": "Pick-up slot 12",
+      "status": "active",
+      "local_target_delta": [0, 0, -1062.8, 0, 0, 0]
+    },
+    "slot_13d": {
+      "display_name": "Drop-off slot 13",
+      "status": "active",
+      "local_target_delta": [0, 0, -1107.6, 0, 0, 0]
+    },
+    "slot_13p": {
+      "display_name": "Pick-up slot 13",
+      "status": "active",
+      "local_target_delta": [0, 0, -1142.6, 0, 0, 0]
+    },
+    "slot_14d": {
+      "display_name": "Drop-off slot 14",
+      "status": "active",
+      "local_target_delta": [0, 0, -1187.4, 0, 0, 0]
+    },
+    "slot_14p": {
+      "display_name": "Pick-up slot 14",
+      "status": "active",
+      "local_target_delta": [0, 0, -1222.4, 0, 0, 0]
+    },
+    "slot_15d": {
+      "display_name": "Drop-off slot 15",
+      "status": "active",
+      "local_target_delta": [0, 0, -1267.2, 0, 0, 0]
+    },
+    "slot_15p": {
+      "display_name": "Pick-up slot 15",
+      "status": "active",
+      "local_target_delta": [0, 0, -1302.2, 0, 0, 0]
+    },
+    "slot_16d": {
+      "display_name": "Drop-off slot 16",
+      "status": "active",
+      "local_target_delta": [0, 0, -1347.0, 0, 0, 0]
+    },
+    "slot_16p": {
+      "display_name": "Pick-up slot 16",
+      "status": "active",
+      "local_target_delta": [0, 0, -1382.0, 0, 0, 0]
     }
   }
 }

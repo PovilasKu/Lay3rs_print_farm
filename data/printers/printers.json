@@ -21,7 +21,7 @@
           "target_distance_mm": 250,
           "target_x_mm": 0.0,
           "target_y_mm": 0.0,
-          "require_family": false
+          "require_family": true
         },
         "outside_front": {
           "id": 3,
@@ -29,7 +29,7 @@
           "target_distance_mm": 225,
           "target_x_mm": 0.0,
           "target_y_mm": 0.0,
-          "require_family": false
+          "require_family": true
         },
         "inside_heatbed": {
           "id": 12,
@@ -37,7 +37,7 @@
           "target_distance_mm":400 ,
           "target_x_mm": 0.0,
           "target_y_mm": 0.0,
-          "require_family": false
+          "require_family": true
         }
       },
       "sequences": {
@@ -45,6 +45,100 @@
         "door_scan_pose": "printer_specific/printer_03/go_to_door_scan_pose.json",
         "outside_tag_scan_pose": "printer_specific/printer_03/go_to_outside_tag_scan_pose.json",
         "final_scan_pose": "printer_specific/printer_03/go_to_final_scan_pose.json"
+      }
+    },
+    "printer_04": {
+      "enabled": true,
+      "display_name": "Cabinet 4 - second test printer",
+      "family": "bambu_x1c",
+      "group": "rack_a",
+      "rack_position": {"row": 1, "column": 3},
+      "notes": "Initial printer using the previously tested JSON sequence. Tag family checking is disabled until the Vision Pi outputs tag_family.",
+      "joints": {
+        "home": [-46.693, -117.918, 150.791, -35.677, 90.199, 44.388],
+        "neutral": [-46.693, -117.918, 150.791, -35.677, 90.199, 44.388],
+        "door_scan_pose": [-7.718, -67.997, 89.72, -22.569, 36.837, 44.815],
+        "outside_tag_scan_pose": [-1.098, -65.16, 88.278, -23.874, 88.227, 43.645],
+        "final_scan_pose": [-27.319, -78.066, 65.957, 39.516, 16.658, 17.768]
+      },
+      "tags": {
+        "door": {
+          "id": 1,
+          "family": "tag25h9",
+          "target_distance_mm": 250,
+          "target_x_mm": 0.0,
+          "target_y_mm": 0.0,
+          "require_family": true
+        },
+        "outside_front": {
+          "id": 4,
+          "family": "tag36h11",
+          "target_distance_mm": 225,
+          "target_x_mm": 0.0,
+          "target_y_mm": 0.0,
+          "require_family": true
+        },
+        "inside_heatbed": {
+          "id": 12,
+          "family": "tag36h11",
+          "target_distance_mm":400 ,
+          "target_x_mm": 0.0,
+          "target_y_mm": 0.0,
+          "require_family": true
+        }
+      },
+      "sequences": {
+        "go_home": "printer_specific/printer_05/go_home.json",
+        "door_scan_pose": "printer_specific/printer_05/go_to_door_scan_pose.json",
+        "outside_tag_scan_pose": "printer_specific/printer_05/go_to_outside_tag_scan_pose.json",
+        "final_scan_pose": "printer_specific/printer_05/go_to_final_scan_pose.json"
+      }
+    },
+    "printer_05": {
+      "enabled": true,
+      "display_name": "Cabinet 5 - third test printer",
+      "family": "bambu_x1c",
+      "group": "rack_a",
+      "rack_position": {"row": 1, "column": 3},
+      "notes": "Initial printer using the previously tested JSON sequence. Tag family checking is disabled until the Vision Pi outputs tag_family.",
+      "joints": {
+        "home": [-46.693, -117.918, 150.791, -35.677, 90.199, 44.388],
+        "neutral": [-46.693, -117.918, 150.791, -35.677, 90.199, 44.388],
+        "door_scan_pose": [-7.718, -67.997, 89.72, -22.569, 36.837, 44.815],
+        "outside_tag_scan_pose": [-1.098, -65.16, 88.278, -23.874, 88.227, 43.645],
+        "final_scan_pose": [-27.319, -78.066, 65.957, 39.516, 16.658, 17.768]
+      },
+      "tags": {
+        "door": {
+          "id": 2,
+          "family": "tag25h9",
+          "target_distance_mm": 250,
+          "target_x_mm": 0.0,
+          "target_y_mm": 0.0,
+          "require_family": true
+        },
+        "outside_front": {
+          "id": 5,
+          "family": "tag36h11",
+          "target_distance_mm": 225,
+          "target_x_mm": 0.0,
+          "target_y_mm": 0.0,
+          "require_family": true
+        },
+        "inside_heatbed": {
+          "id": 12,
+          "family": "tag36h11",
+          "target_distance_mm":400 ,
+          "target_x_mm": 0.0,
+          "target_y_mm": 0.0,
+          "require_family": true
+        }
+      },
+      "sequences": {
+        "go_home": "printer_specific/printer_05/go_home.json",
+        "door_scan_pose": "printer_specific/printer_05/go_to_door_scan_pose.json",
+        "outside_tag_scan_pose": "printer_specific/printer_05/go_to_outside_tag_scan_pose.json",
+        "final_scan_pose": "printer_specific/printer_05/go_to_final_scan_pose.json"
       }
     }
   }

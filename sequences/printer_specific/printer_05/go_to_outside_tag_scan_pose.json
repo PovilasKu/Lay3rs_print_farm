@@ -1,7 +1,7 @@
 [
   {
     "type": "move_joint",
-    "name": "Go to printer 3 outside-front tag scan pose",
+    "name": "Go to printer 5 outside-front tag scan pose",
     "joints": "${printer.joints.outside_tag_scan_pose}",
     "vel": 50,
     "acc": 30,
