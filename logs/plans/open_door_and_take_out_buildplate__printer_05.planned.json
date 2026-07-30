@@ -28,12 +28,12 @@
     "type": "move_joint",
     "name": "Cabinet5_scanningpose",
     "joints": [
-      -7.718,
-      -67.997,
-      89.72,
-      -22.569,
-      36.837,
-      44.815
+      -9.364,
+      -35.245,
+      98.909,
+      -64.57,
+      33.892,
+      44.9
     ],
     "vel": 50,
     "acc": 30,
@@ -60,12 +60,12 @@
         "type": "move_joint",
         "name": "Go to check if door is open (move to door scan pose)",
         "joints": [
-          -7.718,
-          -67.997,
-          89.72,
-          -22.569,
-          36.837,
-          44.815
+          -9.364,
+          -35.245,
+          98.909,
+          -64.57,
+          33.892,
+          44.9
         ],
         "vel": 50,
         "acc": 30,
@@ -89,7 +89,7 @@
         "frame": "tcp",
         "delta": [
           60,
-          50,
+          48,
           -45,
           0,
           0,
@@ -244,12 +244,12 @@
         "type": "move_joint",
         "name": "Go to check if door is open (move to door scan pose)",
         "joints": [
-          -7.718,
-          -67.997,
-          89.72,
-          -22.569,
-          36.837,
-          44.815
+          -9.364,
+          -35.245,
+          98.909,
+          -64.57,
+          33.892,
+          44.9
         ],
         "vel": 50,
         "acc": 30,
@@ -266,12 +266,12 @@
     "type": "move_joint",
     "name": "Go to printer 5 outside-front tag scan pose",
     "joints": [
-      -1.098,
-      -65.16,
-      88.278,
-      -23.874,
-      88.227,
-      43.645
+      -0.611,
+      -34.067,
+      95.454,
+      -62.148,
+      88.713,
+      43.636
     ],
     "vel": 50,
     "acc": 30,
@@ -319,9 +319,54 @@
     "name": "line_up_with_buildplate",
     "delta": [
       -43,
-      105,
+      98,
       -240,
       0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt a bit",
+    "delta": [
+      0,
+      0,
+      3,
+      -1.5,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "go insided tilted",
+    "delta": [
+      0,
+      15,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "un-tilt a bit",
+    "delta": [
+      0,
+      0,
+      -3,
+      1.5,
       0,
       0
     ],
@@ -354,7 +399,7 @@
     "name": "go_into_buildplates_deep_end",
     "delta": [
       0,
-      140,
+      133,
       0,
       0,
       0,
@@ -451,7 +496,7 @@
   },
   {
     "type": "local_cart",
-    "name": "move_farther_back_to_rack",
+    "name": "move_farther_back",
     "delta": [
       0,
       -200,
@@ -459,6 +504,21 @@
       0,
       0,
       0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "line_cart",
+    "name": "rack good position",
+    "pose": [
+      -761.152,
+      29.744,
+      763.487,
+      8.742,
+      -1.382,
+      136.677
     ],
     "vel": 80,
     "acc": 20,

@@ -89,7 +89,7 @@
         "frame": "tcp",
         "delta": [
           60,
-          50,
+          48,
           -45,
           0,
           0,
@@ -319,9 +319,54 @@
     "name": "line_up_with_buildplate",
     "delta": [
       -43,
-      105,
+      98,
       -240,
       0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt a bit",
+    "delta": [
+      0,
+      0,
+      3,
+      -1.5,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "go insided tilted",
+    "delta": [
+      0,
+      15,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "un-tilt a bit",
+    "delta": [
+      0,
+      0,
+      -3,
+      1.5,
       0,
       0
     ],
@@ -354,7 +399,7 @@
     "name": "go_into_buildplates_deep_end",
     "delta": [
       0,
-      140,
+      133,
       0,
       0,
       0,
@@ -465,45 +510,15 @@
     "ovl": 100
   },
   {
-    "type": "line_tcp",
-    "name": "move_farther_back_again_in_line",
-    "delta": [
-      0,
-      -100,
-      0,
-      0,
-      0,
-      0
-    ],
-    "vel": 80,
-    "acc": 20,
-    "ovl": 100
-  },
-  {
-    "type": "line_tcp",
-    "name": "move_farther_back_again_in_line2",
-    "delta": [
-      0,
-      -100,
-      0,
-      0,
-      0,
-      0
-    ],
-    "vel": 80,
-    "acc": 20,
-    "ovl": 100
-  },
-  {
-    "type": "line_tcp",
-    "name": "move_farther_back_again_in_line3",
-    "delta": [
-      0,
-      -50,
-      0,
-      0,
-      0,
-      0
+    "type": "line_cart",
+    "name": "rack good position",
+    "pose": [
+      -657.136,
+      130.183,
+      1044.706,
+      8.742,
+      -1.379,
+      136.676
     ],
     "vel": 80,
     "acc": 20,

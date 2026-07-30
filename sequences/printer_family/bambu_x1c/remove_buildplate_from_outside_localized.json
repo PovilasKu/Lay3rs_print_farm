@@ -19,9 +19,54 @@
     "name": "line_up_with_buildplate",
     "delta": [
       -43,
-      105,
+      98,
       -240,
       0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt a bit",
+    "delta": [
+      0,
+      0,
+      3,
+      -1.5,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "go insided tilted",
+    "delta": [
+      0,
+      15,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+    {
+    "type": "local_cart",
+    "name": "un-tilt a bit",
+    "delta": [
+      0,
+      0,
+      -3,
+      1.5,
       0,
       0
     ],
@@ -54,7 +99,7 @@
     "name": "go_into_buildplates_deep_end",
     "delta": [
       0,
-      140,
+      133,
       0,
       0,
       0,
@@ -165,46 +210,9 @@
     "ovl": 100
   },
   {
-    "type": "line_tcp",
-    "name": "move_farther_back_again_in_line",
-    "delta": [
-      0,
-      -100,
-      0,
-      0,
-      0,
-      0
-    ],
-    "vel": 80,
-    "acc": 20,
-    "ovl": 100
-  },
-  {
-    "type": "line_tcp",
-    "name": "move_farther_back_again_in_line2",
-    "delta": [
-      0,
-      -100,
-      0,
-      0,
-      0,
-      0
-    ],
-    "vel": 80,
-    "acc": 20,
-    "ovl": 100
-  },
-  {
-    "type": "line_tcp",
-    "name": "move_farther_back_again_in_line3",
-    "delta": [
-      0,
-      -30,
-      0,
-      0,
-      0,
-      0
-    ],
+    "type": "line_cart",
+    "name": "rack good position",
+    "pose": "${printer.tcp_poses.extraction_end_pose}",
     "vel": 80,
     "acc": 20,
     "ovl": 100

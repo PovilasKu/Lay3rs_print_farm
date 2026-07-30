@@ -83,6 +83,13 @@
         "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json"
       ]
     },
+    "go_home":{
+      "description": "its in the name",
+      "requires_printer": false,
+      "steps": [
+        "common/go_home.json"
+      ]
+    },
     "localize_rack_only": {
       "description": "",
       "requires_drop_slot": false,
