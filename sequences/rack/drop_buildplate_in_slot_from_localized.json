@@ -49,8 +49,8 @@
     "name": "clear_griper_from_buildplate",
     "delta": [
       0,
-      -100,
-      -35,
+      -160,
+      -23,
       0,
       0,
       0
@@ -64,8 +64,8 @@
     "name": "pull_out_of_rack",
     "delta": [
       0,
-      -300,
-      0,
+      -240,
+      -10,
       0,
       0,
       0

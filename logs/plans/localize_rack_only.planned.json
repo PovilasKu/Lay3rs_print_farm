@@ -1,6 +1,26 @@
 [
   {
     "type": "_marker",
+    "name": "Starting sequence: rack/go_to_rack_scanning_pose.json",
+    "sequence_file": "rack/go_to_rack_scanning_pose.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Rack_scanningpose",
+    "joints": [
+      -34.546,
+      -108.172,
+      78.662,
+      29.108,
+      100.403,
+      44.542
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
     "name": "Starting sequence: localization/localize_buildplate_rack_tag.json",
     "sequence_file": "localization/localize_buildplate_rack_tag.json"
   },

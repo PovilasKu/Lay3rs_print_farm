@@ -13,7 +13,7 @@
     "type": "gripper",
     "name": "Set gripper position",
     "device_id": 2,
-    "position": 50,
+    "position": 0,
     "speed": 53,
     "torque": 100,
     "max_time_ms": 2000,
@@ -24,7 +24,7 @@
     "name": "go_into_rack_to_pick_up_new_buildplate",
     "delta": [
       0,
-      430,
+      415,
       0,
       0,
       0,
@@ -64,7 +64,7 @@
     "name": "pull_out_of_rack_with_new_buildplate",
     "delta": [
       0,
-      -480,
+      -465,
       30,
       0,
       0,

@@ -94,6 +94,7 @@
       "description": "",
       "requires_drop_slot": false,
       "steps": [
+        "rack/go_to_rack_scanning_pose.json",
         "localization/localize_buildplate_rack_tag.json"
       ]
     },
@@ -120,6 +121,21 @@
       "description": "Move to the buildplate rack, localize on the rack tag, move to the selected pick slot, and pick up a clean buildplate.",
       "requires_pick_slot": true,
       "steps": [
+        "rack/go_to_rack_scanning_pose.json",
+        "localization/localize_buildplate_rack_tag.json",
+        "rack/move_to_pick_slot_from_rack_localized.json",
+        "rack/pick_buildplate_from_slot_from_localized.json"
+      ]
+    },
+    "rack_buildplate_switch": {
+      "description": "Drops an old and picks up a new buildplate, all from the buildplate rack. Assumes the printer door is already open and the old buildplate is already removed.",
+      "requires_drop_slot": true,
+      "steps": [
+        "rack/go_to_rack_prescanning_pose.json",
+        "rack/go_to_rack_scanning_pose.json",
+        "localization/localize_buildplate_rack_tag.json",
+        "rack/move_to_drop_slot_from_rack_localized.json",
+        "rack/drop_buildplate_in_slot_from_localized.json",
         "rack/go_to_rack_scanning_pose.json",
         "localization/localize_buildplate_rack_tag.json",
         "rack/move_to_pick_slot_from_rack_localized.json",
