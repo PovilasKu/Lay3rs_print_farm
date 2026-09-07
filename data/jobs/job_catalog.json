@@ -87,6 +87,7 @@
       "description": "localization on the tag inside the printer",
       "requires_printer": true,
       "steps": [
+        "rack/go_to_rack_prescanning_pose.json",
         "printer_family/${printer.family}/go_to_pre_placement_pose.json",
         "localization/check_printer_door_tag_absent.json",
         "printer_family/${printer.family}/go_to_final_scan_pose.json",
@@ -136,7 +137,7 @@
         "localization/localize_buildplate_rack_tag.json",
         "rack/move_to_pick_slot_from_rack_localized.json",
         "rack/pick_buildplate_from_slot_from_localized.json",
-        "common/twist_J5_90_degress.json"
+        "common/twist_J5_90_degrees.json"
       ]
     },
     "rack_buildplate_switch": {
@@ -152,8 +153,7 @@
         "localization/localize_buildplate_rack_tag.json",
         "rack/move_to_pick_slot_from_rack_localized.json",
         "rack/pick_buildplate_from_slot_from_localized.json",
-        "rack/go_to_rack_scanning_pose.json",
-        "common/twist_J5_90_degress.json"
+        "rack/go_to_rack_scanning_pose.json"
       ]
     },
     "full_buildplate_change": {

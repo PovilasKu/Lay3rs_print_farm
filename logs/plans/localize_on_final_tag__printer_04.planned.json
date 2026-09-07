@@ -1,22 +1,42 @@
 [
   {
     "type": "_marker",
-    "name": "Starting sequence: printer_family/bambu_x1c/go_to_door_scan_pose.json",
-    "sequence_file": "printer_family/bambu_x1c/go_to_door_scan_pose.json"
+    "name": "Starting sequence: rack/go_to_rack_prescanning_pose.json",
+    "sequence_file": "rack/go_to_rack_prescanning_pose.json"
   },
   {
     "type": "move_joint",
-    "name": "Go to selected printer door scan pose",
+    "name": "Rack_pre-scanningpose",
     "joints": [
-      -8.56,
-      -66.285,
-      89.5,
-      -24.092,
-      35.475,
-      44.853
+      -32.686,
+      -93.442,
+      99.719,
+      -46.627,
+      13.572,
+      83.153
     ],
     "vel": 50,
     "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_family/bambu_x1c/go_to_pre_placement_pose.json",
+    "sequence_file": "printer_family/bambu_x1c/go_to_pre_placement_pose.json"
+  },
+  {
+    "type": "line_cart",
+    "name": "rack good position",
+    "pose": [
+      -990.553,
+      -177.033,
+      396.382,
+      -0.294,
+      -0.658,
+      139.786
+    ],
+    "vel": 80,
+    "acc": 20,
     "ovl": 100
   },
   {
@@ -26,7 +46,7 @@
   },
   {
     "type": "check_tag_absent",
-    "name": "Verify printer door is open before inserting buildplate",
+    "name": "Verify printer door is open",
     "tag_id": 1,
     "tag_family": "tag25h9",
     "require_tag_family": true,

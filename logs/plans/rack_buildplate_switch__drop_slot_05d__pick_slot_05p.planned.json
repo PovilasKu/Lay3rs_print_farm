@@ -298,21 +298,6 @@
     "ovl": 100
   },
   {
-    "type": "local_joint",
-    "name": "twist_to_get_good_grip_on_buildplate",
-    "delta": [
-      0,
-      0,
-      0,
-      -90,
-      0,
-      0
-    ],
-    "vel": 80,
-    "acc": 20,
-    "ovl": 100
-  },
-  {
     "type": "_marker",
     "name": "Starting sequence: rack/go_to_rack_scanning_pose.json",
     "sequence_file": "rack/go_to_rack_scanning_pose.json"
