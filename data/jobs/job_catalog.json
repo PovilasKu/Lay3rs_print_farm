@@ -14,10 +14,10 @@
       "requires_pick_slot": true,
       "steps": [
         "common/go_home.json",
-        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/go_to_door_scan_pose.json",
         "localization/localize_printer_door_tag.json",
         "printer_family/${printer.family}/open_door_from_door_tag_localized.json",
-        "${printer.sequences.outside_tag_scan_pose}",
+        "printer_family/${printer.family}/go_to_outside_tag_scan_pose.json",
         "localization/localize_printer_outside_front_tag.json",
         "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json",
         "rack/go_to_rack_scanning_pose.json",
@@ -28,13 +28,13 @@
         "localization/localize_buildplate_rack_tag.json",
         "rack/move_to_pick_slot_from_rack_localized.json",
         "rack/pick_buildplate_from_slot_from_localized.json",
-        "${printer.sequences.outside_tag_scan_pose}",
+        "printer_family/${printer.family}/go_to_outside_tag_scan_pose.json",
         "localization/localize_printer_outside_front_tag.json",
         "printer_family/${printer.family}/bring_buildplate_into_enclosure_from_outside_localized.json",
         "printer_family/${printer.family}/place_buildplate_on_heatbed_from_inside_localized.json",
         "printer_family/${printer.family}/back_out_of_printer_after_placing_plate.json",
         "printer_family/${printer.family}/close_door_from_outside_localized.json",
-        "${printer.sequences.final_scan_pose}",
+        "printer_family/${printer.family}/go_to_final_scan_pose.json",
         "common/go_home.json"
       ]
     },
@@ -42,7 +42,7 @@
       "description": "Move to selected printer door scan pose and localize on the 25h9 door tag.",
       "requires_printer": true,
       "steps": [
-        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/go_to_door_scan_pose.json",
         "localization/localize_printer_door_tag.json"
       ]
     },
@@ -50,7 +50,7 @@
       "description": "Move to selected printer outside-front scan pose and localize on the 36h11 outside tag.",
       "requires_printer": true,
       "steps": [
-        "${printer.sequences.outside_tag_scan_pose}",
+        "printer_family/${printer.family}/go_to_outside_tag_scan_pose.json",
         "localization/localize_printer_outside_front_tag.json"
       ]
     },
@@ -58,7 +58,7 @@
       "description": "Try to open the door and verify that the 25h9 door tag disappears. Retries before failing.",
       "requires_printer": true,
       "steps": [
-        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/go_to_door_scan_pose.json",
         "printer_family/${printer.family}/open_door_with_verification.json"
       ]
     },
@@ -66,7 +66,7 @@
       "description": "Assumes the printer door is already open. Localizes on the outside 36h11 tag and removes the old buildplate.",
       "requires_printer": true,
       "steps": [
-        "${printer.sequences.outside_tag_scan_pose}",
+        "printer_family/${printer.family}/go_to_outside_tag_scan_pose.json",
         "localization/localize_printer_outside_front_tag.json",
         "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json"
       ]
@@ -76,9 +76,9 @@
       "requires_printer": true,
       "steps": [
         "common/go_home.json",
-        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/go_to_door_scan_pose.json",
         "printer_family/${printer.family}/open_door_with_verification.json",
-        "${printer.sequences.outside_tag_scan_pose}",
+        "printer_family/${printer.family}/go_to_outside_tag_scan_pose.json",
         "localization/localize_printer_outside_front_tag.json",
         "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json"
       ]
@@ -149,12 +149,12 @@
       "requires_pick_slot": true,
       "steps": [
         "common/go_home.json",
-        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/go_to_door_scan_pose.json",
         "printer_family/${printer.family}/open_door_with_verification.json",
-        "${printer.sequences.outside_tag_scan_pose}",
+        "printer_family/${printer.family}/go_to_outside_tag_scan_pose.json",
         "localization/localize_printer_outside_front_tag.json",
         "printer_family/${printer.family}/remove_buildplate_from_outside_localized.json",
-        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/go_to_door_scan_pose.json",
         "rack/go_to_rack_scanning_pose.json",
         "localization/localize_buildplate_rack_tag.json",
         "rack/move_to_drop_slot_from_rack_localized.json",
@@ -163,17 +163,17 @@
         "localization/localize_buildplate_rack_tag.json",
         "rack/move_to_pick_slot_from_rack_localized.json",
         "rack/pick_buildplate_from_slot_from_localized.json",
-        "${printer.sequences.door_scan_pose}",
-        "${printer.sequences.outside_tag_scan_pose}",
+        "printer_family/${printer.family}/go_to_door_scan_pose.json",
+        "printer_family/${printer.family}/go_to_outside_tag_scan_pose.json",
         "localization/localize_printer_outside_front_tag.json",
         "printer_family/${printer.family}/bring_buildplate_into_enclosure_from_outside_localized.json",
         "localization/localize_printer_inside_heatbed_tag.json",
         "printer_family/${printer.family}/place_buildplate_on_heatbed_from_inside_localized.json",
         "printer_family/${printer.family}/back_out_of_printer_after_placing_plate.json",
-        "${printer.sequences.outside_tag_scan_pose}",
+        "printer_family/${printer.family}/go_to_outside_tag_scan_pose.json",
         "localization/localize_printer_outside_front_tag.json",
         "printer_family/${printer.family}/close_door_from_outside_localized.json",
-        "${printer.sequences.door_scan_pose}",
+        "printer_family/${printer.family}/go_to_door_scan_pose.json",
         "common/go_home.json"
       ]
     }

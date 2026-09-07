@@ -42,12 +42,6 @@
           "target_y_mm": 0.0,
           "require_family": true
         }
-      },
-      "sequences": {
-        "go_home": "printer_specific/printer_03/go_home.json",
-        "door_scan_pose": "printer_specific/printer_03/go_to_door_scan_pose.json",
-        "outside_tag_scan_pose": "printer_specific/printer_03/go_to_outside_tag_scan_pose.json",
-        "final_scan_pose": "printer_specific/printer_03/go_to_final_scan_pose.json"
       }
     },
     "printer_04": {
@@ -92,12 +86,6 @@
           "target_y_mm": 0.0,
           "require_family": true
         }
-      },
-      "sequences": {
-        "go_home": "printer_specific/printer_05/go_home.json",
-        "door_scan_pose": "printer_specific/printer_05/go_to_door_scan_pose.json",
-        "outside_tag_scan_pose": "printer_specific/printer_05/go_to_outside_tag_scan_pose.json",
-        "final_scan_pose": "printer_specific/printer_05/go_to_final_scan_pose.json"
       }
     },
     "printer_05": {
@@ -142,12 +130,6 @@
           "target_y_mm": 0.0,
           "require_family": true
         }
-      },
-      "sequences": {
-        "go_home": "printer_specific/printer_05/go_home.json",
-        "door_scan_pose": "printer_specific/printer_05/go_to_door_scan_pose.json",
-        "outside_tag_scan_pose": "printer_specific/printer_05/go_to_outside_tag_scan_pose.json",
-        "final_scan_pose": "printer_specific/printer_05/go_to_final_scan_pose.json"
       }
     }
   }
