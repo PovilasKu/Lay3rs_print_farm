@@ -1,0 +1,17 @@
+[
+    {
+    "type": "local_joint",
+    "name": "unturn_J5",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      -90,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  }
+]

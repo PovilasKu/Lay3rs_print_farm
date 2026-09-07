@@ -1,0 +1,88 @@
+[
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_family/bambu_x1c/go_to_door_scan_pose.json",
+    "sequence_file": "printer_family/bambu_x1c/go_to_door_scan_pose.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Go to selected printer door scan pose",
+    "joints": [
+      -8.56,
+      -66.285,
+      89.5,
+      -24.092,
+      35.475,
+      44.853
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: localization/check_printer_door_tag_absent.json",
+    "sequence_file": "localization/check_printer_door_tag_absent.json"
+  },
+  {
+    "type": "check_tag_absent",
+    "name": "Verify printer door is open before inserting buildplate",
+    "tag_id": 1,
+    "tag_family": "tag25h9",
+    "require_tag_family": true,
+    "timeout_s": 2.5,
+    "require_stereo": false
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_family/bambu_x1c/go_to_final_scan_pose.json",
+    "sequence_file": "printer_family/bambu_x1c/go_to_final_scan_pose.json"
+  },
+  {
+    "type": "move_joint",
+    "name": "Go to selected printer final scan pose",
+    "joints": [
+      -8.56,
+      -66.285,
+      89.5,
+      -24.092,
+      35.475,
+      44.853
+    ],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "go_inside the printer a tiny bit",
+    "delta": [
+      0,
+      20,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: localization/localize_printer_inside_heatbed_tag.json",
+    "sequence_file": "localization/localize_printer_inside_heatbed_tag.json"
+  },
+  {
+    "type": "localize",
+    "name": "localize_on_inside_heatbed_tag_36h11",
+    "tag_id": 15,
+    "tag_family": "tag36h11",
+    "require_tag_family": true,
+    "target_distance_mm": 500,
+    "target_x_mm": 83.0,
+    "target_y_mm": 30.0,
+    "target_roll_deg": 0,
+    "max_iters": 30
+  }
+]

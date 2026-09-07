@@ -1,12 +1,12 @@
 [
   {
     "type": "_marker",
-    "name": "Starting sequence: printer_specific/printer_05/go_to_door_scan_pose.json",
-    "sequence_file": "printer_specific/printer_05/go_to_door_scan_pose.json"
+    "name": "Starting sequence: printer_family/bambu_x1c/go_to_door_scan_pose.json",
+    "sequence_file": "printer_family/bambu_x1c/go_to_door_scan_pose.json"
   },
   {
     "type": "move_joint",
-    "name": "Cabinet5_scanningpose",
+    "name": "Go to selected printer door scan pose",
     "joints": [
       -8.56,
       -66.285,

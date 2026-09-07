@@ -1,0 +1,11 @@
+[
+  {
+    "type": "check_tag_absent",
+    "name": "Verify printer door is open",
+    "tag_id": "${printer.tags.door.id}",
+    "tag_family": "${printer.tags.door.family}",
+    "require_tag_family": "${printer.tags.door.require_family}",
+    "timeout_s": 2.5,
+    "require_stereo": false
+  }
+]

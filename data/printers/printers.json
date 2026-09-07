@@ -37,9 +37,9 @@
         "inside_heatbed": {
           "id": 12,
           "family": "tag36h11",
-          "target_distance_mm":400 ,
-          "target_x_mm": 0.0,
-          "target_y_mm": 0.0,
+          "target_distance_mm":500 ,
+          "target_x_mm": 83.0,
+          "target_y_mm": 30.0,
           "require_family": true
         }
       }
@@ -56,10 +56,12 @@
         "neutral": [-46.693, -117.918, 150.791, -35.677, 90.199, 44.388],
         "door_scan_pose": [-8.560, -66.285, 89.500, -24.092, 35.475, 44.853],
         "outside_tag_scan_pose": [-0.570, -63.451, 85.258, -22.565, 88.215, 43.640],
-        "final_scan_pose": [-8.560, -66.285, 89.500, -24.092, 35.475, 44.853]
+        "final_scan_pose": [-8.560, -66.285, 89.500, -24.092, 35.475, 44.853],
+        "pre_buildplate_placement_pose": [-20.106, -79.545, 86.898, -14.636, 23.957, 49.694]
       },
       "tcp_poses": {
-        "extraction_end_pose": [-761.152, 29.744, 763.487, 8.742, -1.382, 136.677]
+        "extraction_end_pose": [-761.152, 29.744, 763.487, 8.742, -1.382, 136.677],
+        "pre_placement_pose": [-990.553, -177.033, 396.382, -0.294, -0.658, 139.786]
       },
       "tags": {
         "door": {
@@ -79,11 +81,11 @@
           "require_family": true
         },
         "inside_heatbed": {
-          "id": 12,
+          "id": 15,
           "family": "tag36h11",
-          "target_distance_mm":400 ,
-          "target_x_mm": 0.0,
-          "target_y_mm": 0.0,
+          "target_distance_mm":500 ,
+          "target_x_mm": 83.0,
+          "target_y_mm": 30.0,
           "require_family": true
         }
       }
@@ -100,7 +102,8 @@
         "neutral": [-46.693, -117.918, 150.791, -35.677, 90.199, 44.388],
         "door_scan_pose": [-9.364, -35.245, 98.909, -64.570, 33.892, 44.900],
         "outside_tag_scan_pose": [-0.611, -34.067, 95.454, -62.148, 88.713, 43.636],
-        "final_scan_pose": [-9.364, -35.245, 98.909, -64.570, 33.892, 44.900]
+        "final_scan_pose": [-9.364, -35.245, 98.909, -64.570, 33.892, 44.900],
+        "pre_buildplate_placement_pose": [-9.364, -35.245, 98.909, -64.570, 33.892, 44.900]
       },
       "tcp_poses": {
         "extraction_end_pose": [-761.152, 29.744, 763.487, 8.742, -1.382, 136.677]
@@ -125,9 +128,9 @@
         "inside_heatbed": {
           "id": 12,
           "family": "tag36h11",
-          "target_distance_mm":400 ,
-          "target_x_mm": 0.0,
-          "target_y_mm": 0.0,
+          "target_distance_mm":500 ,
+          "target_x_mm": 83.0,
+          "target_y_mm": 30.0,
           "require_family": true
         }
       }

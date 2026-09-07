@@ -316,23 +316,31 @@ def collect_stable_tag(required_tag_id=None, enable_rotation=True, params=None, 
     return out
 
 
-def check_tag_visible(tag_id=None, tag_family=None, timeout_s=1.5, require_tag_family=True, require_stereo=False) -> bool:
-    """Return True if a matching tag is visible within timeout_s.
-
-    This is intended for logic checks, e.g. after opening the door the 25h9
-    door tag should no longer be visible. It does not require full pose values.
+def check_tag_visible(
+    tag_id=None,
+    tag_family=None,
+    timeout_s=1.5,
+    require_tag_family=True,
+    require_stereo=False,
+) -> bool:
     """
+    Return True if a matching tag is visible within timeout_s.
+    False means pi responded and the tag was not seen.
+    If Pi does not respond, error is raised.
+    """
+
     deadline = time.time() + float(timeout_s)
-    params = {
-        "tag_family": tag_family,
-        "require_tag_family": require_tag_family,
-        "vision_source_policy": "require_stereo" if require_stereo else "allow_any",
-    }
+
+    valid_vision_reads = 0
+    last_error = None
 
     while time.time() < deadline:
         try:
             raw = read_tag_once()
             tag = normalize_vision_tag(raw)
+
+            # We successfully talked to the Vision Pi and got valid JSON.
+            valid_vision_reads += 1
 
             if not tag.get("ok"):
                 time.sleep(0.15)
@@ -340,13 +348,16 @@ def check_tag_visible(tag_id=None, tag_family=None, timeout_s=1.5, require_tag_f
 
             if tag_id is not None:
                 seen_id = tag.get("tag_id")
+
                 if seen_id is None or int(seen_id) != int(tag_id):
                     time.sleep(0.15)
                     continue
 
             expected_family = normalize_family_name(tag_family)
+
             if require_tag_family and expected_family is not None:
                 seen_family = normalize_family_name(tag.get("tag_family"))
+
                 if seen_family != expected_family:
                     time.sleep(0.15)
                     continue
@@ -355,8 +366,20 @@ def check_tag_visible(tag_id=None, tag_family=None, timeout_s=1.5, require_tag_f
                 time.sleep(0.15)
                 continue
 
+            # Matching tag was seen.
             return True
-        except Exception:
+
+        except Exception as e:
+            last_error = e
             time.sleep(0.15)
 
+    # Do NOT interpret a dead Vision Pi as "tag absent".
+    if valid_vision_reads == 0:
+        raise RuntimeError(
+            "Could not verify tag visibility because no valid Vision Pi "
+            f"response was received within {timeout_s:.1f}s. "
+            f"Last error: {last_error}"
+        )
+
+    # Vision worked, but matching tag was never seen.
     return False

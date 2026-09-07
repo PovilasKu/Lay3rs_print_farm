@@ -1,0 +1,10 @@
+[
+  {
+    "type": "line_cart",
+    "name": "rack good position",
+    "pose": "${printer.tcp_poses.pre_placement_pose}",
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  }
+]

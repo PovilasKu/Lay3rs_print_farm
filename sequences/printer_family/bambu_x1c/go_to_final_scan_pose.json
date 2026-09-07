@@ -6,5 +6,20 @@
     "vel": 50,
     "acc": 30,
     "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "go_inside the printer a tiny bit",
+    "delta": [
+      0,
+      20,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
   }
 ]
