@@ -94,6 +94,18 @@
         "localization/localize_printer_inside_heatbed_tag.json"
       ]
     },
+    "localize_and_place_buildplate":{
+      "description": "prefinal step",
+      "requires_printer": true,
+      "steps": [
+        "rack/go_to_rack_prescanning_pose.json",
+        "printer_family/${printer.family}/go_to_pre_placement_pose.json",
+        "localization/check_printer_door_tag_absent.json",
+        "printer_family/${printer.family}/go_to_final_scan_pose.json",
+        "localization/localize_printer_inside_heatbed_tag.json",
+        "printer_family/${printer.family}/place_new_buildplate_into_printer.json"
+      ]
+    },
     
     "go_home":{
       "description": "its in the name",

@@ -1,0 +1,111 @@
+[
+  {
+    "type": "local_cart",
+    "name": "go down",
+    "delta": [
+      0,
+      0,
+      -150,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "twist along x to tilt new buildplate",
+    "delta": [
+      0,
+      0,
+      0,
+      -10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "slide buildplate into printer 1",
+    "delta": [
+      0,
+      100,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "slide buildplate into printer 2",
+    "delta": [
+      0,
+      90,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "gripper_activate",
+    "name": "Activate gripper",
+    "device_id": 2
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 70",
+    "device_id": 2,
+    "position": 70,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "line_tcp",
+    "name": "pullout the prongs",
+    "delta": [
+      0,
+      -200,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "ultilt x back to level",
+    "delta": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  }
+]

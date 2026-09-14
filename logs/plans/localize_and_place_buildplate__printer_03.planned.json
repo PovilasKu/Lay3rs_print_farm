@@ -28,12 +28,12 @@
     "type": "line_cart",
     "name": "rack good position",
     "pose": [
-      -925.165,
-      -102.394,
-      550.491,
+      -922.24,
+      -108.438,
+      1081.84,
       -0.294,
-      -0.657,
-      139.788
+      -0.658,
+      139.786
     ],
     "vel": 80,
     "acc": 20,
@@ -47,7 +47,7 @@
   {
     "type": "check_tag_absent",
     "name": "Verify printer door is open",
-    "tag_id": 1,
+    "tag_id": 0,
     "tag_family": "tag25h9",
     "require_tag_family": true,
     "timeout_s": 2.5,
@@ -62,12 +62,12 @@
     "type": "move_joint",
     "name": "Go to selected printer final scan pose",
     "joints": [
-      -8.56,
-      -66.285,
-      89.5,
-      -24.092,
-      35.475,
-      44.853
+      -7.718,
+      -63.084,
+      29.769,
+      32.471,
+      36.837,
+      44.814
     ],
     "vel": 50,
     "acc": 30,
@@ -96,13 +96,127 @@
   {
     "type": "localize",
     "name": "localize_on_inside_heatbed_tag_36h11",
-    "tag_id": 15,
+    "tag_id": 12,
     "tag_family": "tag36h11",
     "require_tag_family": true,
     "target_distance_mm": 500,
-    "target_x_mm": 83.0,
+    "target_x_mm": 77.0,
     "target_y_mm": 30.0,
     "target_roll_deg": 0,
     "max_iters": 30
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: printer_family/bambu_x1c/place_new_buildplate_into_printer.json",
+    "sequence_file": "printer_family/bambu_x1c/place_new_buildplate_into_printer.json"
+  },
+  {
+    "type": "local_cart",
+    "name": "go down",
+    "delta": [
+      0,
+      0,
+      -150,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "twist along x to tilt new buildplate",
+    "delta": [
+      0,
+      0,
+      0,
+      -10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "slide buildplate into printer 1",
+    "delta": [
+      0,
+      100,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "slide buildplate into printer 2",
+    "delta": [
+      0,
+      90,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "gripper_activate",
+    "name": "Activate gripper",
+    "device_id": 2
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "gripper",
+    "name": "Set gripper position 70",
+    "device_id": 2,
+    "position": 70,
+    "speed": 53,
+    "torque": 100,
+    "max_time_ms": 2000,
+    "block": 0
+  },
+  {
+    "type": "wait",
+    "name": "Pause for 1 second",
+    "seconds": 1.0
+  },
+  {
+    "type": "line_tcp",
+    "name": "pullout the prongs",
+    "delta": [
+      0,
+      -200,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "ultilt x back to level",
+    "delta": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 100
   }
 ]

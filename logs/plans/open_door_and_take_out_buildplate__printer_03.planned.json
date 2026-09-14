@@ -21,12 +21,12 @@
   },
   {
     "type": "_marker",
-    "name": "Starting sequence: printer_specific/printer_03/go_to_door_scan_pose.json",
-    "sequence_file": "printer_specific/printer_03/go_to_door_scan_pose.json"
+    "name": "Starting sequence: printer_family/bambu_x1c/go_to_door_scan_pose.json",
+    "sequence_file": "printer_family/bambu_x1c/go_to_door_scan_pose.json"
   },
   {
     "type": "move_joint",
-    "name": "Cabinet3_scanningpose",
+    "name": "Go to selected printer door scan pose",
     "joints": [
       -7.718,
       -63.084,
@@ -259,12 +259,12 @@
   },
   {
     "type": "_marker",
-    "name": "Starting sequence: printer_specific/printer_03/go_to_outside_tag_scan_pose.json",
-    "sequence_file": "printer_specific/printer_03/go_to_outside_tag_scan_pose.json"
+    "name": "Starting sequence: printer_family/bambu_x1c/go_to_outside_tag_scan_pose.json",
+    "sequence_file": "printer_family/bambu_x1c/go_to_outside_tag_scan_pose.json"
   },
   {
     "type": "move_joint",
-    "name": "Go to printer 3 outside-front tag scan pose",
+    "name": "Go to selected printer outside tag scan pose",
     "joints": [
       -1.334,
       -57.034,
