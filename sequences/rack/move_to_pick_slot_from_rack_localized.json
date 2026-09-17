@@ -5,8 +5,8 @@
     "delta": "${pick_slot.local_target_delta}",
     "frame": "tcp",
     "motion": "line",
-    "vel": 50,
-    "acc": 50,
+    "vel": 100,
+    "acc": 100,
     "ovl": 100
   }
 ]

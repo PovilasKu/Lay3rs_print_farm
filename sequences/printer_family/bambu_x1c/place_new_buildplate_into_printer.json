@@ -3,7 +3,7 @@
     "type": "local_cart",
     "name": "go down",
     "delta": [
-      -12,
+      -15,
       120,
       -155,
       0,
@@ -46,7 +46,7 @@
     "name": "slide buildplate into printer 2",
     "delta": [
       0,
-      80,
+      78,
       0,
       0,
       0,

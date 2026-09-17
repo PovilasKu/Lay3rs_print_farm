@@ -41,8 +41,6 @@ def move_cart(robot, pose, vel=None, acc=None, ovl=None):
         config=-1,
     )
 
-    time.sleep(0.5)
-
     try:
         actual_pose = get_actual_pose(robot)
         print(f"Actual pose after MoveCart: {[round(v, 3) for v in actual_pose]}")

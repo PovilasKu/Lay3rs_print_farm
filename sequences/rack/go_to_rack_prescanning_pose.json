@@ -3,8 +3,8 @@
     "type": "move_joint",
     "name": "Rack_pre-scanningpose",
     "joints": "${rack.prescanning_pose_joints}",
-    "vel": 50,
-    "acc": 30,
+    "vel": 60,
+    "acc": 100,
     "ovl": 100
   }
 ]  

@@ -52,7 +52,7 @@ USER = 0
 
 VEL = 80.0
 ACC = 60.0
-OVL = 20.0
+OVL = 80.0
 
 LOCALIZE_VEL = 50.0
 LOCALIZE_ACC = 30.0
@@ -138,9 +138,9 @@ LOCALIZE_STAGES = [
         "name": "coarse",
         "max_iters": 12,
         "samples": 5,
-        "center_tol_mm": 4.0,
-        "distance_tol_mm": 4.0,
-        "rot_tol_deg": 4.0,
+        "center_tol_mm": 2.0,
+        "distance_tol_mm": 2.0,
+        "rot_tol_deg": 2.0,
         "gain_xy": 0.75,
         "gain_z": 0.65,
         "gain_pitch": 0.55,
