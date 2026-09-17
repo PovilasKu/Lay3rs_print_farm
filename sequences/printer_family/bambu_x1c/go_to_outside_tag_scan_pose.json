@@ -3,8 +3,8 @@
     "type": "move_joint",
     "name": "Go to selected printer outside tag scan pose",
     "joints": "${printer.joints.outside_tag_scan_pose}",
-    "vel": 50,
-    "acc": 30,
+    "vel": 100,
+    "acc": 100,
     "ovl": 100
   }
 ]

@@ -1,0 +1,100 @@
+[
+{
+    "type": "move_joint",
+    "name": "Go to end pose",
+    "joints": [-6.850, -67.084, 56.477, 10.488, 36.304, 44.440],
+    "vel": 50,
+    "acc": 30,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "move back",
+    "delta": [
+      0,
+      -400,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 100,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "move left",
+    "delta": [
+      -120,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 100,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
+    "name": "move in",
+    "delta": [
+      0,
+      200,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 100,
+    "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "push door right",
+    "delta": [
+      200,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 100,
+    "acc": 100,
+    "ovl": 100
+},
+{
+    "type": "local_cart",
+    "name": "push forward",
+    "delta": [
+      40,
+      220,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 30,
+    "acc": 100,
+    "ovl": 100
+},
+{
+    "type": "local_cart",
+    "name": "pull back for safety",
+    "delta": [
+      0,
+      -200,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 30,
+    "acc": 100,
+    "ovl": 100
+}
+]

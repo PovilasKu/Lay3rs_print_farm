@@ -1,17 +1,10 @@
 [
   {
-    "type": "local_cart",
-    "name": "go_inside the printer a tiny bit",
-    "delta": [
-      0,
-      20,
-      0,
-      0,
-      0,
-      0
-    ],
-    "vel": 80,
-    "acc": 20,
+    "type": "move_joint",
+    "name": "Go to selected printer final scan pose",
+    "joints": "${printer.joints.final_scan_pose}",
+    "vel": 100,
+    "acc": 100,
     "ovl": 100
   }
 ]

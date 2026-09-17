@@ -3,8 +3,8 @@
     "type": "move_joint",
     "name": "Go to selected printer door scan pose",
     "joints": "${printer.joints.door_scan_pose}",
-    "vel": 50,
-    "acc": 30,
+    "vel": 100,
+    "acc": 100,
     "ovl": 100
   }
 ]

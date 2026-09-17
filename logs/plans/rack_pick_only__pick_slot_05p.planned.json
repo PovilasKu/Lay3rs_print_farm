@@ -8,12 +8,12 @@
     "type": "move_joint",
     "name": "Rack_scanningpose",
     "joints": [
-      -34.89,
-      -108.2,
-      78.678,
-      29.121,
-      100.059,
-      44.541
+      -35.328,
+      -108.306,
+      78.655,
+      29.258,
+      99.618,
+      44.545
     ],
     "vel": 50,
     "acc": 30,
@@ -87,7 +87,7 @@
     "type": "line_tcp",
     "name": "go_into_rack_to_pick_up_new_buildplate",
     "delta": [
-      0,
+      -8,
       415,
       0,
       0,
@@ -104,7 +104,7 @@
     "delta": [
       0,
       0,
-      20,
+      18,
       0,
       0,
       0
@@ -136,6 +136,26 @@
     ],
     "vel": 80,
     "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: common/twist_J5_90_degrees.json",
+    "sequence_file": "common/twist_J5_90_degrees.json"
+  },
+  {
+    "type": "local_joint",
+    "name": "unturn_J5",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      -90,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
     "ovl": 100
   }
 ]

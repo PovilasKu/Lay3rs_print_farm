@@ -3,9 +3,9 @@
     "type": "local_cart",
     "name": "go down",
     "delta": [
-      0,
-      0,
-      -150,
+      -12,
+      120,
+      -155,
       0,
       0,
       0
@@ -20,7 +20,7 @@
       0,
       0,
       0,
-      -10,
+      -7,
       0,
       0
     ],
@@ -32,7 +32,7 @@
     "name": "slide buildplate into printer 1",
     "delta": [
       0,
-      100,
+      110,
       0,
       0,
       0,
@@ -46,7 +46,7 @@
     "name": "slide buildplate into printer 2",
     "delta": [
       0,
-      90,
+      80,
       0,
       0,
       0,
@@ -54,16 +54,6 @@
     ],
     "vel": 80,
     "acc": 100
-  },
-  {
-    "type": "gripper_activate",
-    "name": "Activate gripper",
-    "device_id": 2
-  },
-  {
-    "type": "wait",
-    "name": "Pause for 1 second",
-    "seconds": 1.0
   },
   {
     "type": "gripper",
@@ -101,7 +91,7 @@
       0,
       0,
       0,
-      10,
+      7,
       0,
       0
     ],

@@ -23,8 +23,8 @@
     "type": "line_tcp",
     "name": "go_into_rack_to_pick_up_new_buildplate",
     "delta": [
-      0,
-      415,
+      -8,
+      412,
       0,
       0,
       0,
@@ -40,7 +40,7 @@
     "delta": [
       0,
       0,
-      20,
+      18,
       0,
       0,
       0
