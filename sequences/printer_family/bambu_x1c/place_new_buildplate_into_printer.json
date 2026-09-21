@@ -5,7 +5,7 @@
     "delta": [
       -15,
       120,
-      -155,
+      -168,
       0,
       0,
       0
@@ -32,21 +32,7 @@
     "name": "slide buildplate into printer 1",
     "delta": [
       0,
-      110,
-      0,
-      0,
-      0,
-      0
-    ],
-    "vel": 80,
-    "acc": 100
-  },
-  {
-    "type": "line_tcp",
-    "name": "slide buildplate into printer 2",
-    "delta": [
-      0,
-      78,
+      62,
       0,
       0,
       0,

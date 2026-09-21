@@ -1,22 +1,22 @@
 [
   {
     "type": "_marker",
-    "name": "Starting sequence: printer_specific/printer_05/go_to_outside_tag_scan_pose.json",
-    "sequence_file": "printer_specific/printer_05/go_to_outside_tag_scan_pose.json"
+    "name": "Starting sequence: printer_family/bambu_x1c/go_to_outside_tag_scan_pose.json",
+    "sequence_file": "printer_family/bambu_x1c/go_to_outside_tag_scan_pose.json"
   },
   {
     "type": "move_joint",
-    "name": "Go to printer 5 outside-front tag scan pose",
+    "name": "Go to selected printer outside tag scan pose",
     "joints": [
-      -1.098,
-      -65.16,
-      88.278,
-      -23.874,
-      88.227,
-      43.645
+      -0.57,
+      -63.451,
+      85.258,
+      -22.565,
+      88.215,
+      43.64
     ],
-    "vel": 50,
-    "acc": 30,
+    "vel": 100,
+    "acc": 100,
     "ovl": 100
   },
   {

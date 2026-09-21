@@ -1,12 +1,4 @@
 [
-{
-    "type": "move_joint",
-    "name": "Go to end pose",
-    "joints": [-6.850, -67.084, 56.477, 10.488, 36.304, 44.440],
-    "vel": 50,
-    "acc": 30,
-    "ovl": 100
-  },
   {
     "type": "line_tcp",
     "name": "move back",
