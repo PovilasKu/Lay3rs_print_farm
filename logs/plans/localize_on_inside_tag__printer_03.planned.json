@@ -15,8 +15,8 @@
       13.572,
       83.153
     ],
-    "vel": 50,
-    "acc": 30,
+    "vel": 60,
+    "acc": 100,
     "ovl": 100
   },
   {
@@ -62,12 +62,12 @@
     "type": "move_joint",
     "name": "Go to selected printer final scan pose",
     "joints": [
-      -13.56,
-      -69.688,
-      44.449,
-      25.081,
-      29.595,
-      44.479
+      -13.287,
+      -70.331,
+      45.539,
+      24.628,
+      30.829,
+      44.471
     ],
     "vel": 100,
     "acc": 100,
@@ -84,7 +84,7 @@
     "tag_id": 12,
     "tag_family": "tag36h11",
     "require_tag_family": true,
-    "target_distance_mm": 620,
+    "target_distance_mm": 500,
     "target_x_mm": 77.0,
     "target_y_mm": 30.0,
     "target_roll_deg": 0,
