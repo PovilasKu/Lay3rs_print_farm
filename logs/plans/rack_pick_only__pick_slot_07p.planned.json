@@ -6,32 +6,17 @@
   },
   {
     "type": "move_joint",
-    "name": "Rack_pre-scanningpose",
-    "joints": [
-      -20.812,
-      -137.239,
-      116.776,
-      -1.105,
-      24.351,
-      64.171
-    ],
-    "vel": 50,
-    "acc": 30,
-    "ovl": 100
-  },
-  {
-    "type": "move_joint",
     "name": "Rack_scanningpose",
     "joints": [
-      -34.546,
-      -108.172,
-      78.662,
-      29.108,
-      100.403,
-      44.542
+      -35.796,
+      -107.662,
+      77.844,
+      29.433,
+      99.131,
+      44.544
     ],
-    "vel": 50,
-    "acc": 30,
+    "vel": 80,
+    "acc": 100,
     "ovl": 100
   },
   {
@@ -69,8 +54,8 @@
     ],
     "frame": "tcp",
     "motion": "line",
-    "vel": 50,
-    "acc": 50,
+    "vel": 100,
+    "acc": 100,
     "ovl": 100
   },
   {
@@ -92,7 +77,7 @@
     "type": "gripper",
     "name": "Set gripper position",
     "device_id": 2,
-    "position": 50,
+    "position": 0,
     "speed": 53,
     "torque": 100,
     "max_time_ms": 2000,
@@ -102,8 +87,8 @@
     "type": "line_tcp",
     "name": "go_into_rack_to_pick_up_new_buildplate",
     "delta": [
-      0,
-      430,
+      -8,
+      412,
       0,
       0,
       0,
@@ -119,7 +104,7 @@
     "delta": [
       0,
       0,
-      20,
+      18,
       0,
       0,
       0
@@ -143,7 +128,7 @@
     "name": "pull_out_of_rack_with_new_buildplate",
     "delta": [
       0,
-      -480,
+      -465,
       30,
       0,
       0,
@@ -151,6 +136,26 @@
     ],
     "vel": 80,
     "acc": 100,
+    "ovl": 100
+  },
+  {
+    "type": "_marker",
+    "name": "Starting sequence: common/twist_J5_90_degrees.json",
+    "sequence_file": "common/twist_J5_90_degrees.json"
+  },
+  {
+    "type": "local_joint",
+    "name": "unturn_J5",
+    "delta_joints": [
+      0,
+      0,
+      0,
+      0,
+      -90,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
     "ovl": 100
   }
 ]

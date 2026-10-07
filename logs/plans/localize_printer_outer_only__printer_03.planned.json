@@ -8,12 +8,12 @@
     "type": "move_joint",
     "name": "Go to selected printer outside tag scan pose",
     "joints": [
-      -1.334,
-      -57.034,
-      19.36,
-      36.943,
-      84.814,
-      43.647
+      0.885,
+      -56.902,
+      19.455,
+      36.715,
+      91.968,
+      44.35
     ],
     "vel": 100,
     "acc": 100,

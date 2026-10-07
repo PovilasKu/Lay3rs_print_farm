@@ -9,6 +9,10 @@ KNOWN_COMMAND_TYPES = {
     "check_tag_visible", "check_tag_absent", "retry_until_tag_absent",
 }
 
+JOINT_ONLY_JOBS = {"go_home"}
+
+def _is_joint_only(commands: list[dict]) -> bool:
+    return all(c.get("type") == "move_joint" for c in walk_commands(commands))
 
 def walk_commands(commands: list[dict]):
     for cmd in commands:
@@ -29,7 +33,10 @@ def validate_plan(job_name: str, printer: dict | None, commands: list[dict]) -> 
     types = command_types(commands)
 
     if printer is not None and "localize" not in types:
-        raise RuntimeError(f"Printer job '{job_name}' has no localize command.")
+        if job_name in JOINT_ONLY_JOBS and _is_joint_only(commands):
+            pass  # fixed joint move, no localization needed
+        else:
+            raise RuntimeError(f"Printer job '{job_name}' has no localize command.")
 
     for i, cmd in enumerate(walk_commands(commands), start=1):
         if not isinstance(cmd, dict):

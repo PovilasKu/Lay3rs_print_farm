@@ -1,22 +1,22 @@
 [
   {
     "type": "_marker",
-    "name": "Starting sequence: printer_specific/printer_03/go_to_outside_tag_scan_pose.json",
-    "sequence_file": "printer_specific/printer_03/go_to_outside_tag_scan_pose.json"
+    "name": "Starting sequence: printer_family/bambu_x1c/go_to_outside_tag_scan_pose.json",
+    "sequence_file": "printer_family/bambu_x1c/go_to_outside_tag_scan_pose.json"
   },
   {
     "type": "move_joint",
-    "name": "Go to printer outside-front tag scan pose",
+    "name": "Go to selected printer outside tag scan pose",
     "joints": [
-      -1.334,
-      -57.034,
-      19.36,
-      36.943,
-      84.814,
-      43.647
+      0.885,
+      -56.902,
+      19.455,
+      36.715,
+      91.968,
+      44.35
     ],
-    "vel": 50,
-    "acc": 30,
+    "vel": 100,
+    "acc": 100,
     "ovl": 100
   },
   {
@@ -29,7 +29,7 @@
     "name": "localize_on_printer_outside_front_tag_36h11",
     "tag_id": 3,
     "tag_family": "tag36h11",
-    "require_tag_family": false,
+    "require_tag_family": true,
     "target_distance_mm": 225,
     "target_x_mm": 0.0,
     "target_y_mm": 0.0,
@@ -53,7 +53,7 @@
       46
     ],
     "vel": 80,
-    "acc": 20,
+    "acc": 50,
     "ovl": 100
   },
   {
@@ -61,9 +61,54 @@
     "name": "line_up_with_buildplate",
     "delta": [
       -43,
-      105,
+      98,
       -240,
       0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "tilt a bit",
+    "delta": [
+      0,
+      0,
+      3,
+      -1.5,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "go insided tilted",
+    "delta": [
+      0,
+      15,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "local_cart",
+    "name": "un-tilt a bit",
+    "delta": [
+      0,
+      0,
+      -3,
+      1.5,
       0,
       0
     ],
@@ -96,7 +141,7 @@
     "name": "go_into_buildplates_deep_end",
     "delta": [
       0,
-      140,
+      133,
       0,
       0,
       0,
@@ -193,7 +238,7 @@
   },
   {
     "type": "local_cart",
-    "name": "move_farther_back_to_rack",
+    "name": "move_farther_back",
     "delta": [
       0,
       -200,
@@ -201,6 +246,21 @@
       0,
       0,
       0
+    ],
+    "vel": 80,
+    "acc": 20,
+    "ovl": 100
+  },
+  {
+    "type": "line_cart",
+    "name": "rack good position",
+    "pose": [
+      -761.152,
+      29.744,
+      763.487,
+      8.742,
+      -1.382,
+      136.677
     ],
     "vel": 80,
     "acc": 20,

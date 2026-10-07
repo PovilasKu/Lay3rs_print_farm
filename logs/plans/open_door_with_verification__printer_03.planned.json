@@ -1,22 +1,22 @@
 [
   {
     "type": "_marker",
-    "name": "Starting sequence: printer_specific/printer_03/go_to_door_scan_pose.json",
-    "sequence_file": "printer_specific/printer_03/go_to_door_scan_pose.json"
+    "name": "Starting sequence: printer_family/bambu_x1c/go_to_door_scan_pose.json",
+    "sequence_file": "printer_family/bambu_x1c/go_to_door_scan_pose.json"
   },
   {
     "type": "move_joint",
-    "name": "Cabinet3_scanningpose",
+    "name": "Go to selected printer door scan pose",
     "joints": [
-      -7.718,
-      -63.084,
-      29.769,
-      32.471,
-      36.837,
-      44.814
+      -7.902,
+      -62.154,
+      28.229,
+      33.085,
+      36.649,
+      44.822
     ],
-    "vel": 50,
-    "acc": 30,
+    "vel": 100,
+    "acc": 100,
     "ovl": 100
   },
   {
@@ -31,7 +31,7 @@
     "check": {
       "tag_id": 0,
       "tag_family": "tag25h9",
-      "require_tag_family": false,
+      "require_tag_family": true,
       "timeout_s": 2.0,
       "require_stereo": false
     },
@@ -40,15 +40,15 @@
         "type": "move_joint",
         "name": "Go to check if door is open (move to door scan pose)",
         "joints": [
-          -7.718,
-          -63.084,
-          29.769,
-          32.471,
-          36.837,
-          44.814
+          -7.902,
+          -62.154,
+          28.229,
+          33.085,
+          36.649,
+          44.822
         ],
-        "vel": 50,
-        "acc": 30,
+        "vel": 100,
+        "acc": 100,
         "ovl": 100
       },
       {
@@ -56,7 +56,7 @@
         "name": "localize_on_printer_door_tag_25h9",
         "tag_id": 0,
         "tag_family": "tag25h9",
-        "require_tag_family": false,
+        "require_tag_family": true,
         "target_distance_mm": 250,
         "target_x_mm": 0.0,
         "target_y_mm": 0.0,
@@ -69,7 +69,7 @@
         "frame": "tcp",
         "delta": [
           60,
-          50,
+          46,
           -45,
           0,
           0,
@@ -224,12 +224,12 @@
         "type": "move_joint",
         "name": "Go to check if door is open (move to door scan pose)",
         "joints": [
-          -7.718,
-          -63.084,
-          29.769,
-          32.471,
-          36.837,
-          44.814
+          -7.902,
+          -62.154,
+          28.229,
+          33.085,
+          36.649,
+          44.822
         ],
         "vel": 50,
         "acc": 30,
