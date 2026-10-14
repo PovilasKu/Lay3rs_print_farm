@@ -214,6 +214,7 @@ def set_busy(value: bool):
     status_dot.classes(replace="sdot run animate-pulse" if value else "sdot idle")
 
 async def run(job: str, needs_slots: bool, printer_name: str, dry_run: bool):
+    transfer = None
     if state["busy"]:
         ui.notify("A job is already running", type="warning")
         return
@@ -230,6 +231,7 @@ async def run(job: str, needs_slots: bool, printer_name: str, dry_run: bool):
             ui.notify(err, type="warning")
             return
         p, d = selected["pickup"] + 1, selected["dropoff"] + 1
+        transfer = (selected["pickup"], selected["dropoff"])
         cmd += ["--pick-slot", f"slot_{p:02d}p", "--drop-slot", f"slot_{d:02d}d"]
         desc += f", pickup {p} → dropoff {d}"
     if dry_run:
@@ -267,6 +269,12 @@ async def run(job: str, needs_slots: bool, printer_name: str, dry_run: bool):
     if code == 0:
         log.push("Finished successfully")
         ui.notify("Job finished", type="positive")
+        if transfer and not dry_run:
+            pi, di = transfer
+            slots["pickup"][pi] = False
+            slots["dropoff"][di] = True
+            save_slots()
+            clear_selection()
     else:
         log.push(f"Finished with errors (exit code {code})")
         ui.notify(f"Job failed (exit code {code})", type="negative")
