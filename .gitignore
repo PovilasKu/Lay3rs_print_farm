@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 logs/
 *.planned.json
+slots.json

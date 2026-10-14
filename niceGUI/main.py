@@ -1,4 +1,4 @@
-import asyncio, sys
+import asyncio, sys, json
 from nicegui import app, ui
 from pathlib import Path
 
@@ -7,18 +7,39 @@ PRINTERS = {"printer_03": "X1C-3", "printer_04": "X1C-2", "printer_05": "X1C-1"}
 N_SLOTS = 16
 SLOT_POLL_S = 2.0
 JOB_TIMEOUT_S = 600
+SLOT_FILE = Path(__file__).with_name("slots.json") 
 
 JOBS = {
     "Home": ("go_home", False),
     "Localize (door)": ("localize_printer_door_only", False),
-    "Transfer slot → slot": ("transfer", True),
+    "Transfer slot → slot": ("transfer_buildplate", True),
 }
 
-state = {"busy": False, "proc": None, "printer": next(iter(PRINTERS))}
+state = {"busy": False, "proc": None, "editing": False, "printer": next(iter(PRINTERS))}
 # True = occupied, False = empty
 slots = {"pickup": [False] * N_SLOTS, "dropoff": [False] * N_SLOTS}
 selected = {"pickup": None, "dropoff": None}
 
+def load_slots():
+    try:
+        data = json.loads(SLOT_FILE.read_text())
+        for kind in ("pickup", "dropoff"):
+            if len(data[kind]) == N_SLOTS:
+                slots[kind] = [bool(x) for x in data[kind]]
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        print(f"Could not read {SLOT_FILE}: {e}")
+ 
+ 
+def save_slots():
+    try:
+        SLOT_FILE.write_text(json.dumps(slots))
+    except Exception as e:
+        ui.notify(f"Could not save slots: {e}", type="negative")
+ 
+ 
+load_slots()
 
 def fetch_slot_status() -> dict:
     return slots
@@ -63,7 +84,10 @@ body { background: var(--bg); color: var(--text);
 .slot.occ .dot, .legend-dot.occ { background: var(--accent); border-color: var(--accent); }
 .q-btn.slot.sel { border-color: #fff !important; color: #fff; }
 .legend-sel { width: 10px; height: 10px; border: 1px solid #fff; border-radius: 3px; }
-
+.q-btn.editbtn { border: 1px solid var(--line-hi); border-radius: 5px; padding: 0 12px;
+                color: var(--text); }
+.q-btn.editbtn.on { border-color: var(--live); color: var(--live); }
+.editing .q-btn.slot { border-style: dashed; } 
 /* jobs */
 .q-btn.job { height: 40px; padding: 0 18px; border-radius: 6px; font-weight: 500;
              letter-spacing: 0; color: var(--text); border: 1px solid var(--line-hi);
@@ -120,7 +144,24 @@ def refresh_slots():
 
 
 def on_slot_click(kind: str, i: int):
-    selected[kind] = None if selected[kind] == i else i
+    if state["editing"]:  # edit mode: toggle occupied / empty
+        slots[kind][i] = not slots[kind][i]
+        save_slots()
+    else:  # normal mode: select for jobs
+        selected[kind] = None if selected[kind] == i else i
+    refresh_slots()
+
+
+def toggle_edit():
+    state["editing"] = not state["editing"]
+    editing = state["editing"]
+    if editing:
+        selected["pickup"] = selected["dropoff"] = None
+    edit_btn.set_text("Done" if editing else "Edit")
+    mark(edit_btn, "on", editing)
+    mark(slots_row, "editing", editing)
+    edit_hint.set_visibility(editing)
+    summary_col.set_visibility(not editing)
     refresh_slots()
 
 
@@ -130,6 +171,8 @@ def clear_selection():
 
 
 async def poll_slots():
+    if state["editing"]:
+        return
     try:
         data = await asyncio.to_thread(fetch_slot_status)
         for kind in ("pickup", "dropoff"):
@@ -187,7 +230,7 @@ async def run(job: str, needs_slots: bool, printer_name: str, dry_run: bool):
             ui.notify(err, type="warning")
             return
         p, d = selected["pickup"] + 1, selected["dropoff"] + 1
-        cmd += ["--pickup", str(p), "--dropoff", str(d)]
+        cmd += ["--pick-slot", f"slot_{p:02d}p", "--drop-slot", f"slot_{d:02d}d"]
         desc += f", pickup {p} → dropoff {d}"
     if dry_run:
         cmd.append("--dry-run")
@@ -307,7 +350,7 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                     ui.element("div").classes("legend-sel")
                     ui.label("Selected")
 
-            with ui.row().classes("w-full justify-center items-start gap-5"):
+            with ui.row().classes("w-full justify-center items-start gap-5") as slots_row:
                 for kind in ("pickup", "dropoff"):
                     with ui.column().classes("items-stretch gap-1 w-24"):
                         ui.label(kind.capitalize()).classes("eyebrow mb-1")
@@ -318,10 +361,17 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                                 ui.element("div").classes("dot")
                                 ui.label(f"{i + 1:02d}")
                             slot_buttons[kind].append(b)
+            edit_hint = ui.label("Click a slot to mark it occupied / empty") \
+                .classes("text-xs").style("color:var(--live)")
+            edit_hint.set_visibility(False)
 
-            with ui.column().classes("w-full items-start gap-1"):
+
+            with ui.row().classes("w-full items-center justify-between"):
                 clear_btn = ui.button("Clear selection", on_click=clear_selection) \
                     .props("flat dense no-caps size=sm color=grey-6")
+                edit_btn = ui.button("Edit", on_click=toggle_edit) \
+                    .props("flat dense no-caps size=sm").classes("editbtn")
+
 
 refresh_printers()
 refresh_slots()
@@ -329,4 +379,4 @@ refresh_mode()
 ui.timer(SLOT_POLL_S, poll_slots)
 app.on_shutdown(stop_job)
 
-ui.run(host="0.0.0.0", port=8080, title="Print Farm", dark=True)
+ui.run(host="0.0.0.0", port=8080, title="Print Farm", dark=True, show=False)
