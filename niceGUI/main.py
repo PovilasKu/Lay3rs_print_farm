@@ -11,7 +11,7 @@ SLOT_FILE = Path(__file__).with_name("slots.json")
 
 JOBS = {
     "Home": ("go_home", False),
-    "Localize (door)": ("localize_printer_door_only", False),
+    "Change buildplate": ("full_buildplate_change", True),
     "Transfer slot → slot": ("transfer_buildplate", True),
 }
 
