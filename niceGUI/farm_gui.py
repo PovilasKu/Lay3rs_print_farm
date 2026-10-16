@@ -1,7 +1,12 @@
 import asyncio, sys, json
 from nicegui import app, ui
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from config import VISION_PI_IP, VISION_PORT
+from fastapi.responses import StreamingResponse
+import httpx
 
+VISION_URL = f"http://{VISION_PI_IP}:{VISION_PORT}" 
 RUN_JOB_SCRIPT = Path("/home/main/Lay3rs_print_farm/run_job.py")
 PRINTERS = {"printer_03": "X1C-3", "printer_04": "X1C-2", "printer_05": "X1C-1"}
 N_SLOTS = 16
@@ -19,6 +24,19 @@ state = {"busy": False, "proc": None, "editing": False, "printer": next(iter(PRI
 # True = occupied, False = empty
 slots = {"pickup": [False] * N_SLOTS, "dropoff": [False] * N_SLOTS}
 selected = {"pickup": None, "dropoff": None}
+
+@app.get("/vision/stream")
+async def vision_stream():
+    async def gen():
+        try:
+            async with httpx.AsyncClient(timeout=None) as client:
+                async with client.stream("GET", f"{VISION_URL}/stream") as r:
+                    async for chunk in r.aiter_raw():
+                        yield chunk
+        except httpx.HTTPError:
+            return 
+    return StreamingResponse(
+        gen(), media_type="multipart/x-mixed-replace; boundary=frame")
 
 def load_slots():
     try:
@@ -45,14 +63,14 @@ def fetch_slot_status() -> dict:
     return slots
 
 
-ui.colors(primary="#5b8def", negative="#ef4444", positive="#3fb68b", warning="#f2a93b")
+ui.colors(primary="#20BCEF", negative="#ef4444", positive="#3fb68b", warning="#f2a93b")
 ui.dark_mode(True)
 ui.add_css("""
 :root {
     --bg: #0a0c10; --surface: #0f1218; --raised: #151a22;
     --line: #1c222c; --line-hi: #2a3240;
     --text: #e7eaee; --muted: #6b7686;
-    --accent: #5b8def; --live: #f2a93b;
+    --accent: #20BCEF; --live: #20BCEF;
 }
 body { background: var(--bg); color: var(--text);
        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -334,6 +352,11 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                 stop_btn = ui.button("Stop job", on_click=stop_job) \
                     .props("flat no-caps").classes("stop")
                 stop_btn.set_visibility(False)
+            
+            with ui.column().classes("panel w-full p-4 gap-3"):
+                ui.label("Vision").classes("eyebrow")
+                ui.element("img").props("src=/vision/stream") \
+                    .classes("w-full").style("border-radius:6px; background:var(--bg); min-height:200px")
 
             with ui.column().classes("panel w-full p-4 gap-3"):
                 with ui.row().classes("w-full items-center justify-between"):
@@ -341,6 +364,7 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                     ui.button("Clear", on_click=lambda: log.clear()) \
                         .props("flat dense no-caps size=sm color=grey-6")
                 log = ui.log(max_lines=1000).classes("log-box w-full h-72")
+            
 
         # Slot panel
         with ui.column().classes("panel w-full max-w-xs p-6 gap-5    items-center"):
@@ -387,4 +411,4 @@ refresh_mode()
 ui.timer(SLOT_POLL_S, poll_slots)
 app.on_shutdown(stop_job)
 
-ui.run(host="0.0.0.0", port=8080, title="Print Farm", dark=True, show=False)
+ui.run(host="0.0.0.0", port=8080, title="Print Farm", dark=True, show=False, favicon="https://www.lay3rs.nl/wp-content/uploads/2020/10/beeldmerk-lay3rs-donker.png")
