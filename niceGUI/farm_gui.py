@@ -8,16 +8,16 @@ import httpx
 
 VISION_URL = f"http://{VISION_PI_IP}:{VISION_PORT}" 
 RUN_JOB_SCRIPT = Path("/home/main/Lay3rs_print_farm/run_job.py")
-PRINTERS = {"printer_03": "X1C-3", "printer_04": "X1C-2", "printer_05": "X1C-1"}
+PRINTERS = {"printer_03": "X1C-4", "printer_04": "X1C-2", "printer_05": "X1C-1"}
 N_SLOTS = 16
 SLOT_POLL_S = 2.0
 JOB_TIMEOUT_S = 600
 SLOT_FILE = Path(__file__).with_name("slots.json") 
 
 JOBS = {
-    "Home": ("go_home", False),
     "Change buildplate": ("full_buildplate_change", True),
     "Transfer slot → slot": ("transfer_buildplate", True),
+    "Home": ("go_home", False),
 }
 
 state = {"busy": False, "proc": None, "editing": False, "printer": next(iter(PRINTERS))}
@@ -106,6 +106,8 @@ body { background: var(--bg); color: var(--text);
                 color: var(--text); }
 .q-btn.editbtn.on { border-color: var(--live); color: var(--live); }
 .editing .q-btn.slot { border-style: dashed; } 
+.q-btn.slot.blocked { opacity: .3; cursor: not-allowed; }
+.q-btn.slot.blocked:hover { border-color: var(--line); color: var(--muted); }
 /* jobs */
 .q-btn.job { height: 40px; padding: 0 18px; border-radius: 6px; font-weight: 500;
              letter-spacing: 0; color: var(--text); border: 1px solid var(--line-hi);
@@ -148,10 +150,21 @@ def on_printer_click(name: str):
 
 # Slots
 def refresh_slots():
+    blocked = {} if state["editing"] else blocked_dropoffs()
+    if selected["dropoff"] in blocked:
+        selected["dropoff"] = None
+
     for kind, buttons in slot_buttons.items():
         for i, btn in enumerate(buttons):
             mark(btn, "occ", slots[kind][i])
             mark(btn, "sel", selected[kind] == i)
+            mark(btn, "blocked", kind == "dropoff" and i in blocked)
+
+    h = get_print_height_cm(selected["dropoff"])
+    height_msg.set_visibility(h is not None)
+    if h is not None:
+        height_msg.set_text(f"Make sure your print is no taller than {h:g} cm")
+
     for kind, lbl in sel_labels.items():
         i = selected[kind]
         if i is None:
@@ -162,6 +175,9 @@ def refresh_slots():
 
 
 def on_slot_click(kind: str, i: int):
+    if kind == "dropoff" and not state["editing"] and i in blocked_dropoffs():
+        ui.notify(f"Dropoff {i + 1:02d} is blocked by pickup {i:02d}", type="warning")
+        return
     if state["editing"]:  # edit mode: toggle occupied / empty
         slots[kind][i] = not slots[kind][i]
         save_slots()
@@ -179,7 +195,6 @@ def toggle_edit():
     mark(edit_btn, "on", editing)
     mark(slots_row, "editing", editing)
     edit_hint.set_visibility(editing)
-    summary_col.set_visibility(not editing)
     refresh_slots()
 
 
@@ -298,6 +313,23 @@ async def run(job: str, needs_slots: bool, printer_name: str, dry_run: bool):
         ui.notify(f"Job failed (exit code {code})", type="negative")
     await poll_slots()
 
+def get_print_height_cm(dropoff: int | None) -> int | None:
+    """Returns the max print height in cm, or None to hide the message."""
+    if (dropoff == None or dropoff == 1): 
+        return None
+    idx = dropoff - 1
+    while idx >= 0:
+        if (slots["dropoff"][idx] == True):
+            return (dropoff - idx) * 7
+        idx -= 1
+    return dropoff * 7 + 4
+
+
+def blocked_dropoffs() -> dict[int, int]:
+    """dropoff index -> index of the pickup slot blocking it.
+    A full pickup slot N blocks dropoff slot N+1 (not the other way round)."""
+    return {i + 1: i for i, occ in enumerate(slots["pickup"]) if occ and i + 1 < N_SLOTS}
+
 async def stop_job():
     proc = state["proc"]
     if proc and proc.returncode is None:
@@ -325,7 +357,6 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                         .props("flat no-caps").classes("printer w-full") as pb:
                     with ui.row().classes("w-full items-center justify-between no-wrap"):
                         ui.label(pos).classes("text-sm font-medium")
-                        # ui.label(name).classes("mono text-xs opacity-60")
                 printer_buttons[name] = pb
 
         # Center panel
@@ -363,7 +394,7 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                     ui.label("Output").classes("eyebrow")
                     ui.button("Clear", on_click=lambda: log.clear()) \
                         .props("flat dense no-caps size=sm color=grey-6")
-                log = ui.log(max_lines=1000).classes("log-box w-full h-72")
+                log = ui.log(max_lines=1000).classes("log-box w-full h-32")
             
 
         # Slot panel
@@ -381,6 +412,10 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                 with ui.row().classes("items-center gap-2"):
                     ui.element("div").classes("legend-sel")
                     ui.label("Selected")
+
+            height_msg = ui.label("").classes("w-full text-xs text-center p-2 rounded") \
+                .style("color:rgba(242,169,59,.75); background:rgba(242,169,59,.08); "
+                       "border:1px solid rgba(242,169,59,.35)")
 
             with ui.row().classes("w-full justify-center items-start gap-5") as slots_row:
                 for kind in ("pickup", "dropoff"):
@@ -411,4 +446,4 @@ refresh_mode()
 ui.timer(SLOT_POLL_S, poll_slots)
 app.on_shutdown(stop_job)
 
-ui.run(host="0.0.0.0", port=8080, title="Print Farm", dark=True, show=False, favicon="https://www.lay3rs.nl/wp-content/uploads/2020/10/beeldmerk-lay3rs-donker.png")
+ui.run(host="0.0.0.0", port=8080, title="Lay3rs Print Farm", dark=True, show=False, favicon="https://www.lay3rs.nl/wp-content/uploads/2020/10/beeldmerk-lay3rs-donker.png")
