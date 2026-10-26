@@ -157,6 +157,7 @@
         "localization/localize_buildplate_rack_tag.json",
         "rack/move_to_pick_slot_from_rack_localized.json",
         "rack/pick_buildplate_from_slot_from_localized.json",
+        "common/go_home.json",
         "rack/go_to_rack_scanning_pose.json",
         "localization/localize_buildplate_rack_tag.json",
         "rack/move_to_drop_slot_from_rack_localized.json",
