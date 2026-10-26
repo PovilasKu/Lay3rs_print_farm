@@ -14,10 +14,23 @@ SLOT_POLL_S = 2.0
 JOB_TIMEOUT_S = 600
 SLOT_FILE = Path(__file__).with_name("slots.json") 
 
-JOBS = {
-    "Change buildplate": ("full_buildplate_change", True),
-    "Transfer slot → slot": ("transfer_buildplate", True),
-    "Home": ("go_home", False),
+MAIN_JOBS = {
+    "Change plate": ("full_buildplate_change", True, "sym_r_stack"),
+    "Home":         ("go_home", False, "sym_r_home"),
+    "Transfer":     ("transfer_buildplate", True, "sym_r_swap_vert"),
+}
+
+DEBUG_JOBS = {
+    "Open door":                ("open_door_with_verification", False),
+    "Remove plate (door open)": ("remove_buildplate_only", False),
+    "Open door":                ("open_door_with_verification", False),
+    "Open and take plate":      ("open_door_and_take_out_buildplate", False),
+    "Place plate":              ("localize_and_place_buildplate", True),
+    "Drop plate":               ("rack_drop_only", True),
+    "Pickup plate":             ("rack_pickup_only", True),
+    "Close door":               ("close_door", False),
+    "Localize door":            ("localize_printer_door_only", False),
+
 }
 
 state = {"busy": False, "proc": None, "editing": False, "printer": next(iter(PRINTERS))}
@@ -113,8 +126,16 @@ body { background: var(--bg); color: var(--text);
              letter-spacing: 0; color: var(--text); border: 1px solid var(--line-hi);
              background: var(--raised) !important; }
 .q-btn.job:hover { border-color: var(--accent); }
-.q-btn.stop { border: 1px solid rgba(239,68,68,.5); color: #f87171;
-              background: transparent !important; border-radius: 6px; }
+.q-btn.stop { color: #ffffff !important; background: rgba(239,68,68,.8) !important; width: 350px; height: 40px;}
+.q-btn.jobtile { width: 108px; height: 108px; border: 1px solid var(--line-hi);
+                 border-radius: 10px; background: var(--raised) !important;
+                 color: var(--text); }
+.q-btn.jobtile:hover { border-color: var(--accent); }
+.q-btn.jobtile .q-icon { color: var(--accent); }
+.q-btn.morebtn { color: var(--muted); }
+.q-btn.morebtn:hover { color: var(--text); background: var(--raised) !important; }
+.q-menu { background: var(--raised) !important; border: 1px solid var(--line-hi);
+          border-radius: 8px; }
 
 /* status + badges */
 .sdot { width: 7px; height: 7px; border-radius: 50%; }
@@ -122,7 +143,7 @@ body { background: var(--bg); color: var(--text);
 .sdot.run { background: var(--accent); }
 .badge { font-size: 11px; letter-spacing: .06em; padding: 3px 8px; border-radius: 4px;
          border: 1px solid var(--line-hi); color: var(--muted); }
-.badge.live { color: var(--live); border-color: rgba(242,169,59,.5);
+.badge.live { color: rgba(242,169,59,1); border-color: rgba(242,169,59,.5);
               background: rgba(242,169,59,.08); }
 
 /* log */
@@ -369,18 +390,31 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                         status = ui.label("IDLE").classes("eyebrow mono")
                     mode_badge = ui.label("TEST MODE").classes("badge mono")
 
-                dry = ui.switch("Test mode (robot won't move)", value=True,
-                                on_change=refresh_mode)
+                with ui.row().classes("w-60 items-center justify-between"):
+                    dry = ui.switch("Test mode", value=True,
+                                    on_change=refresh_mode)
+                    with ui.button(icon="more_horiz").props("flat round dense") \
+                            .classes("morebtn") as more_btn:
+                        with ui.menu():
+                            for label, (job, needs) in DEBUG_JOBS.items():
+                                ui.menu_item(
+                                    label,
+                                    on_click=lambda j=job, n=needs: run(j, n, state["printer"], dry.value),
+                                )
 
-                with ui.row().classes("gap-3 justify-center"):
-                    for label, (job, needs) in JOBS.items():
-                        btn = ui.button(
-                            label,
+                with ui.row().classes("gap-4 justify-center"):
+                    for label, (job, needs, icon) in MAIN_JOBS.items():
+                        with ui.button(
                             on_click=lambda j=job, n=needs: run(j, n, state["printer"], dry.value),
-                        ).props("unelevated no-caps").classes("job")
+                        ).props("flat no-caps").classes("jobtile") as btn:
+                            with ui.column().classes("items-center gap-2"):
+                                ui.icon(icon).classes("text-4xl")
+                                ui.label(label).classes("text-xs font-medium")
                         job_buttons.append(btn)
 
-                stop_btn = ui.button("Stop job", on_click=stop_job) \
+                job_buttons.append(more_btn)
+
+                stop_btn = ui.button("Stop", on_click=stop_job, color="#ffffff") \
                     .props("flat no-caps").classes("stop")
                 stop_btn.set_visibility(False)
             
