@@ -5,7 +5,7 @@
     "delta": [
       0,
       400,
-      0,
+      10,
       0,
       0,
       0
@@ -20,7 +20,7 @@
     "delta": [
       0,
       0,
-      -38,
+      0,
       8,
       0,
       0
@@ -46,11 +46,26 @@
   },
   {
     "type": "line_tcp",
+    "name": "prepare_to_leave_buildplate",
+    "delta": [
+      0,
+      -60,
+      -15,
+      -8,
+      0,
+      0
+    ],
+    "vel": 80,
+    "acc": 50,
+    "ovl": 100
+  },
+  {
+    "type": "line_tcp",
     "name": "clear_griper_from_buildplate",
     "delta": [
       0,
       -160,
-      -23,
+      -10,
       0,
       0,
       0
@@ -65,7 +80,7 @@
     "delta": [
       0,
       -240,
-      -10,
+      10,
       0,
       0,
       0
