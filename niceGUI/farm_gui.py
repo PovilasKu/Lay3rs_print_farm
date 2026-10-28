@@ -75,6 +75,33 @@ load_slots()
 def fetch_slot_status() -> dict:
     return slots
 
+GCODE_DIR = Path("/home/main/Lay3rs_print_farm/gcode")
+
+
+def list_gcode_files() -> list[Path]:
+    return sorted(GCODE_DIR.glob("*.gcode"), key=lambda p: ("start" not in p.name.lower(), p.name))
+
+
+async def copy_gcode(path: Path):
+    try:
+        text = path.read_text()   # read on click, so edits to the file are picked up
+    except Exception as e:  # noqa: BLE001
+        ui.notify(f"Could not read {path.name}: {e}", type="negative")
+        return
+    # navigator.clipboard only works on https/localhost, and you open the page over
+    # plain http on a LAN IP, so fall back to a hidden textarea + execCommand.
+    ui.run_javascript(f"""
+        const t = {json.dumps(text)};
+        if (navigator.clipboard && window.isSecureContext) {{
+            navigator.clipboard.writeText(t);
+        }} else {{
+            const a = document.createElement('textarea');
+            a.value = t; a.style.position = 'fixed'; a.style.opacity = '0';
+            document.body.appendChild(a); a.select();
+            document.execCommand('copy'); a.remove();
+        }}
+    """)
+    ui.notify(f"Copied {path.name}", type="positive")
 
 ui.colors(primary="#20BCEF", negative="#ef4444", positive="#3fb68b", warning="#f2a93b")
 ui.dark_mode(True)
@@ -101,6 +128,9 @@ body { background: var(--bg); color: var(--text);
 .q-btn.printer:hover { background: var(--raised) !important; color: var(--text); }
 .q-btn.printer.sel { background: var(--raised) !important; border-color: var(--line-hi);
                      color: var(--text); box-shadow: inset 2px 0 0 var(--accent) !important; }
+
+.q-btn.copybtn { color: var(--muted) !important; }
+.q-btn.copybtn:hover { color: var(--accent) !important; background: var(--raised) !important; }
 
 /* slots */
 .q-btn.slot { width: 100%; height: 30px; padding: 0 10px; border: 1px solid var(--line);
@@ -336,14 +366,16 @@ async def run(job: str, needs_slots: bool, printer_name: str, dry_run: bool):
 
 def get_print_height_cm(dropoff: int | None) -> int | None:
     """Returns the max print height in cm, or None to hide the message."""
-    if (dropoff == None or dropoff == 1): 
+    if (dropoff == None): 
         return None
     idx = dropoff - 1
     while idx >= 0:
-        if (slots["dropoff"][idx] == True):
-            return (dropoff - idx) * 7
+        if (slots["pickup"][idx] == True):
+            return (dropoff - idx - 1) * 7 if ((dropoff - idx - 1) * 7 <= 25) else None
+        if (slots["dropoff"][idx] == True or idx == 0):
+            return 4 + (dropoff - idx) * 7 if (4 + (dropoff - idx) * 7 <= 25) else None
         idx -= 1
-    return dropoff * 7 + 4
+    return 4
 
 
 def blocked_dropoffs() -> dict[int, int]:
@@ -371,14 +403,26 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
     with ui.row().classes("w-full justify-center items-start gap-5"):
 
         # Printer panel
-        with ui.column().classes("panel w-full max-w-[13rem] p-5 gap-3"):
-            ui.label("Printers").classes("eyebrow")
-            for name, pos in PRINTERS.items():
-                with ui.button(on_click=lambda n=name: on_printer_click(n)) \
-                        .props("flat no-caps").classes("printer w-full") as pb:
-                    with ui.row().classes("w-full items-center justify-between no-wrap"):
-                        ui.label(pos).classes("text-sm font-medium")
-                printer_buttons[name] = pb
+        with ui.column().classes("w-full max-w-[13rem] gap-5"):
+            with ui.column().classes("panel w-full max-w-[13rem] p-5 gap-3"):
+                ui.label("Printers").classes("eyebrow")
+                for name, pos in PRINTERS.items():
+                    with ui.button(on_click=lambda n=name: on_printer_click(n)) \
+                            .props("flat no-caps").classes("printer w-full") as pb:
+                        with ui.row().classes("w-full items-center justify-between no-wrap"):
+                            ui.label(pos).classes("text-sm font-medium")
+                    printer_buttons[name] = pb
+            with ui.column().classes("panel w-full p-5 gap-3"):
+                ui.label("G-code").classes("eyebrow")
+                files = list_gcode_files()
+                if not files:
+                    ui.label("No .gcode files found").classes("text-xs") \
+                        .style("color:var(--muted)")
+                for f in files:
+                    with ui.row().classes("w-full items-center justify-between no-wrap gap-2"):
+                        ui.label(f.stem).classes("text-sm truncate flex-1 min-w-0").tooltip(f.name)
+                        ui.button(icon="content_copy", on_click=lambda p=f: copy_gcode(p)) \
+                            .props("flat dense round size=sm").classes("copybtn")
 
         # Center panel
         with ui.column().classes("w-full max-w-xl gap-5"):
