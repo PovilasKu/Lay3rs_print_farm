@@ -59,12 +59,12 @@ OVL = 20.0
 #
 # Replace these values with your real tested pose.
 TEST_START_POSE = [
-    400.0,   # X
-    0.0,     # Y
-    350.0,   # Z
-    0.0,     # RX
-    0.0,     # RY
-    0.0,     # RZ
+    400.0,  # X
+    0.0,  # Y
+    350.0,  # Z
+    0.0,  # RX
+    0.0,  # RY
+    0.0,  # RZ
 ]
 
 MOVE_TO_START_POSE = False
@@ -152,6 +152,7 @@ SAFE_LIMITS = None
 # BASIC HELPERS
 # ============================================================
 
+
 def clamp(value, low, high):
     return max(low, min(high, value))
 
@@ -212,7 +213,9 @@ def extract_pose(result):
     if len(result) == 2 and isinstance(result[1], list) and len(result[1]) >= 6:
         err = int(result[0])
         if err != 0:
-            raise RuntimeError(f"Robot returned error code while reading pose: {result}")
+            raise RuntimeError(
+                f"Robot returned error code while reading pose: {result}"
+            )
         return [float(v) for v in result[1][:6]]
 
     # Format: [0, x, y, z, rx, ry, rz]
@@ -246,6 +249,7 @@ def check_safe_limits(pose):
 # ============================================================
 # ROBOT FUNCTIONS
 # ============================================================
+
 
 def connect_robot():
     robot = Robot.RPC(ROBOT_IP)
@@ -308,6 +312,7 @@ def move_cart(robot, pose):
 # VISION FUNCTIONS
 # ============================================================
 
+
 def read_tag_once():
     with urllib.request.urlopen(VISION_URL, timeout=1.0) as response:
         return json.loads(response.read().decode("utf-8"))
@@ -333,7 +338,9 @@ def wait_for_fresh_tag():
             needed = ["x_mm", "y_mm", "z_mm", "distance_mm", "cx", "cy"]
 
             if not all(k in tag for k in needed):
-                print("Tag detected, but pose values are missing from Vision Pi output.")
+                print(
+                    "Tag detected, but pose values are missing from Vision Pi output."
+                )
                 print("Make sure apriltag_server.py uses estimate_tag_pose=True.")
                 time.sleep(0.2)
                 continue
@@ -350,6 +357,7 @@ def wait_for_fresh_tag():
 # ============================================================
 # CENTERING LOGIC
 # ============================================================
+
 
 def add_axis_step(pose, axis, step_mm):
     new_pose = list(pose)
@@ -416,15 +424,9 @@ def is_finished(tag):
 
     distance_error_mm = tag_z_mm - TARGET_DISTANCE_MM
 
-    pose_centered = (
-        abs(tag_x_mm) <= CENTER_TOL_MM and
-        abs(tag_y_mm) <= CENTER_TOL_MM
-    )
+    pose_centered = abs(tag_x_mm) <= CENTER_TOL_MM and abs(tag_y_mm) <= CENTER_TOL_MM
 
-    pixel_centered = (
-        abs(cx - TARGET_U) <= PIXEL_TOL and
-        abs(cy - TARGET_V) <= PIXEL_TOL
-    )
+    pixel_centered = abs(cx - TARGET_U) <= PIXEL_TOL and abs(cy - TARGET_V) <= PIXEL_TOL
 
     distance_ok = abs(distance_error_mm) <= DISTANCE_TOL_MM
 
@@ -435,6 +437,7 @@ def is_finished(tag):
 # ============================================================
 # MAIN PROGRAM
 # ============================================================
+
 
 def main():
     print()
@@ -458,8 +461,6 @@ def main():
         print([round(v, 3) for v in current_start_pose])
         time.sleep(1.5)
 
-        
-
     for iteration in range(1, MAX_ITERS + 1):
         tag = wait_for_fresh_tag()
 
@@ -475,7 +476,9 @@ def main():
         print("--------------------")
         print(f"Tag pixel center:       u={cx:.1f}, v={cy:.1f}")
         print(f"Pixel error:            du={cx - TARGET_U:.1f}, dv={cy - TARGET_V:.1f}")
-        print(f"Camera-space tag pose:  x={tag_x_mm:.1f} mm, y={tag_y_mm:.1f} mm, z={tag_z_mm:.1f} mm")
+        print(
+            f"Camera-space tag pose:  x={tag_x_mm:.1f} mm, y={tag_y_mm:.1f} mm, z={tag_z_mm:.1f} mm"
+        )
         print(f"Target distance error:  {distance_error_mm:.1f} mm")
 
         if is_finished(tag):

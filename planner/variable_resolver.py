@@ -12,7 +12,9 @@ def get_path_value(context: dict, dotted_path: str) -> Any:
         if isinstance(current, dict) and part in current:
             current = current[part]
         else:
-            raise RuntimeError(f"Could not resolve placeholder '${{{dotted_path}}}'. Missing part: {part}")
+            raise RuntimeError(
+                f"Could not resolve placeholder '${{{dotted_path}}}'. Missing part: {part}"
+            )
     return current
 
 

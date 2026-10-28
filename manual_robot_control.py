@@ -141,9 +141,7 @@ def parse_six_values(text: str, name: str) -> list[float]:
     parts = [part for part in cleaned.split() if part]
 
     if len(parts) != 6:
-        raise ValueError(
-            f"{name} requires exactly 6 numbers; received {len(parts)}."
-        )
+        raise ValueError(f"{name} requires exactly 6 numbers; received {len(parts)}.")
 
     try:
         return [float(value) for value in parts]
@@ -180,16 +178,12 @@ def print_current_position(robot) -> None:
     print()
     print("Current absolute TCP pose")
     print("-------------------------")
-    print(
-        "{:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}".format(*pose)
-    )
+    print("{:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}".format(*pose))
 
     print()
     print("Current joint coordinates")
     print("-------------------------")
-    print(
-        "{:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}".format(*joints)
-    )
+    print("{:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}, {:.3f}".format(*joints))
 
 
 def execute_programmed_move(
@@ -207,9 +201,7 @@ def execute_programmed_move(
     print()
     print(description)
     print(f"Target: {[round(value, 3) for value in target]}")
-    print(
-        f"Test speed: vel={TEST_VEL}, acc={TEST_ACC}, ovl={TEST_OVL}"
-    )
+    print(f"Test speed: vel={TEST_VEL}, acc={TEST_ACC}, ovl={TEST_OVL}")
 
     if not confirm("Execute this robot movement?"):
         print("Movement cancelled.")
@@ -225,10 +217,7 @@ def execute_programmed_move(
             try:
                 set_manual_mode(robot)
             except Exception as exc:
-                print(
-                    "WARNING: Could not return to manual mode after movement: "
-                    f"{exc}"
-                )
+                print(f"WARNING: Could not return to manual mode after movement: {exc}")
 
 
 def move_local_tcp(robot, linear: bool) -> None:
@@ -339,9 +328,7 @@ def set_gripper_position(robot, gripper_is_active: bool) -> bool:
     On many parallel grippers, 0 is closed and 100 is open. Verify this using
     a safe test with no object between the fingers.
     """
-    raw = input(
-        "Enter gripper position 0-100 (or 'q' to cancel): "
-    ).strip()
+    raw = input("Enter gripper position 0-100 (or 'q' to cancel): ").strip()
 
     if raw.lower() in {"q", "quit", "cancel"}:
         print("Gripper command cancelled.")

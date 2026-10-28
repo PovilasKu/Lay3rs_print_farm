@@ -31,7 +31,9 @@ def validate_vector(name: str, values: Any, length: int) -> list[float]:
     if not isinstance(values, list):
         raise RuntimeError(f"{name} must be a list, got: {type(values)}")
     if len(values) != length:
-        raise RuntimeError(f"{name} must contain exactly {length} values, got {len(values)}: {values}")
+        raise RuntimeError(
+            f"{name} must contain exactly {length} values, got {len(values)}: {values}"
+        )
     if not all(is_number(v) for v in values):
         raise RuntimeError(f"{name} contains non-numeric values: {values}")
     return [float(v) for v in values]
@@ -39,7 +41,9 @@ def validate_vector(name: str, values: Any, length: int) -> list[float]:
 
 def add_vectors(a: list[float], b: list[float]) -> list[float]:
     if len(a) != len(b):
-        raise RuntimeError(f"Cannot add vectors of different lengths: {len(a)} and {len(b)}")
+        raise RuntimeError(
+            f"Cannot add vectors of different lengths: {len(a)} and {len(b)}"
+        )
     return [float(x) + float(y) for x, y in zip(a, b)]
 
 
@@ -60,5 +64,13 @@ def truthy(value: Any) -> bool:
     if isinstance(value, (int, float)):
         return value != 0
     if isinstance(value, str):
-        return value.strip().lower() in ["1", "true", "yes", "y", "ok", "stereo", "fused"]
+        return value.strip().lower() in [
+            "1",
+            "true",
+            "yes",
+            "y",
+            "ok",
+            "stereo",
+            "fused",
+        ]
     return False

@@ -13,11 +13,23 @@ from core.vision_client import check_tag_visible
 
 
 def execute_move_cart(robot, command):
-    move_cart(robot, command["pose"], vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+    move_cart(
+        robot,
+        command["pose"],
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+    )
 
 
 def execute_line_cart(robot, command):
-    move_line(robot, command["pose"], vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+    move_line(
+        robot,
+        command["pose"],
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+    )
 
 
 def execute_arc_cart(robot, command):
@@ -25,11 +37,26 @@ def execute_arc_cart(robot, command):
     end_pose = command.get("end_pose", command.get("pose"))
     if via_pose is None or end_pose is None:
         raise RuntimeError("arc_cart needs via_pose/end_pose or old-style via/pose.")
-    move_arc(robot, via_pose, end_pose, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"), fallback_segments=command.get("fallback_segments", 12))
+    move_arc(
+        robot,
+        via_pose,
+        end_pose,
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+        fallback_segments=command.get("fallback_segments", 12),
+    )
 
 
 def execute_move_joint(robot, command):
-    move_joint(robot, command["joints"], pose=command.get("pose"), vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+    move_joint(
+        robot,
+        command["joints"],
+        pose=command.get("pose"),
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+    )
 
 
 def execute_local_cart(robot, command):
@@ -54,7 +81,9 @@ def execute_local_cart(robot, command):
     applied_delta[1] *= y_sign
     applied_delta[2] *= z_sign
 
-    frame = str(command.get("frame", command.get("reference_frame", "tcp"))).strip().lower()
+    frame = (
+        str(command.get("frame", command.get("reference_frame", "tcp"))).strip().lower()
+    )
     motion = str(command.get("motion", "cart")).strip().lower()
 
     if frame in ["tcp", "tool", "local"]:
@@ -77,16 +106,34 @@ def execute_local_cart(robot, command):
     print(f"Motion type:            {motion}")
 
     if motion in ["line", "straight", "movel"]:
-        move_line(robot, next_pose, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+        move_line(
+            robot,
+            next_pose,
+            vel=command.get("vel"),
+            acc=command.get("acc"),
+            ovl=command.get("ovl"),
+        )
     else:
-        move_cart(robot, next_pose, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+        move_cart(
+            robot,
+            next_pose,
+            vel=command.get("vel"),
+            acc=command.get("acc"),
+            ovl=command.get("ovl"),
+        )
 
 
 def execute_line_tcp(robot, command):
     current_pose = get_actual_pose(robot)
     delta = validate_vector("line_tcp delta", command["delta"][:6], 6)
     next_pose = tcp_delta_to_pose(current_pose, delta)
-    move_line(robot, next_pose, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+    move_line(
+        robot,
+        next_pose,
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+    )
 
 
 def execute_arc_tcp(robot, command):
@@ -94,7 +141,9 @@ def execute_arc_tcp(robot, command):
     via_delta_raw = command.get("via_delta")
     end_delta_raw = command.get("end_delta", command.get("delta"))
     if via_delta_raw is None or end_delta_raw is None:
-        raise RuntimeError("arc_tcp needs via_delta and end_delta, or old-style via_delta and delta.")
+        raise RuntimeError(
+            "arc_tcp needs via_delta and end_delta, or old-style via_delta and delta."
+        )
 
     via_delta = validate_vector("arc_tcp via_delta", via_delta_raw, 6)
     end_delta = validate_vector("arc_tcp end_delta", end_delta_raw, 6)
@@ -102,7 +151,15 @@ def execute_arc_tcp(robot, command):
     via_pose = tcp_delta_to_pose(current_pose, via_delta)
     end_pose = tcp_delta_to_pose(current_pose, end_delta)
 
-    move_arc(robot, via_pose, end_pose, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"), fallback_segments=command.get("fallback_segments", 12))
+    move_arc(
+        robot,
+        via_pose,
+        end_pose,
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+        fallback_segments=command.get("fallback_segments", 12),
+    )
 
 
 def execute_local_joint(robot, command):
@@ -112,7 +169,13 @@ def execute_local_joint(robot, command):
         raise RuntimeError("local_joint needs delta or old-style delta_joints.")
     delta = validate_vector("local_joint delta", delta_raw, 6)
     target_joints = add_vectors(current_joints, delta)
-    move_joint(robot, target_joints, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+    move_joint(
+        robot,
+        target_joints,
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+    )
 
 
 def execute_wait(robot, command):
@@ -159,7 +222,9 @@ def execute_check_tag_visible(robot, command):
     )
     print(f"Tag visible check: tag_id={tag_id}, family={tag_family}, visible={visible}")
     if not visible:
-        raise RuntimeError(f"Expected tag to be visible, but it was not found: id={tag_id}, family={tag_family}")
+        raise RuntimeError(
+            f"Expected tag to be visible, but it was not found: id={tag_id}, family={tag_family}"
+        )
 
 
 def execute_check_tag_absent(robot, command):
@@ -178,7 +243,9 @@ def execute_check_tag_absent(robot, command):
     )
     print(f"Tag absent check: tag_id={tag_id}, family={tag_family}, visible={visible}")
     if visible:
-        raise RuntimeError(f"Expected tag to be absent, but it was still visible: id={tag_id}, family={tag_family}")
+        raise RuntimeError(
+            f"Expected tag to be absent, but it was still visible: id={tag_id}, family={tag_family}"
+        )
 
 
 def execute_command_list(robot, commands, start_index=1, total=None):
@@ -203,18 +270,29 @@ def execute_retry_until_tag_absent(robot, command):
     attempts = int(command.get("max_attempts", 2))
     commands = command.get("commands", [])
     if not isinstance(commands, list) or not commands:
-        raise RuntimeError("retry_until_tag_absent requires a non-empty 'commands' list.")
+        raise RuntimeError(
+            "retry_until_tag_absent requires a non-empty 'commands' list."
+        )
 
     check = command.get("check", {})
     tag_id = check.get("tag_id", command.get("tag_id"))
     tag_family = check.get("tag_family", command.get("tag_family"))
     timeout_s = float(check.get("timeout_s", command.get("timeout_s", 2.0)))
-    require_family = bool(check.get("require_tag_family", command.get("require_tag_family", tag_family is not None)))
-    require_stereo = bool(check.get("require_stereo", command.get("require_stereo", False)))
+    require_family = bool(
+        check.get(
+            "require_tag_family",
+            command.get("require_tag_family", tag_family is not None),
+        )
+    )
+    require_stereo = bool(
+        check.get("require_stereo", command.get("require_stereo", False))
+    )
 
     for attempt in range(1, attempts + 1):
         print()
-        print(f"Retry block attempt {attempt}/{attempts}: {command.get('name', 'unnamed retry block')}")
+        print(
+            f"Retry block attempt {attempt}/{attempts}: {command.get('name', 'unnamed retry block')}"
+        )
         execute_command_list(robot, commands, start_index=1, total=len(commands))
 
         visible = check_tag_visible(
@@ -224,7 +302,9 @@ def execute_retry_until_tag_absent(robot, command):
             require_tag_family=require_family,
             require_stereo=require_stereo,
         )
-        print(f"Post-attempt tag visibility: id={tag_id}, family={tag_family}, visible={visible}")
+        print(
+            f"Post-attempt tag visibility: id={tag_id}, family={tag_family}, visible={visible}"
+        )
         if not visible:
             print("Retry block succeeded: tag is absent.")
             return

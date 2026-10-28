@@ -1,4 +1,5 @@
 import sys
+
 sys.path.insert(0, "/home/fairino/fairino-python-sdk/linux/fairino")
 
 import Robot
@@ -18,14 +19,7 @@ try:
     # install=0 means installed on robot end/flange
     # toolID can usually match TOOL_NUM
     # loadNum=0 means use load setting 0
-    ret = robot.SetToolCoord(
-        TOOL_NUM,
-        TOOL_TCP,
-        0,
-        0,
-        TOOL_NUM,
-        0
-    )
+    ret = robot.SetToolCoord(TOOL_NUM, TOOL_TCP, 0, 0, TOOL_NUM, 0)
 
     print("SetToolCoord returned:", ret)
 

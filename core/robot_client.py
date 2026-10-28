@@ -17,7 +17,9 @@ def connect_robot():
         return FakeRobot()
 
     if Robot is None:
-        raise RuntimeError("Could not import Fairino Robot SDK. Activate fairino-venv on the Control Pi.")
+        raise RuntimeError(
+            "Could not import Fairino Robot SDK. Activate fairino-venv on the Control Pi."
+        )
 
     robot = Robot.RPC(cfg.ROBOT_IP)
     print(robot)
@@ -74,12 +76,17 @@ def get_actual_joints(robot) -> list[float]:
     return [float(v) for v in joints[:6]]
 
 
-def pose_close(actual: list[float], target: list[float], xyz_tol=None, rot_tol=None) -> bool:
+def pose_close(
+    actual: list[float], target: list[float], xyz_tol=None, rot_tol=None
+) -> bool:
     xyz_tol = cfg.POSE_XYZ_REACHED_TOL_MM if xyz_tol is None else float(xyz_tol)
     rot_tol = cfg.POSE_ROT_REACHED_TOL_DEG if rot_tol is None else float(rot_tol)
 
     xyz_errors = [abs(float(actual[i]) - float(target[i])) for i in range(3)]
-    rot_errors = [abs(wrap_angle_deg(float(actual[i + 3]) - float(target[i + 3]))) for i in range(3)]
+    rot_errors = [
+        abs(wrap_angle_deg(float(actual[i + 3]) - float(target[i + 3])))
+        for i in range(3)
+    ]
 
     print(f"Pose XYZ errors: {[round(e, 3) for e in xyz_errors]} mm")
     print(f"Pose rot errors: {[round(e, 3) for e in rot_errors]} deg")

@@ -21,14 +21,35 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Fairino autoprint-farm job runner")
     parser.add_argument("--job", help="Job name from data/jobs/job_catalog.json")
     parser.add_argument("--printer", help="Printer ID from data/printers/printers.json")
-    parser.add_argument("--drop-slot", help="Rack slot ID where the old plate should be dropped")
-    parser.add_argument("--pick-slot", help="Rack slot ID where the clean plate should be picked")
-    parser.add_argument("--vars-json", help="Optional JSON string of extra variables for ${vars.*} placeholders")
-    parser.add_argument("--list-jobs", action="store_true", help="List available jobs and exit")
-    parser.add_argument("--list-printers", action="store_true", help="List available printers and exit")
-    parser.add_argument("--list-slots", action="store_true", help="List available rack slots and exit")
-    parser.add_argument("--plan-only", action="store_true", help="Build and print/save the plan, but do not connect to the robot")
-    parser.add_argument("--dry-run", action="store_true", help="Override config.DRY_RUN=True for this run")
+    parser.add_argument(
+        "--drop-slot", help="Rack slot ID where the old plate should be dropped"
+    )
+    parser.add_argument(
+        "--pick-slot", help="Rack slot ID where the clean plate should be picked"
+    )
+    parser.add_argument(
+        "--vars-json",
+        help="Optional JSON string of extra variables for ${vars.*} placeholders",
+    )
+    parser.add_argument(
+        "--list-jobs", action="store_true", help="List available jobs and exit"
+    )
+    parser.add_argument(
+        "--list-printers", action="store_true", help="List available printers and exit"
+    )
+    parser.add_argument(
+        "--list-slots", action="store_true", help="List available rack slots and exit"
+    )
+    parser.add_argument(
+        "--plan-only",
+        action="store_true",
+        help="Build and print/save the plan, but do not connect to the robot",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Override config.DRY_RUN=True for this run",
+    )
     return parser.parse_args()
 
 
@@ -54,7 +75,9 @@ def main():
         print("  python run_job.py --list-jobs")
         print("  python run_job.py --list-printers")
         print("  python run_job.py --list-slots")
-        print("  python run_job.py --job trial_full_swap_legacy --printer printer_03 --plan-only")
+        print(
+            "  python run_job.py --job trial_full_swap_legacy --printer printer_03 --plan-only"
+        )
         return
 
     extra_vars = {}

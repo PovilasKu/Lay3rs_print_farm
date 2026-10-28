@@ -37,7 +37,9 @@ def get_printer(printer_id: str) -> dict:
     printers = load_printers()
     if printer_id not in printers:
         available = ", ".join(sorted(printers.keys()))
-        raise RuntimeError(f"Unknown printer '{printer_id}'. Available printers: {available}")
+        raise RuntimeError(
+            f"Unknown printer '{printer_id}'. Available printers: {available}"
+        )
 
     raw_printer = dict(printers[printer_id])
     raw_printer["id"] = printer_id

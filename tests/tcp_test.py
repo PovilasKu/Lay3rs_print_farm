@@ -1,4 +1,5 @@
 import sys
+
 sys.path.insert(0, "/home/fairino/fairino-python-sdk/linux/fairino")
 
 import Robot
@@ -17,10 +18,12 @@ OVL = 10.0
 EPOS = [0.0, 0.0, 0.0, 0.0]
 OFFSET_POS = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
+
 def check(ret, name):
     print(f"{name}: {ret}")
     if ret != 0:
         raise RuntimeError(f"{name} failed, error code {ret}")
+
 
 def read_pose_input(prompt, current_pose):
     print()
@@ -55,6 +58,7 @@ def read_pose_input(prompt, current_pose):
             return pose
         except ValueError:
             print("Invalid number. Try again.")
+
 
 def main():
     robot = Robot.RPC(ROBOT_IP)
@@ -100,9 +104,7 @@ def main():
 
             # Check whether target pose has an IK solution
             ret, has_solution = robot.GetInverseKinHasSolution(
-                0,
-                target_pose,
-                current_joints
+                0, target_pose, current_joints
             )
             check(ret, "IK has-solution call")
 
@@ -113,11 +115,7 @@ def main():
                 continue
 
             # Calculate target joints for this TCP pose
-            ret, target_joints = robot.GetInverseKinRef(
-                0,
-                target_pose,
-                current_joints
-            )
+            ret, target_joints = robot.GetInverseKinRef(0, target_pose, current_joints)
             check(ret, "Get inverse kinematics")
 
             print()
@@ -147,7 +145,7 @@ def main():
                 exaxis_pos=EPOS,
                 blendT=-1.0,
                 offset_flag=0,
-                offset_pos=OFFSET_POS
+                offset_pos=OFFSET_POS,
             )
 
             print("MoveJ returned:", ret)
@@ -163,6 +161,7 @@ def main():
 
     finally:
         robot.CloseRPC()
+
 
 if __name__ == "__main__":
     main()

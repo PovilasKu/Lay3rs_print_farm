@@ -23,7 +23,9 @@ def load_sequence_file(relative_path: str | Path) -> list[dict]:
 
     for i, command in enumerate(commands, start=1):
         if not isinstance(command, dict):
-            raise RuntimeError(f"Command {i} in {path} is not an object/dict: {command}")
+            raise RuntimeError(
+                f"Command {i} in {path} is not an object/dict: {command}"
+            )
 
     return commands
 
@@ -33,7 +35,9 @@ def load_and_resolve_sequence(relative_path: str | Path, context: dict) -> list[
     return resolve_value(commands, context)
 
 
-def load_sequence_steps(step_paths: list[Any], context: dict, add_markers: bool = True) -> list[dict]:
+def load_sequence_steps(
+    step_paths: list[Any], context: dict, add_markers: bool = True
+) -> list[dict]:
     """
     Load a list of sequence path strings and merge them into one command list.
 
@@ -62,11 +66,13 @@ def load_sequence_steps(step_paths: list[Any], context: dict, add_markers: bool 
             continue
 
         if add_markers:
-            all_commands.append({
-                "type": "_marker",
-                "name": f"Starting sequence: {step}",
-                "sequence_file": str(step),
-            })
+            all_commands.append(
+                {
+                    "type": "_marker",
+                    "name": f"Starting sequence: {step}",
+                    "sequence_file": str(step),
+                }
+            )
 
         all_commands.extend(load_and_resolve_sequence(step, context))
 

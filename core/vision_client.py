@@ -73,7 +73,13 @@ def normalize_vision_tag(raw: dict) -> dict:
 
     aliases = {
         "tag_id": ["tag_id", "id", "tagId"],
-        "tag_family": ["tag_family", "family", "tagFamily", "tag_family_name", "apriltag_family"],
+        "tag_family": [
+            "tag_family",
+            "family",
+            "tagFamily",
+            "tag_family_name",
+            "apriltag_family",
+        ],
         "x_mm": ["x_mm", "x", "X_mm", "camera_x_mm"],
         "y_mm": ["y_mm", "y", "Y_mm", "camera_y_mm"],
         "z_mm": ["z_mm", "z", "Z_mm", "depth_mm", "camera_z_mm"],
@@ -82,11 +88,37 @@ def normalize_vision_tag(raw: dict) -> dict:
         "cy": ["cy", "center_y", "v", "pixel_y"],
         "age_s": ["age_s", "age", "data_age_s"],
         "timestamp": ["timestamp", "time", "t"],
-        "tag_pitch_deg": ["tag_pitch_deg", "pitch_deg", "pitch", "tag_tilt_x_deg", "tilt_x_deg", "tilt_x"],
-        "tag_yaw_deg": ["tag_yaw_deg", "yaw_deg", "yaw", "tag_tilt_y_deg", "tilt_y_deg", "tilt_y"],
+        "tag_pitch_deg": [
+            "tag_pitch_deg",
+            "pitch_deg",
+            "pitch",
+            "tag_tilt_x_deg",
+            "tilt_x_deg",
+            "tilt_x",
+        ],
+        "tag_yaw_deg": [
+            "tag_yaw_deg",
+            "yaw_deg",
+            "yaw",
+            "tag_tilt_y_deg",
+            "tilt_y_deg",
+            "tilt_y",
+        ],
         "tag_roll_deg": ["tag_roll_deg", "roll_deg", "roll"],
-        "tag_tilt_x_deg": ["tag_tilt_x_deg", "tilt_x_deg", "tilt_x", "tag_pitch_deg", "pitch_deg"],
-        "tag_tilt_y_deg": ["tag_tilt_y_deg", "tilt_y_deg", "tilt_y", "tag_yaw_deg", "yaw_deg"],
+        "tag_tilt_x_deg": [
+            "tag_tilt_x_deg",
+            "tilt_x_deg",
+            "tilt_x",
+            "tag_pitch_deg",
+            "pitch_deg",
+        ],
+        "tag_tilt_y_deg": [
+            "tag_tilt_y_deg",
+            "tilt_y_deg",
+            "tilt_y",
+            "tag_yaw_deg",
+            "yaw_deg",
+        ],
         "source": ["source", "pose_source", "mode", "vision_mode"],
         "left_ok": ["left_ok", "left_detected"],
         "right_ok": ["right_ok", "right_detected"],
@@ -133,7 +165,11 @@ def vision_source_policy_from_params(params: dict | None) -> str:
     params = params or {}
     if bool(params.get("require_stereo", False)):
         return "require_stereo"
-    return str(params.get("vision_source_policy", cfg.VISION_SOURCE_POLICY)).strip().lower()
+    return (
+        str(params.get("vision_source_policy", cfg.VISION_SOURCE_POLICY))
+        .strip()
+        .lower()
+    )
 
 
 def describe_vision_source(tag: dict) -> str:
@@ -161,7 +197,9 @@ def describe_vision_source(tag: dict) -> str:
     return ", ".join(parts)
 
 
-def validate_tag_for_localize(tag, required_tag_id=None, enable_rotation=True, params=None, quiet=False) -> bool:
+def validate_tag_for_localize(
+    tag, required_tag_id=None, enable_rotation=True, params=None, quiet=False
+) -> bool:
     if not tag.get("ok"):
         if not quiet:
             print("Waiting for AprilTag detection...")
@@ -171,12 +209,16 @@ def validate_tag_for_localize(tag, required_tag_id=None, enable_rotation=True, p
         seen_tag_id = tag.get("tag_id")
         if seen_tag_id is None or int(seen_tag_id) != int(required_tag_id):
             if not quiet:
-                print(f"Waiting for tag_id={required_tag_id}; currently seeing tag_id={seen_tag_id}...")
+                print(
+                    f"Waiting for tag_id={required_tag_id}; currently seeing tag_id={seen_tag_id}..."
+                )
             return False
 
     params = params or {}
     required_family = params.get("tag_family", params.get("required_tag_family"))
-    require_family_check = bool(params.get("require_tag_family", required_family is not None))
+    require_family_check = bool(
+        params.get("require_tag_family", required_family is not None)
+    )
     if require_family_check and required_family is not None:
         expected_family = normalize_family_name(required_family)
         seen_family_raw = tag.get("tag_family")
@@ -198,14 +240,24 @@ def validate_tag_for_localize(tag, required_tag_id=None, enable_rotation=True, p
     source_policy = vision_source_policy_from_params(params)
     stereo_confirmed = is_stereo_confirmed(tag)
 
-    if source_policy in ["require_stereo", "stereo", "stereo_only"] and not stereo_confirmed:
+    if (
+        source_policy in ["require_stereo", "stereo", "stereo_only"]
+        and not stereo_confirmed
+    ):
         if not quiet:
             print("Waiting for confirmed stereo/fused AprilTag pose...")
             print(f"Vision status: {describe_vision_source(tag)}")
         return False
 
-    if source_policy == "prefer_stereo" and not stereo_confirmed and cfg.PRINT_VISION_SOURCE and not quiet:
-        print("WARNING: using AprilTag pose, but stereo/fused source was not confirmed.")
+    if (
+        source_policy == "prefer_stereo"
+        and not stereo_confirmed
+        and cfg.PRINT_VISION_SOURCE
+        and not quiet
+    ):
+        print(
+            "WARNING: using AprilTag pose, but stereo/fused source was not confirmed."
+        )
         print(f"Vision status: {describe_vision_source(tag)}")
 
     needed = ["x_mm", "y_mm", "z_mm", "distance_mm", "cx", "cy"]
@@ -215,20 +267,26 @@ def validate_tag_for_localize(tag, required_tag_id=None, enable_rotation=True, p
     missing = [key for key in needed if key not in tag]
     if missing:
         if not quiet:
-            print("Tag detected, but some required values are missing from Vision Pi output.")
+            print(
+                "Tag detected, but some required values are missing from Vision Pi output."
+            )
             print(f"Missing keys: {missing}")
         return False
 
     return True
 
 
-def wait_for_fresh_tag(required_tag_id=None, enable_rotation=True, params=None, quiet=False) -> dict:
+def wait_for_fresh_tag(
+    required_tag_id=None, enable_rotation=True, params=None, quiet=False
+) -> dict:
     for _ in range(25):
         try:
             raw_tag = read_tag_once()
             tag = normalize_vision_tag(raw_tag)
 
-            if validate_tag_for_localize(tag, required_tag_id, enable_rotation, params, quiet=quiet):
+            if validate_tag_for_localize(
+                tag, required_tag_id, enable_rotation, params, quiet=quiet
+            ):
                 if cfg.PRINT_VISION_SOURCE and not quiet:
                     print(f"Vision status: {describe_vision_source(tag)}")
                 return tag
@@ -254,10 +312,16 @@ def spread_or_none(values):
     return float(max(values) - min(values))
 
 
-def collect_stable_tag(required_tag_id=None, enable_rotation=True, params=None, samples=7, delay_s=None) -> dict:
+def collect_stable_tag(
+    required_tag_id=None, enable_rotation=True, params=None, samples=7, delay_s=None
+) -> dict:
     delay_s = cfg.VISION_SAMPLE_DELAY_S if delay_s is None else float(delay_s)
     samples = max(1, int(samples))
-    min_valid = max(3, int(math.ceil(samples * cfg.VISION_MIN_VALID_RATIO))) if samples >= 3 else 1
+    min_valid = (
+        max(3, int(math.ceil(samples * cfg.VISION_MIN_VALID_RATIO)))
+        if samples >= 3
+        else 1
+    )
 
     valid_tags = []
     last_error = None
@@ -282,11 +346,23 @@ def collect_stable_tag(required_tag_id=None, enable_rotation=True, params=None, 
         )
 
     numeric_keys = [
-        "x_mm", "y_mm", "z_mm", "distance_mm", "cx", "cy",
-        "tag_pitch_deg", "tag_yaw_deg", "tag_roll_deg",
-        "tag_tilt_x_deg", "tag_tilt_y_deg",
-        "disparity_px", "rectified_y_error_px", "tag_size_error_mm",
-        "left_margin", "right_margin", "age_s",
+        "x_mm",
+        "y_mm",
+        "z_mm",
+        "distance_mm",
+        "cx",
+        "cy",
+        "tag_pitch_deg",
+        "tag_yaw_deg",
+        "tag_roll_deg",
+        "tag_tilt_x_deg",
+        "tag_tilt_y_deg",
+        "disparity_px",
+        "rectified_y_error_px",
+        "tag_size_error_mm",
+        "left_margin",
+        "right_margin",
+        "age_s",
     ]
 
     out = dict(valid_tags[-1])

@@ -33,11 +33,13 @@ def rpy_deg_to_matrix(rx_deg: float, ry_deg: float, rz_deg: float) -> list[list[
     return [
         [cz * cy, cz * sy * sx - sz * cx, cz * sy * cx + sz * sx],
         [sz * cy, sz * sy * sx + cz * cx, sz * sy * cx - cz * sx],
-        [-sy,     cy * sx,                cy * cx],
+        [-sy, cy * sx, cy * cx],
     ]
 
 
-def tcp_delta_to_global_delta(current_pose: list[float], tcp_delta: list[float]) -> list[float]:
+def tcp_delta_to_global_delta(
+    current_pose: list[float], tcp_delta: list[float]
+) -> list[float]:
     dx_tcp, dy_tcp, dz_tcp, drx, dry, drz = tcp_delta
     rx, ry, rz = current_pose[3], current_pose[4], current_pose[5]
 

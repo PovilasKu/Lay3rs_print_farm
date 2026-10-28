@@ -76,12 +76,12 @@ OVL = 20.0
 
 # Format: [X, Y, Z, RX, RY, RZ]
 TEST_START_POSE = [
-    400.0,   # X
-    0.0,     # Y
-    350.0,   # Z
-    0.0,     # RX
-    0.0,     # RY
-    0.0,     # RZ
+    400.0,  # X
+    0.0,  # Y
+    350.0,  # Z
+    0.0,  # RX
+    0.0,  # RY
+    0.0,  # RZ
 ]
 
 MOVE_TO_START_POSE = False
@@ -168,6 +168,7 @@ SAFE_LIMITS = None
 # BASIC HELPERS
 # ============================================================
 
+
 def clamp(value, low, high):
     return max(low, min(high, value))
 
@@ -181,7 +182,9 @@ def validate_vector(name, values, length):
         raise RuntimeError(f"{name} must be a list, got: {type(values)}")
 
     if len(values) != length:
-        raise RuntimeError(f"{name} must contain exactly {length} values, got {len(values)}: {values}")
+        raise RuntimeError(
+            f"{name} must contain exactly {length} values, got {len(values)}: {values}"
+        )
 
     if not all(is_number(v) for v in values):
         raise RuntimeError(f"{name} contains non-numeric values: {values}")
@@ -211,7 +214,9 @@ def add_axis_step(pose, axis, step):
 
 def add_vectors(a, b):
     if len(a) != len(b):
-        raise RuntimeError(f"Cannot add vectors of different lengths: {len(a)} and {len(b)}")
+        raise RuntimeError(
+            f"Cannot add vectors of different lengths: {len(a)} and {len(b)}"
+        )
     return [float(x) + float(y) for x, y in zip(a, b)]
 
 
@@ -228,6 +233,7 @@ def load_job_file(filename):
 # ============================================================
 # ROBOT FUNCTIONS
 # ============================================================
+
 
 def connect_robot():
     robot = Robot.RPC(ROBOT_IP)
@@ -271,7 +277,9 @@ def move_cart(robot, pose, vel=None, acc=None, ovl=None):
         print(f"[DRY RUN] Would MoveCart to: {[round(v, 3) for v in pose]}")
         return
 
-    print(f"Sending MoveCart: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}")
+    print(
+        f"Sending MoveCart: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}"
+    )
 
     err = robot.MoveCart(
         desc_pos=pose,
@@ -300,7 +308,9 @@ def move_joint(robot, joints, vel=None, acc=None, ovl=None):
         print(f"[DRY RUN] Would MoveJ to joints: {[round(v, 3) for v in joints]}")
         return
 
-    print(f"Sending MoveJ: {[round(v, 3) for v in joints]}  vel={vel}, acc={acc}, ovl={ovl}")
+    print(
+        f"Sending MoveJ: {[round(v, 3) for v in joints]}  vel={vel}, acc={acc}, ovl={ovl}"
+    )
 
     # Different Fairino SDK builds expose slightly different MoveJ signatures.
     # Try the simple keyword form first, then the form with desc_pos.
@@ -367,6 +377,7 @@ def print_robot_debug(robot):
 # VISION FUNCTIONS
 # ============================================================
 
+
 def read_tag_once():
     with urllib.request.urlopen(VISION_URL, timeout=1.0) as response:
         return json.loads(response.read().decode("utf-8"))
@@ -385,7 +396,9 @@ def wait_for_fresh_tag(required_tag_id=None, enable_rotation=True):
             if required_tag_id is not None:
                 seen_tag_id = tag.get("tag_id")
                 if int(seen_tag_id) != int(required_tag_id):
-                    print(f"Waiting for tag_id={required_tag_id}; currently seeing tag_id={seen_tag_id}...")
+                    print(
+                        f"Waiting for tag_id={required_tag_id}; currently seeing tag_id={seen_tag_id}..."
+                    )
                     time.sleep(0.2)
                     continue
 
@@ -402,9 +415,13 @@ def wait_for_fresh_tag(required_tag_id=None, enable_rotation=True):
                 needed += ["tag_tilt_x_deg", "tag_tilt_y_deg", "tag_roll_deg"]
 
             if not all(k in tag for k in needed):
-                print("Tag detected, but some required values are missing from Vision Pi output.")
+                print(
+                    "Tag detected, but some required values are missing from Vision Pi output."
+                )
                 print(f"Missing keys: {[k for k in needed if k not in tag]}")
-                print("Make sure apriltag_server.py sends tag_tilt_x_deg, tag_tilt_y_deg, tag_roll_deg.")
+                print(
+                    "Make sure apriltag_server.py sends tag_tilt_x_deg, tag_tilt_y_deg, tag_roll_deg."
+                )
                 time.sleep(0.2)
                 continue
 
@@ -420,6 +437,7 @@ def wait_for_fresh_tag(required_tag_id=None, enable_rotation=True):
 # ============================================================
 # LOCALIZATION LOGIC
 # ============================================================
+
 
 def build_corrected_pose(current_pose, tag, params):
     """
@@ -488,9 +506,15 @@ def build_corrected_pose(current_pose, tag, params):
         tilt_y_error_deg = tag_tilt_y_deg - target_tilt_y_deg
         roll_error_deg = tag_roll_deg - target_roll_deg
 
-        tilt_x_step = clamp(GAIN_TILT_X * tilt_x_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG)
-        tilt_y_step = clamp(GAIN_TILT_Y * tilt_y_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG)
-        roll_step = clamp(GAIN_ROLL * roll_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG)
+        tilt_x_step = clamp(
+            GAIN_TILT_X * tilt_x_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG
+        )
+        tilt_y_step = clamp(
+            GAIN_TILT_Y * tilt_y_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG
+        )
+        roll_step = clamp(
+            GAIN_ROLL * roll_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG
+        )
 
         robot_rx_step = TILT_X_SIGN * tilt_x_step
         robot_ry_step = TILT_Y_SIGN * tilt_y_step
@@ -500,17 +524,19 @@ def build_corrected_pose(current_pose, tag, params):
         next_pose = add_axis_step(next_pose, TILT_Y_TO_ROBOT_ROT_AXIS, robot_ry_step)
         next_pose = add_axis_step(next_pose, ROLL_TO_ROBOT_ROT_AXIS, robot_rz_step)
 
-        info.update({
-            "tag_tilt_x_deg": tag_tilt_x_deg,
-            "tag_tilt_y_deg": tag_tilt_y_deg,
-            "tag_roll_deg": tag_roll_deg,
-            "tilt_x_error_deg": tilt_x_error_deg,
-            "tilt_y_error_deg": tilt_y_error_deg,
-            "roll_error_deg": roll_error_deg,
-            "robot_rx_step": robot_rx_step,
-            "robot_ry_step": robot_ry_step,
-            "robot_rz_step": robot_rz_step,
-        })
+        info.update(
+            {
+                "tag_tilt_x_deg": tag_tilt_x_deg,
+                "tag_tilt_y_deg": tag_tilt_y_deg,
+                "tag_roll_deg": tag_roll_deg,
+                "tilt_x_error_deg": tilt_x_error_deg,
+                "tilt_y_error_deg": tilt_y_error_deg,
+                "roll_error_deg": roll_error_deg,
+                "robot_rx_step": robot_rx_step,
+                "robot_ry_step": robot_ry_step,
+                "robot_rz_step": robot_rz_step,
+            }
+        )
 
     return next_pose, info
 
@@ -533,15 +559,9 @@ def is_localize_finished(tag, params):
 
     distance_error_mm = tag_z_mm - target_distance_mm
 
-    pose_centered = (
-        abs(tag_x_mm) <= CENTER_TOL_MM and
-        abs(tag_y_mm) <= CENTER_TOL_MM
-    )
+    pose_centered = abs(tag_x_mm) <= CENTER_TOL_MM and abs(tag_y_mm) <= CENTER_TOL_MM
 
-    pixel_centered = (
-        abs(cx - target_u) <= PIXEL_TOL and
-        abs(cy - target_v) <= PIXEL_TOL
-    )
+    pixel_centered = abs(cx - target_u) <= PIXEL_TOL and abs(cy - target_v) <= PIXEL_TOL
 
     distance_ok = abs(distance_error_mm) <= DISTANCE_TOL_MM
 
@@ -551,9 +571,9 @@ def is_localize_finished(tag, params):
         roll_error = float(tag["tag_roll_deg"]) - target_roll_deg
 
         rotation_ok = (
-            abs(tilt_x_error) <= ROT_TOL_DEG and
-            abs(tilt_y_error) <= ROT_TOL_DEG and
-            abs(roll_error) <= ROT_TOL_DEG
+            abs(tilt_x_error) <= ROT_TOL_DEG
+            and abs(tilt_y_error) <= ROT_TOL_DEG
+            and abs(roll_error) <= ROT_TOL_DEG
         )
     else:
         rotation_ok = True
@@ -578,7 +598,9 @@ def execute_localize(robot, command):
     print(f"Rotation correction: {enable_rotation}")
 
     for iteration in range(1, max_iters + 1):
-        tag = wait_for_fresh_tag(required_tag_id=required_tag_id, enable_rotation=enable_rotation)
+        tag = wait_for_fresh_tag(
+            required_tag_id=required_tag_id, enable_rotation=enable_rotation
+        )
 
         cx = float(tag["cx"])
         cy = float(tag["cy"])
@@ -592,7 +614,9 @@ def execute_localize(robot, command):
         print("--------------------------------")
         print(f"Tag pixel center:       u={cx:.1f}, v={cy:.1f}")
         print(f"Pixel error:            du={cx - target_u:.1f}, dv={cy - target_v:.1f}")
-        print(f"Camera-space tag pose:  x={tag_x_mm:.1f} mm, y={tag_y_mm:.1f} mm, z={tag_z_mm:.1f} mm")
+        print(
+            f"Camera-space tag pose:  x={tag_x_mm:.1f} mm, y={tag_y_mm:.1f} mm, z={tag_z_mm:.1f} mm"
+        )
         print(f"Target distance error:  {distance_error_mm:.1f} mm")
 
         if enable_rotation:
@@ -653,12 +677,15 @@ def execute_localize(robot, command):
 
         time.sleep(WAIT_AFTER_MOVE_S)
 
-    raise RuntimeError(f"Localization failed: maximum iterations reached for command '{name}'.")
+    raise RuntimeError(
+        f"Localization failed: maximum iterations reached for command '{name}'."
+    )
 
 
 # ============================================================
 # COMMAND EXECUTION
 # ============================================================
+
 
 def execute_move_cart(robot, command):
     pose = validate_vector("pose", command["pose"], 6)
@@ -707,7 +734,7 @@ def rpy_deg_to_matrix(rx_deg, ry_deg, rz_deg):
     return [
         [cz * cy, cz * sy * sx - sz * cx, cz * sy * cx + sz * sx],
         [sz * cy, sz * sy * sx + cz * cx, sz * sy * cx - cz * sx],
-        [-sy,     cy * sx,                cy * cx],
+        [-sy, cy * sx, cy * cx],
     ]
 
 
@@ -814,6 +841,7 @@ def execute_command(robot, command, index, total):
 # ============================================================
 # MAIN PROGRAM
 # ============================================================
+
 
 def main():
     print()

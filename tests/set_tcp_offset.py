@@ -1,4 +1,5 @@
 import sys
+
 sys.path.insert(0, "/home/fairino/fairino-python-sdk/linux/fairino")
 
 import Robot
@@ -29,14 +30,7 @@ try:
     print("Setting TCP offset for Tool", TOOL_NUM)
     print("TCP_OFFSET =", TCP_OFFSET)
 
-    ret = robot.SetToolCoord(
-        TOOL_NUM,
-        TCP_OFFSET,
-        TYPE,
-        INSTALL,
-        TOOL_NUM,
-        LOAD_NUM
-    )
+    ret = robot.SetToolCoord(TOOL_NUM, TCP_OFFSET, TYPE, INSTALL, TOOL_NUM, LOAD_NUM)
 
     print("SetToolCoord returned:", ret)
 

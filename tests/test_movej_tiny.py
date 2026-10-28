@@ -19,7 +19,7 @@ print("Current joints:")
 print([round(v, 3) for v in joints])
 
 target = list(joints)
-target[0] += 1.0   # move only J1 by +1 degree
+target[0] += 1.0  # move only J1 by +1 degree
 
 print("Target joints:")
 print([round(v, 3) for v in target])

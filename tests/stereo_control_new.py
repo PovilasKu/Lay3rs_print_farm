@@ -245,6 +245,7 @@ GRIPPER_DEFAULT_TORQUE = 100
 # BASIC HELPERS
 # ============================================================
 
+
 def clamp(value, low, high):
     return max(low, min(high, value))
 
@@ -258,7 +259,9 @@ def validate_vector(name, values, length):
         raise RuntimeError(f"{name} must be a list, got: {type(values)}")
 
     if len(values) != length:
-        raise RuntimeError(f"{name} must contain exactly {length} values, got {len(values)}: {values}")
+        raise RuntimeError(
+            f"{name} must contain exactly {length} values, got {len(values)}: {values}"
+        )
 
     if not all(is_number(v) for v in values):
         raise RuntimeError(f"{name} contains non-numeric values: {values}")
@@ -288,7 +291,9 @@ def add_axis_step(pose, axis, step):
 
 def add_vectors(a, b):
     if len(a) != len(b):
-        raise RuntimeError(f"Cannot add vectors of different lengths: {len(a)} and {len(b)}")
+        raise RuntimeError(
+            f"Cannot add vectors of different lengths: {len(a)} and {len(b)}"
+        )
     return [float(x) + float(y) for x, y in zip(a, b)]
 
 
@@ -312,7 +317,15 @@ def truthy(value):
     if isinstance(value, (int, float)):
         return value != 0
     if isinstance(value, str):
-        return value.strip().lower() in ["1", "true", "yes", "y", "ok", "stereo", "fused"]
+        return value.strip().lower() in [
+            "1",
+            "true",
+            "yes",
+            "y",
+            "ok",
+            "stereo",
+            "fused",
+        ]
     return False
 
 
@@ -361,10 +374,22 @@ def merged_stage_params(stage, command):
 
     # Global localization overrides.
     for key in [
-        "center_tol_mm", "distance_tol_mm", "rot_tol_deg",
-        "samples", "max_iters", "gain_xy", "gain_z", "gain_pitch", "gain_yaw", "gain_roll",
-        "max_xy_step_mm", "max_z_step_mm", "max_rot_step_deg",
-        "min_xy_step_mm", "min_z_step_mm", "min_rot_step_deg",
+        "center_tol_mm",
+        "distance_tol_mm",
+        "rot_tol_deg",
+        "samples",
+        "max_iters",
+        "gain_xy",
+        "gain_z",
+        "gain_pitch",
+        "gain_yaw",
+        "gain_roll",
+        "max_xy_step_mm",
+        "max_z_step_mm",
+        "max_rot_step_deg",
+        "min_xy_step_mm",
+        "min_z_step_mm",
+        "min_rot_step_deg",
     ]:
         if key in command:
             out[key] = command[key]
@@ -375,6 +400,7 @@ def merged_stage_params(stage, command):
 # ============================================================
 # TCP-LOCAL COORDINATE HELPERS
 # ============================================================
+
 
 def rpy_deg_to_matrix(rx_deg, ry_deg, rz_deg):
     """
@@ -399,7 +425,7 @@ def rpy_deg_to_matrix(rx_deg, ry_deg, rz_deg):
     return [
         [cz * cy, cz * sy * sx - sz * cx, cz * sy * cx + sz * sx],
         [sz * cy, sz * sy * sx + cz * cx, sz * sy * cx - cz * sx],
-        [-sy,     cy * sx,                cy * cx],
+        [-sy, cy * sx, cy * cx],
     ]
 
 
@@ -424,6 +450,7 @@ def tcp_delta_to_pose(current_pose, tcp_delta):
 # ============================================================
 # ROBOT FUNCTIONS
 # ============================================================
+
 
 def connect_robot():
     robot = Robot.RPC(ROBOT_IP)
@@ -489,9 +516,14 @@ def get_actual_joints(robot):
     return [float(v) for v in joints[:6]]
 
 
-def pose_close(actual, target, xyz_tol=POSE_XYZ_REACHED_TOL_MM, rot_tol=POSE_ROT_REACHED_TOL_DEG):
+def pose_close(
+    actual, target, xyz_tol=POSE_XYZ_REACHED_TOL_MM, rot_tol=POSE_ROT_REACHED_TOL_DEG
+):
     xyz_errors = [abs(float(actual[i]) - float(target[i])) for i in range(3)]
-    rot_errors = [abs(wrap_angle_deg(float(actual[i + 3]) - float(target[i + 3]))) for i in range(3)]
+    rot_errors = [
+        abs(wrap_angle_deg(float(actual[i + 3]) - float(target[i + 3])))
+        for i in range(3)
+    ]
 
     print(f"Pose XYZ errors: {[round(e, 3) for e in xyz_errors]} mm")
     print(f"Pose rot errors: {[round(e, 3) for e in rot_errors]} deg")
@@ -537,6 +569,7 @@ def reset_robot_errors_quiet(robot):
 # MOTION FUNCTIONS
 # ============================================================
 
+
 def move_cart(robot, pose, vel=None, acc=None, ovl=None):
     pose = validate_vector("Cartesian pose", pose[:6], 6)
     check_safe_limits(pose)
@@ -550,7 +583,9 @@ def move_cart(robot, pose, vel=None, acc=None, ovl=None):
         return
 
     reset_robot_errors_quiet(robot)
-    print(f"Sending MoveCart: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}")
+    print(
+        f"Sending MoveCart: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}"
+    )
 
     err = robot.MoveCart(
         desc_pos=pose,
@@ -570,7 +605,9 @@ def move_cart(robot, pose, vel=None, acc=None, ovl=None):
         print(f"Actual pose after MoveCart: {[round(v, 3) for v in actual_pose]}")
         if pose_close(actual_pose, pose):
             if err != 0:
-                print(f"WARNING: MoveCart returned {err}, but target pose was reached. Continuing.")
+                print(
+                    f"WARNING: MoveCart returned {err}, but target pose was reached. Continuing."
+                )
             else:
                 print("MoveCart reached target.")
             return
@@ -597,7 +634,9 @@ def move_line(robot, pose, vel=None, acc=None, ovl=None):
         return
 
     reset_robot_errors_quiet(robot)
-    print(f"Sending MoveL straight line: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}")
+    print(
+        f"Sending MoveL straight line: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}"
+    )
 
     err = robot.MoveL(
         desc_pos=pose,
@@ -619,7 +658,9 @@ def move_line(robot, pose, vel=None, acc=None, ovl=None):
         print(f"Actual pose after MoveL: {[round(v, 3) for v in actual_pose]}")
         if pose_close(actual_pose, pose):
             if err != 0:
-                print(f"WARNING: MoveL returned {err}, but target pose was reached. Continuing.")
+                print(
+                    f"WARNING: MoveL returned {err}, but target pose was reached. Continuing."
+                )
             else:
                 print("MoveL reached target.")
             return
@@ -649,39 +690,45 @@ def move_joint(robot, joints, pose=None, vel=None, acc=None, ovl=None):
         return
 
     reset_robot_errors_quiet(robot)
-    print(f"Sending MoveJ: {[round(v, 3) for v in joints]}  vel={vel}, acc={acc}, ovl={ovl}")
+    print(
+        f"Sending MoveJ: {[round(v, 3) for v in joints]}  vel={vel}, acc={acc}, ovl={ovl}"
+    )
 
     attempts = []
 
     if desc_pos is not None:
-        attempts.append((
-            "MoveJ with desc_pos keyword",
+        attempts.append(
+            (
+                "MoveJ with desc_pos keyword",
+                lambda: robot.MoveJ(
+                    joint_pos=joints,
+                    tool=TOOL,
+                    user=USER,
+                    desc_pos=desc_pos,
+                    vel=vel,
+                    acc=acc,
+                    ovl=ovl,
+                    exaxis_pos=[0.0, 0.0, 0.0, 0.0],
+                    blendT=-1.0,
+                    offset_flag=0,
+                    offset_pos=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                ),
+            )
+        )
+
+    attempts.append(
+        (
+            "MoveJ simple keyword form",
             lambda: robot.MoveJ(
                 joint_pos=joints,
                 tool=TOOL,
                 user=USER,
-                desc_pos=desc_pos,
                 vel=vel,
                 acc=acc,
                 ovl=ovl,
-                exaxis_pos=[0.0, 0.0, 0.0, 0.0],
-                blendT=-1.0,
-                offset_flag=0,
-                offset_pos=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            )
-        ))
-
-    attempts.append((
-        "MoveJ simple keyword form",
-        lambda: robot.MoveJ(
-            joint_pos=joints,
-            tool=TOOL,
-            user=USER,
-            vel=vel,
-            acc=acc,
-            ovl=ovl,
+            ),
         )
-    ))
+    )
 
     last_error = None
 
@@ -701,7 +748,9 @@ def move_joint(robot, joints, pose=None, vel=None, acc=None, ovl=None):
             print(f"Actual joints after MoveJ: {[round(v, 3) for v in actual_joints]}")
             if joints_close(actual_joints, joints):
                 if err != 0:
-                    print(f"WARNING: {label} returned {err}, but joint target was reached. Continuing.")
+                    print(
+                        f"WARNING: {label} returned {err}, but joint target was reached. Continuing."
+                    )
                     reset_robot_errors_quiet(robot)
                 else:
                     print("MoveJ reached target.")
@@ -722,7 +771,9 @@ def quadratic_bezier_pose(p0, p1, p2, t):
     return [a * p0[i] + b * p1[i] + c * p2[i] for i in range(6)]
 
 
-def move_arc_fallback_segments(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, segments=12):
+def move_arc_fallback_segments(
+    robot, via_pose, end_pose, vel=None, acc=None, ovl=None, segments=12
+):
     segments = max(3, int(segments))
     start_pose = get_actual_pose(robot)
 
@@ -736,7 +787,9 @@ def move_arc_fallback_segments(robot, via_pose, end_pose, vel=None, acc=None, ov
         move_line(robot, p, vel=vel, acc=acc, ovl=ovl)
 
 
-def move_arc(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_segments=12):
+def move_arc(
+    robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_segments=12
+):
     via_pose = validate_vector("Arc via pose", via_pose[:6], 6)
     end_pose = validate_vector("Arc end pose", end_pose[:6], 6)
     check_safe_limits(via_pose)
@@ -756,7 +809,15 @@ def move_arc(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_s
 
     if not hasattr(robot, "MoveC"):
         print("This SDK does not expose MoveC. Falling back to segmented MoveL arc.")
-        move_arc_fallback_segments(robot, via_pose, end_pose, vel=vel, acc=acc, ovl=ovl, segments=fallback_segments)
+        move_arc_fallback_segments(
+            robot,
+            via_pose,
+            end_pose,
+            vel=vel,
+            acc=acc,
+            ovl=ovl,
+            segments=fallback_segments,
+        )
         return
 
     print("Sending MoveC arc:")
@@ -788,7 +849,9 @@ def move_arc(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_s
 
         if pose_close(actual_pose, end_pose):
             if err != 0:
-                print(f"WARNING: MoveC returned {err}, but end pose was reached. Continuing.")
+                print(
+                    f"WARNING: MoveC returned {err}, but end pose was reached. Continuing."
+                )
             else:
                 print("MoveC reached end pose.")
             return
@@ -803,12 +866,15 @@ def move_arc(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_s
 
     print_robot_debug(robot)
     print("Falling back to segmented MoveL arc approximation.")
-    move_arc_fallback_segments(robot, via_pose, end_pose, vel=vel, acc=acc, ovl=ovl, segments=fallback_segments)
+    move_arc_fallback_segments(
+        robot, via_pose, end_pose, vel=vel, acc=acc, ovl=ovl, segments=fallback_segments
+    )
 
 
 # ============================================================
 # VISION FUNCTIONS
 # ============================================================
+
 
 def read_tag_once():
     with urllib.request.urlopen(VISION_URL, timeout=1.0) as response:
@@ -867,16 +933,39 @@ def normalize_vision_tag(raw):
         "cy": ["cy", "center_y", "v", "pixel_y"],
         "age_s": ["age_s", "age", "data_age_s"],
         "timestamp": ["timestamp", "time", "t"],
-
         # New explicit fields.
-        "tag_pitch_deg": ["tag_pitch_deg", "pitch_deg", "pitch", "tag_tilt_x_deg", "tilt_x_deg", "tilt_x"],
-        "tag_yaw_deg": ["tag_yaw_deg", "yaw_deg", "yaw", "tag_tilt_y_deg", "tilt_y_deg", "tilt_y"],
+        "tag_pitch_deg": [
+            "tag_pitch_deg",
+            "pitch_deg",
+            "pitch",
+            "tag_tilt_x_deg",
+            "tilt_x_deg",
+            "tilt_x",
+        ],
+        "tag_yaw_deg": [
+            "tag_yaw_deg",
+            "yaw_deg",
+            "yaw",
+            "tag_tilt_y_deg",
+            "tilt_y_deg",
+            "tilt_y",
+        ],
         "tag_roll_deg": ["tag_roll_deg", "roll_deg", "roll"],
-
         # Legacy fields retained for old checks/prints.
-        "tag_tilt_x_deg": ["tag_tilt_x_deg", "tilt_x_deg", "tilt_x", "tag_pitch_deg", "pitch_deg"],
-        "tag_tilt_y_deg": ["tag_tilt_y_deg", "tilt_y_deg", "tilt_y", "tag_yaw_deg", "yaw_deg"],
-
+        "tag_tilt_x_deg": [
+            "tag_tilt_x_deg",
+            "tilt_x_deg",
+            "tilt_x",
+            "tag_pitch_deg",
+            "pitch_deg",
+        ],
+        "tag_tilt_y_deg": [
+            "tag_tilt_y_deg",
+            "tilt_y_deg",
+            "tilt_y",
+            "tag_yaw_deg",
+            "yaw_deg",
+        ],
         "source": ["source", "pose_source", "mode", "vision_mode"],
         "left_ok": ["left_ok", "left_detected"],
         "right_ok": ["right_ok", "right_detected"],
@@ -954,7 +1043,9 @@ def describe_vision_source(tag):
     return ", ".join(parts)
 
 
-def validate_tag_for_localize(tag, required_tag_id=None, enable_rotation=True, params=None, quiet=False):
+def validate_tag_for_localize(
+    tag, required_tag_id=None, enable_rotation=True, params=None, quiet=False
+):
     if not tag.get("ok"):
         if not quiet:
             print("Waiting for AprilTag detection...")
@@ -964,7 +1055,9 @@ def validate_tag_for_localize(tag, required_tag_id=None, enable_rotation=True, p
         seen_tag_id = tag.get("tag_id")
         if seen_tag_id is None or int(seen_tag_id) != int(required_tag_id):
             if not quiet:
-                print(f"Waiting for tag_id={required_tag_id}; currently seeing tag_id={seen_tag_id}...")
+                print(
+                    f"Waiting for tag_id={required_tag_id}; currently seeing tag_id={seen_tag_id}..."
+                )
             return False
 
     age_s = float(tag.get("age_s", 999.0))
@@ -976,14 +1069,24 @@ def validate_tag_for_localize(tag, required_tag_id=None, enable_rotation=True, p
     source_policy = vision_source_policy_from_params(params)
     stereo_confirmed = is_stereo_confirmed(tag)
 
-    if source_policy in ["require_stereo", "stereo", "stereo_only"] and not stereo_confirmed:
+    if (
+        source_policy in ["require_stereo", "stereo", "stereo_only"]
+        and not stereo_confirmed
+    ):
         if not quiet:
             print("Waiting for confirmed stereo/fused AprilTag pose...")
             print(f"Vision status: {describe_vision_source(tag)}")
         return False
 
-    if source_policy == "prefer_stereo" and not stereo_confirmed and PRINT_VISION_SOURCE and not quiet:
-        print("WARNING: using AprilTag pose, but stereo/fused source was not confirmed.")
+    if (
+        source_policy == "prefer_stereo"
+        and not stereo_confirmed
+        and PRINT_VISION_SOURCE
+        and not quiet
+    ):
+        print(
+            "WARNING: using AprilTag pose, but stereo/fused source was not confirmed."
+        )
         print(f"Vision status: {describe_vision_source(tag)}")
 
     needed = ["x_mm", "y_mm", "z_mm", "distance_mm", "cx", "cy"]
@@ -993,20 +1096,26 @@ def validate_tag_for_localize(tag, required_tag_id=None, enable_rotation=True, p
     missing = [k for k in needed if k not in tag]
     if missing:
         if not quiet:
-            print("Tag detected, but some required values are missing from Vision Pi output.")
+            print(
+                "Tag detected, but some required values are missing from Vision Pi output."
+            )
             print(f"Missing keys: {missing}")
         return False
 
     return True
 
 
-def wait_for_fresh_tag(required_tag_id=None, enable_rotation=True, params=None, quiet=False):
+def wait_for_fresh_tag(
+    required_tag_id=None, enable_rotation=True, params=None, quiet=False
+):
     for _ in range(25):
         try:
             raw_tag = read_tag_once()
             tag = normalize_vision_tag(raw_tag)
 
-            if validate_tag_for_localize(tag, required_tag_id, enable_rotation, params, quiet=quiet):
+            if validate_tag_for_localize(
+                tag, required_tag_id, enable_rotation, params, quiet=quiet
+            ):
                 if PRINT_VISION_SOURCE and not quiet:
                     print(f"Vision status: {describe_vision_source(tag)}")
                 return tag
@@ -1032,12 +1141,20 @@ def spread_or_none(values):
     return float(max(values) - min(values))
 
 
-def collect_stable_tag(required_tag_id=None, enable_rotation=True, params=None, samples=7, delay_s=VISION_SAMPLE_DELAY_S):
+def collect_stable_tag(
+    required_tag_id=None,
+    enable_rotation=True,
+    params=None,
+    samples=7,
+    delay_s=VISION_SAMPLE_DELAY_S,
+):
     """
     Collect several fresh valid vision samples and return a median-filtered tag.
     """
     samples = max(1, int(samples))
-    min_valid = max(3, int(math.ceil(samples * VISION_MIN_VALID_RATIO))) if samples >= 3 else 1
+    min_valid = (
+        max(3, int(math.ceil(samples * VISION_MIN_VALID_RATIO))) if samples >= 3 else 1
+    )
 
     valid_tags = []
     last_error = None
@@ -1062,11 +1179,23 @@ def collect_stable_tag(required_tag_id=None, enable_rotation=True, params=None, 
         )
 
     numeric_keys = [
-        "x_mm", "y_mm", "z_mm", "distance_mm", "cx", "cy",
-        "tag_pitch_deg", "tag_yaw_deg", "tag_roll_deg",
-        "tag_tilt_x_deg", "tag_tilt_y_deg",
-        "disparity_px", "rectified_y_error_px", "tag_size_error_mm",
-        "left_margin", "right_margin", "age_s",
+        "x_mm",
+        "y_mm",
+        "z_mm",
+        "distance_mm",
+        "cx",
+        "cy",
+        "tag_pitch_deg",
+        "tag_yaw_deg",
+        "tag_roll_deg",
+        "tag_tilt_x_deg",
+        "tag_tilt_y_deg",
+        "disparity_px",
+        "rectified_y_error_px",
+        "tag_size_error_mm",
+        "left_margin",
+        "right_margin",
+        "age_s",
     ]
 
     out = dict(valid_tags[-1])
@@ -1101,6 +1230,7 @@ def collect_stable_tag(required_tag_id=None, enable_rotation=True, params=None, 
 # GRIPPER FUNCTIONS
 # ============================================================
 
+
 def clamp_percent_int(name, value):
     value = int(round(float(value)))
     if value < 0 or value > 100:
@@ -1132,13 +1262,25 @@ def activate_gripper(robot, device_id=GRIPPER_ID):
     time.sleep(0.5)
 
 
-def move_gripper(robot, position, speed=None, torque=None, max_time_ms=None,
-                 device_id=GRIPPER_ID, block=GRIPPER_BLOCK, gripper_type=GRIPPER_TYPE,
-                 activate=False):
+def move_gripper(
+    robot,
+    position,
+    speed=None,
+    torque=None,
+    max_time_ms=None,
+    device_id=GRIPPER_ID,
+    block=GRIPPER_BLOCK,
+    gripper_type=GRIPPER_TYPE,
+    activate=False,
+):
     device_id = int(device_id)
     position = clamp_percent_int("Gripper position", position)
-    speed = clamp_percent_int("Gripper speed", GRIPPER_DEFAULT_SPEED if speed is None else speed)
-    torque = clamp_percent_int("Gripper torque", GRIPPER_DEFAULT_TORQUE if torque is None else torque)
+    speed = clamp_percent_int(
+        "Gripper speed", GRIPPER_DEFAULT_SPEED if speed is None else speed
+    )
+    torque = clamp_percent_int(
+        "Gripper torque", GRIPPER_DEFAULT_TORQUE if torque is None else torque
+    )
     max_time_ms = int(GRIPPER_MAX_TIME_MS if max_time_ms is None else max_time_ms)
     block = int(block)
     gripper_type = int(gripper_type)
@@ -1156,7 +1298,9 @@ def move_gripper(robot, position, speed=None, torque=None, max_time_ms=None,
         return
 
     try:
-        err = robot.MoveGripper(device_id, position, speed, torque, max_time_ms, block, gripper_type)
+        err = robot.MoveGripper(
+            device_id, position, speed, torque, max_time_ms, block, gripper_type
+        )
     except TypeError:
         err = robot.MoveGripper(device_id, position, speed, torque, max_time_ms, block)
 
@@ -1171,8 +1315,13 @@ def move_gripper(robot, position, speed=None, torque=None, max_time_ms=None,
 def print_gripper_status(robot):
     print("Gripper status:")
     for name in [
-        "GetGripperMotionDone", "GetGripperActivateStatus", "GetGripperCurPosition",
-        "GetGripperCurSpeed", "GetGripperCurCurrent", "GetGripperVoltage", "GetGripperTemp",
+        "GetGripperMotionDone",
+        "GetGripperActivateStatus",
+        "GetGripperCurPosition",
+        "GetGripperCurSpeed",
+        "GetGripperCurCurrent",
+        "GetGripperVoltage",
+        "GetGripperTemp",
     ]:
         try:
             fn = getattr(robot, name)
@@ -1185,6 +1334,7 @@ def print_gripper_status(robot):
 # ============================================================
 # LOCALIZATION LOGIC
 # ============================================================
+
 
 def get_targets(params):
     target_x_mm = get_number(params, "target_x_mm", TARGET_X_MM)
@@ -1352,17 +1502,19 @@ def build_corrected_pose(current_pose, tag, params, stage):
         next_pose = add_axis_step(next_pose, YAW_TO_ROBOT_ROT_AXIS, robot_yaw_step)
         next_pose = add_axis_step(next_pose, ROLL_TO_ROBOT_ROT_AXIS, robot_roll_step)
 
-        info.update({
-            "tag_pitch_deg": pitch_deg,
-            "tag_yaw_deg": yaw_deg,
-            "tag_roll_deg": roll_deg,
-            "pitch_error_deg": pitch_error_deg,
-            "yaw_error_deg": yaw_error_deg,
-            "roll_error_deg": roll_error_deg,
-            "robot_pitch_step": robot_pitch_step,
-            "robot_yaw_step": robot_yaw_step,
-            "robot_roll_step": robot_roll_step,
-        })
+        info.update(
+            {
+                "tag_pitch_deg": pitch_deg,
+                "tag_yaw_deg": yaw_deg,
+                "tag_roll_deg": roll_deg,
+                "pitch_error_deg": pitch_error_deg,
+                "yaw_error_deg": yaw_error_deg,
+                "roll_error_deg": roll_error_deg,
+                "robot_pitch_step": robot_pitch_step,
+                "robot_yaw_step": robot_yaw_step,
+                "robot_roll_step": robot_roll_step,
+            }
+        )
 
     check_safe_limits(next_pose)
     return next_pose, info
@@ -1389,15 +1541,16 @@ def is_localize_finished(tag, params, stage):
     distance_error_mm = tag_z_mm - targets["target_distance_mm"]
 
     pose_centered = (
-        abs(x_error_mm) <= center_tol_mm and
-        abs(y_error_mm) <= center_tol_mm
+        abs(x_error_mm) <= center_tol_mm and abs(y_error_mm) <= center_tol_mm
     )
     distance_ok = abs(distance_error_mm) <= distance_tol_mm
 
     if use_pixel_check:
         cx = float(tag["cx"])
         cy = float(tag["cy"])
-        pixel_centered = abs(cx - target_u) <= PIXEL_TOL and abs(cy - target_v) <= PIXEL_TOL
+        pixel_centered = (
+            abs(cx - target_u) <= PIXEL_TOL and abs(cy - target_v) <= PIXEL_TOL
+        )
     else:
         pixel_centered = True
 
@@ -1409,9 +1562,9 @@ def is_localize_finished(tag, params, stage):
         roll_error = angle_error_deg(roll_deg, targets["target_roll_deg"])
 
         rotation_ok = (
-            abs(pitch_error) <= rot_tol_deg and
-            abs(yaw_error) <= rot_tol_deg and
-            abs(roll_error) <= rot_tol_deg
+            abs(pitch_error) <= rot_tol_deg
+            and abs(yaw_error) <= rot_tol_deg
+            and abs(roll_error) <= rot_tol_deg
         )
     else:
         rotation_ok = True
@@ -1439,10 +1592,14 @@ def print_localize_status(tag, params, stage, iteration, stage_iters):
     print(f"Localization stage '{stage['name']}' iteration {iteration}/{stage_iters}")
     print("------------------------------------------------------------")
     print(f"Vision source:          {describe_vision_source(tag)}")
-    print(f"Samples:                {tag.get('sample_count', 1)}/{tag.get('requested_sample_count', 1)}")
+    print(
+        f"Samples:                {tag.get('sample_count', 1)}/{tag.get('requested_sample_count', 1)}"
+    )
     print(f"Tag pixel center:       u={cx:.1f}, v={cy:.1f}")
     print(f"Pixel error:            du={cx - target_u:.1f}, dv={cy - target_v:.1f}")
-    print(f"Camera-space tag pose:  x={tag_x_mm:.2f} mm, y={tag_y_mm:.2f} mm, z={tag_z_mm:.2f} mm")
+    print(
+        f"Camera-space tag pose:  x={tag_x_mm:.2f} mm, y={tag_y_mm:.2f} mm, z={tag_z_mm:.2f} mm"
+    )
     print(
         f"Target camera pose:     x={targets['target_x_mm']:.2f} mm, "
         f"y={targets['target_y_mm']:.2f} mm, "
@@ -1502,7 +1659,9 @@ def execute_localize(robot, command):
     print(f"Required tag id: {required_tag_id}")
     print(f"Rotation correction: {enable_rotation}")
     print(f"Vision source policy: {vision_source_policy_from_params(command)}")
-    print(f"Robot yaw axis mapping: pose[{YAW_TO_ROBOT_ROT_AXIS}] with sign {YAW_SIGN:+.1f}")
+    print(
+        f"Robot yaw axis mapping: pose[{YAW_TO_ROBOT_ROT_AXIS}] with sign {YAW_SIGN:+.1f}"
+    )
 
     last_tag = None
 
@@ -1539,14 +1698,26 @@ def execute_localize(robot, command):
 
             print()
             print("Correction:")
-            print(f"  X error {info['x_error_mm']:.3f} mm -> robot axis {CAMERA_X_TO_ROBOT_AXIS}: {info['robot_x_step']:.3f} mm")
-            print(f"  Y error {info['y_error_mm']:.3f} mm -> robot axis {CAMERA_Y_TO_ROBOT_AXIS}: {info['robot_y_step']:.3f} mm")
-            print(f"  Z error {info['distance_error_mm']:.3f} mm -> robot axis {CAMERA_Z_TO_ROBOT_AXIS}: {info['robot_z_step']:.3f} mm")
+            print(
+                f"  X error {info['x_error_mm']:.3f} mm -> robot axis {CAMERA_X_TO_ROBOT_AXIS}: {info['robot_x_step']:.3f} mm"
+            )
+            print(
+                f"  Y error {info['y_error_mm']:.3f} mm -> robot axis {CAMERA_Y_TO_ROBOT_AXIS}: {info['robot_y_step']:.3f} mm"
+            )
+            print(
+                f"  Z error {info['distance_error_mm']:.3f} mm -> robot axis {CAMERA_Z_TO_ROBOT_AXIS}: {info['robot_z_step']:.3f} mm"
+            )
 
             if enable_rotation:
-                print(f"  pitch -> robot axis {PITCH_TO_ROBOT_ROT_AXIS}: {info['robot_pitch_step']:.3f} deg")
-                print(f"  yaw   -> robot axis {YAW_TO_ROBOT_ROT_AXIS}: {info['robot_yaw_step']:.3f} deg")
-                print(f"  roll  -> robot axis {ROLL_TO_ROBOT_ROT_AXIS}: {info['robot_roll_step']:.3f} deg")
+                print(
+                    f"  pitch -> robot axis {PITCH_TO_ROBOT_ROT_AXIS}: {info['robot_pitch_step']:.3f} deg"
+                )
+                print(
+                    f"  yaw   -> robot axis {YAW_TO_ROBOT_ROT_AXIS}: {info['robot_yaw_step']:.3f} deg"
+                )
+                print(
+                    f"  roll  -> robot axis {ROLL_TO_ROBOT_ROT_AXIS}: {info['robot_roll_step']:.3f} deg"
+                )
 
             print(f"Current pose: {[round(v, 3) for v in current_pose]}")
             print(f"Next pose:    {[round(v, 3) for v in next_pose]}")
@@ -1555,10 +1726,14 @@ def execute_localize(robot, command):
                 print("No correction needed. Localization done.")
                 return
 
-            move_cart(robot, next_pose, vel=localize_vel, acc=localize_acc, ovl=localize_ovl)
+            move_cart(
+                robot, next_pose, vel=localize_vel, acc=localize_acc, ovl=localize_ovl
+            )
             time.sleep(wait_after_move_s)
         else:
-            print(f"Localization stage '{stage['name']}' reached max iterations without meeting tolerance.")
+            print(
+                f"Localization stage '{stage['name']}' reached max iterations without meeting tolerance."
+            )
             continue
 
         # Stage succeeded; continue into next stage, unless it was the final stage.
@@ -1569,20 +1744,29 @@ def execute_localize(robot, command):
     if last_tag is not None:
         print("Last localization measurement:")
         targets = get_targets(command)
-        print(json.dumps({
-            "x_mm": last_tag.get("x_mm"),
-            "target_x_mm": targets["target_x_mm"],
-            "x_error_mm": None if last_tag.get("x_mm") is None else float(last_tag.get("x_mm")) - targets["target_x_mm"],
-            "y_mm": last_tag.get("y_mm"),
-            "target_y_mm": targets["target_y_mm"],
-            "y_error_mm": None if last_tag.get("y_mm") is None else float(last_tag.get("y_mm")) - targets["target_y_mm"],
-            "z_mm": last_tag.get("z_mm"),
-            "target_distance_mm": targets["target_distance_mm"],
-            "tag_pitch_deg": last_tag.get("tag_pitch_deg"),
-            "tag_yaw_deg": last_tag.get("tag_yaw_deg"),
-            "tag_roll_deg": last_tag.get("tag_roll_deg"),
-            "sample_count": last_tag.get("sample_count"),
-        }, indent=2))
+        print(
+            json.dumps(
+                {
+                    "x_mm": last_tag.get("x_mm"),
+                    "target_x_mm": targets["target_x_mm"],
+                    "x_error_mm": None
+                    if last_tag.get("x_mm") is None
+                    else float(last_tag.get("x_mm")) - targets["target_x_mm"],
+                    "y_mm": last_tag.get("y_mm"),
+                    "target_y_mm": targets["target_y_mm"],
+                    "y_error_mm": None
+                    if last_tag.get("y_mm") is None
+                    else float(last_tag.get("y_mm")) - targets["target_y_mm"],
+                    "z_mm": last_tag.get("z_mm"),
+                    "target_distance_mm": targets["target_distance_mm"],
+                    "tag_pitch_deg": last_tag.get("tag_pitch_deg"),
+                    "tag_yaw_deg": last_tag.get("tag_yaw_deg"),
+                    "tag_roll_deg": last_tag.get("tag_roll_deg"),
+                    "sample_count": last_tag.get("sample_count"),
+                },
+                indent=2,
+            )
+        )
 
     raise RuntimeError("Precise localization failed to meet final tolerance.")
 
@@ -1591,12 +1775,25 @@ def execute_localize(robot, command):
 # COMMAND EXECUTION FUNCTIONS
 # ============================================================
 
+
 def execute_move_cart(robot, command):
-    move_cart(robot, command["pose"], vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+    move_cart(
+        robot,
+        command["pose"],
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+    )
 
 
 def execute_line_cart(robot, command):
-    move_line(robot, command["pose"], vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+    move_line(
+        robot,
+        command["pose"],
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+    )
 
 
 def execute_arc_cart(robot, command):
@@ -1653,7 +1850,9 @@ def execute_local_cart(robot, command):
     applied_delta[1] *= y_sign
     applied_delta[2] *= z_sign
 
-    frame = str(command.get("frame", command.get("reference_frame", "tcp"))).strip().lower()
+    frame = (
+        str(command.get("frame", command.get("reference_frame", "tcp"))).strip().lower()
+    )
     motion = str(command.get("motion", "cart")).strip().lower()
 
     if frame in ["tcp", "tool", "local"]:
@@ -1676,16 +1875,34 @@ def execute_local_cart(robot, command):
     print(f"Motion type:            {motion}")
 
     if motion in ["line", "straight", "movel"]:
-        move_line(robot, next_pose, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+        move_line(
+            robot,
+            next_pose,
+            vel=command.get("vel"),
+            acc=command.get("acc"),
+            ovl=command.get("ovl"),
+        )
     else:
-        move_cart(robot, next_pose, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+        move_cart(
+            robot,
+            next_pose,
+            vel=command.get("vel"),
+            acc=command.get("acc"),
+            ovl=command.get("ovl"),
+        )
 
 
 def execute_line_tcp(robot, command):
     current_pose = get_actual_pose(robot)
     delta = validate_vector("line_tcp delta", command["delta"][:6], 6)
     next_pose = tcp_delta_to_pose(current_pose, delta)
-    move_line(robot, next_pose, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+    move_line(
+        robot,
+        next_pose,
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+    )
 
 
 def execute_arc_tcp(robot, command):
@@ -1694,7 +1911,9 @@ def execute_arc_tcp(robot, command):
     end_delta_raw = command.get("end_delta", command.get("delta"))
 
     if via_delta_raw is None or end_delta_raw is None:
-        raise RuntimeError("arc_tcp needs via_delta and end_delta, or old-style via_delta and delta.")
+        raise RuntimeError(
+            "arc_tcp needs via_delta and end_delta, or old-style via_delta and delta."
+        )
 
     via_delta = validate_vector("arc_tcp via_delta", via_delta_raw, 6)
     end_delta = validate_vector("arc_tcp end_delta", end_delta_raw, 6)
@@ -1722,7 +1941,13 @@ def execute_local_joint(robot, command):
 
     delta = validate_vector("local_joint delta", delta_raw, 6)
     target_joints = add_vectors(current_joints, delta)
-    move_joint(robot, target_joints, vel=command.get("vel"), acc=command.get("acc"), ovl=command.get("ovl"))
+    move_joint(
+        robot,
+        target_joints,
+        vel=command.get("vel"),
+        acc=command.get("acc"),
+        ovl=command.get("ovl"),
+    )
 
 
 def execute_wait(command):
@@ -1799,6 +2024,7 @@ def execute_command(robot, command, index, total):
 # ============================================================
 # MAIN PROGRAM
 # ============================================================
+
 
 def main():
     print()

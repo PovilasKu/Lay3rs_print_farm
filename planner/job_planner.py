@@ -75,7 +75,9 @@ def build_context(
             raise RuntimeError(f"Job '{job_name}' requires --printer.")
         printer = get_printer(printer_id)
         if not printer.get("enabled", True):
-            raise RuntimeError(f"Printer '{printer_id}' is marked enabled=false in printers.json.")
+            raise RuntimeError(
+                f"Printer '{printer_id}' is marked enabled=false in printers.json."
+            )
     elif printer_id:
         printer = get_printer(printer_id)
 
@@ -120,7 +122,14 @@ def build_plan(
         raise RuntimeError(f"Unknown job '{job_name}'. Available jobs: {available}")
 
     job_info = jobs[job_name]
-    context, printer = build_context(job_name, job_info, printer_id, drop_slot_id, pick_slot_id, extra_vars=extra_vars)
+    context, printer = build_context(
+        job_name,
+        job_info,
+        printer_id,
+        drop_slot_id,
+        pick_slot_id,
+        extra_vars=extra_vars,
+    )
 
     raw_steps = job_info.get("steps")
     if not isinstance(raw_steps, list):

@@ -2,14 +2,26 @@
 
 KNOWN_COMMAND_TYPES = {
     "_marker",
-    "move_cart", "line_cart", "arc_cart", "move_joint",
-    "local_cart", "line_tcp", "arc_tcp", "local_joint",
-    "localize", "wait",
-    "gripper_activate", "gripper", "gripper_status",
-    "check_tag_visible", "check_tag_absent", "retry_until_tag_absent",
+    "move_cart",
+    "line_cart",
+    "arc_cart",
+    "move_joint",
+    "local_cart",
+    "line_tcp",
+    "arc_tcp",
+    "local_joint",
+    "localize",
+    "wait",
+    "gripper_activate",
+    "gripper",
+    "gripper_status",
+    "check_tag_visible",
+    "check_tag_absent",
+    "retry_until_tag_absent",
 }
 
 JOINT_ONLY_JOBS = {"go_home"}
+
 
 def walk_commands(commands: list[dict]):
     for cmd in commands:
@@ -20,7 +32,11 @@ def walk_commands(commands: list[dict]):
 
 
 def command_types(commands: list[dict]) -> list[str]:
-    return [cmd.get("type") for cmd in walk_commands(commands) if isinstance(cmd, dict) and cmd.get("type") != "_marker"]
+    return [
+        cmd.get("type")
+        for cmd in walk_commands(commands)
+        if isinstance(cmd, dict) and cmd.get("type") != "_marker"
+    ]
 
 
 def validate_plan(job_name: str, printer: dict | None, commands: list[dict]) -> None:
@@ -40,8 +56,15 @@ def validate_plan(job_name: str, printer: dict | None, commands: list[dict]) -> 
         if "type" not in cmd:
             raise RuntimeError(f"Plan entry {i} has no 'type': {cmd}")
         if cmd["type"] not in KNOWN_COMMAND_TYPES:
-            raise RuntimeError(f"Plan entry {i} uses unknown command type: {cmd['type']}")
+            raise RuntimeError(
+                f"Plan entry {i} uses unknown command type: {cmd['type']}"
+            )
 
-    if job_name in ["remove_plate", "insert_plate", "full_buildplate_change", "trial_full_swap_legacy"]:
+    if job_name in [
+        "remove_plate",
+        "insert_plate",
+        "full_buildplate_change",
+        "trial_full_swap_legacy",
+    ]:
         if "gripper" not in types and "gripper_activate" not in types:
             print(f"WARNING: Job '{job_name}' does not contain a gripper command.")

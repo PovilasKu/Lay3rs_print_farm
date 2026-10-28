@@ -9,6 +9,7 @@ robot = Robot.RPC(ROBOT_IP)
 
 print("Connected")
 
+
 def try_call(name, *args):
     print(f"Trying {name}{args} ...")
     try:

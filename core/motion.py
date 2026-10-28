@@ -24,11 +24,15 @@ def move_cart(robot, pose, vel=None, acc=None, ovl=None):
     ovl = float(cfg.OVL if ovl is None else ovl)
 
     if cfg.DRY_RUN:
-        print(f"[DRY RUN] Would MoveCart to: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}")
+        print(
+            f"[DRY RUN] Would MoveCart to: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}"
+        )
         return
 
     reset_robot_errors_quiet(robot)
-    print(f"Sending MoveCart: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}")
+    print(
+        f"Sending MoveCart: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}"
+    )
 
     err = robot.MoveCart(
         desc_pos=pose,
@@ -46,7 +50,9 @@ def move_cart(robot, pose, vel=None, acc=None, ovl=None):
         print(f"Actual pose after MoveCart: {[round(v, 3) for v in actual_pose]}")
         if pose_close(actual_pose, pose):
             if err != 0:
-                print(f"WARNING: MoveCart returned {err}, but target pose was reached. Continuing.")
+                print(
+                    f"WARNING: MoveCart returned {err}, but target pose was reached. Continuing."
+                )
             else:
                 print("MoveCart reached target.")
             return
@@ -69,11 +75,15 @@ def move_line(robot, pose, vel=None, acc=None, ovl=None):
     ovl = float(cfg.OVL if ovl is None else ovl)
 
     if cfg.DRY_RUN:
-        print(f"[DRY RUN] Would MoveL to: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}")
+        print(
+            f"[DRY RUN] Would MoveL to: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}"
+        )
         return
 
     reset_robot_errors_quiet(robot)
-    print(f"Sending MoveL: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}")
+    print(
+        f"Sending MoveL: {[round(v, 3) for v in pose]}  vel={vel}, acc={acc}, ovl={ovl}"
+    )
 
     err = robot.MoveL(
         desc_pos=pose,
@@ -95,7 +105,9 @@ def move_line(robot, pose, vel=None, acc=None, ovl=None):
         print(f"Actual pose after MoveL: {[round(v, 3) for v in actual_pose]}")
         if pose_close(actual_pose, pose):
             if err != 0:
-                print(f"WARNING: MoveL returned {err}, but target pose was reached. Continuing.")
+                print(
+                    f"WARNING: MoveL returned {err}, but target pose was reached. Continuing."
+                )
             else:
                 print("MoveL reached target.")
             return
@@ -121,42 +133,50 @@ def move_joint(robot, joints, pose=None, vel=None, acc=None, ovl=None):
     ovl = float(cfg.OVL if ovl is None else ovl)
 
     if cfg.DRY_RUN:
-        print(f"[DRY RUN] Would MoveJ to joints: {[round(v, 3) for v in joints]}  vel={vel}, acc={acc}, ovl={ovl}")
+        print(
+            f"[DRY RUN] Would MoveJ to joints: {[round(v, 3) for v in joints]}  vel={vel}, acc={acc}, ovl={ovl}"
+        )
         return
 
     reset_robot_errors_quiet(robot)
-    print(f"Sending MoveJ: {[round(v, 3) for v in joints]}  vel={vel}, acc={acc}, ovl={ovl}")
+    print(
+        f"Sending MoveJ: {[round(v, 3) for v in joints]}  vel={vel}, acc={acc}, ovl={ovl}"
+    )
 
     attempts = []
     if desc_pos is not None:
-        attempts.append((
-            "MoveJ with desc_pos keyword",
+        attempts.append(
+            (
+                "MoveJ with desc_pos keyword",
+                lambda: robot.MoveJ(
+                    joint_pos=joints,
+                    tool=cfg.TOOL,
+                    user=cfg.USER,
+                    desc_pos=desc_pos,
+                    vel=vel,
+                    acc=acc,
+                    ovl=ovl,
+                    exaxis_pos=[0.0, 0.0, 0.0, 0.0],
+                    blendT=-1.0,
+                    offset_flag=0,
+                    offset_pos=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                ),
+            )
+        )
+
+    attempts.append(
+        (
+            "MoveJ simple keyword form",
             lambda: robot.MoveJ(
                 joint_pos=joints,
                 tool=cfg.TOOL,
                 user=cfg.USER,
-                desc_pos=desc_pos,
                 vel=vel,
                 acc=acc,
                 ovl=ovl,
-                exaxis_pos=[0.0, 0.0, 0.0, 0.0],
-                blendT=-1.0,
-                offset_flag=0,
-                offset_pos=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
             ),
-        ))
-
-    attempts.append((
-        "MoveJ simple keyword form",
-        lambda: robot.MoveJ(
-            joint_pos=joints,
-            tool=cfg.TOOL,
-            user=cfg.USER,
-            vel=vel,
-            acc=acc,
-            ovl=ovl,
-        ),
-    ))
+        )
+    )
 
     last_error = None
 
@@ -176,7 +196,9 @@ def move_joint(robot, joints, pose=None, vel=None, acc=None, ovl=None):
             print(f"Actual joints after MoveJ: {[round(v, 3) for v in actual_joints]}")
             if joints_close(actual_joints, joints):
                 if err != 0:
-                    print(f"WARNING: {label} returned {err}, but joint target was reached. Continuing.")
+                    print(
+                        f"WARNING: {label} returned {err}, but joint target was reached. Continuing."
+                    )
                     reset_robot_errors_quiet(robot)
                 else:
                     print("MoveJ reached target.")
@@ -197,7 +219,9 @@ def quadratic_bezier_pose(p0, p1, p2, t):
     return [a * p0[i] + b * p1[i] + c * p2[i] for i in range(6)]
 
 
-def move_arc_fallback_segments(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, segments=12):
+def move_arc_fallback_segments(
+    robot, via_pose, end_pose, vel=None, acc=None, ovl=None, segments=12
+):
     segments = max(3, int(segments))
     start_pose = get_actual_pose(robot)
 
@@ -211,7 +235,9 @@ def move_arc_fallback_segments(robot, via_pose, end_pose, vel=None, acc=None, ov
         move_line(robot, p, vel=vel, acc=acc, ovl=ovl)
 
 
-def move_arc(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_segments=12):
+def move_arc(
+    robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_segments=12
+):
     via_pose = validate_vector("Arc via pose", via_pose[:6], 6)
     end_pose = validate_vector("Arc end pose", end_pose[:6], 6)
     check_safe_limits(via_pose)
@@ -231,7 +257,15 @@ def move_arc(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_s
 
     if not hasattr(robot, "MoveC"):
         print("This SDK does not expose MoveC. Falling back to segmented MoveL arc.")
-        move_arc_fallback_segments(robot, via_pose, end_pose, vel=vel, acc=acc, ovl=ovl, segments=fallback_segments)
+        move_arc_fallback_segments(
+            robot,
+            via_pose,
+            end_pose,
+            vel=vel,
+            acc=acc,
+            ovl=ovl,
+            segments=fallback_segments,
+        )
         return
 
     print("Sending MoveC arc:")
@@ -263,7 +297,9 @@ def move_arc(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_s
 
         if pose_close(actual_pose, end_pose):
             if err != 0:
-                print(f"WARNING: MoveC returned {err}, but end pose was reached. Continuing.")
+                print(
+                    f"WARNING: MoveC returned {err}, but end pose was reached. Continuing."
+                )
             else:
                 print("MoveC reached end pose.")
             return
@@ -278,4 +314,6 @@ def move_arc(robot, via_pose, end_pose, vel=None, acc=None, ovl=None, fallback_s
 
     print_robot_debug(robot)
     print("Falling back to segmented MoveL arc approximation.")
-    move_arc_fallback_segments(robot, via_pose, end_pose, vel=vel, acc=acc, ovl=ovl, segments=fallback_segments)
+    move_arc_fallback_segments(
+        robot, via_pose, end_pose, vel=vel, acc=acc, ovl=ovl, segments=fallback_segments
+    )

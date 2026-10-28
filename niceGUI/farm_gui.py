@@ -1,42 +1,43 @@
 import asyncio, sys, json
 from nicegui import app, ui
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from config import VISION_PI_IP, VISION_PORT
 from fastapi.responses import StreamingResponse
 import httpx
 
-VISION_URL = f"http://{VISION_PI_IP}:{VISION_PORT}" 
+VISION_URL = f"http://{VISION_PI_IP}:{VISION_PORT}"
 RUN_JOB_SCRIPT = Path("/home/main/Lay3rs_print_farm/run_job.py")
 PRINTERS = {"printer_03": "X1C-4", "printer_04": "X1C-2", "printer_05": "X1C-1"}
 N_SLOTS = 16
 SLOT_POLL_S = 2.0
 JOB_TIMEOUT_S = 600
-SLOT_FILE = Path(__file__).with_name("slots.json") 
+SLOT_FILE = Path(__file__).with_name("slots.json")
 
 MAIN_JOBS = {
     "Change plate": ("full_buildplate_change", True, "sym_r_stack"),
-    "Home":         ("go_home", False, "sym_r_home"),
-    "Transfer":     ("transfer_buildplate", True, "sym_r_swap_vert"),
+    "Home": ("go_home", False, "sym_r_home"),
+    "Transfer": ("transfer_buildplate", True, "sym_r_swap_vert"),
 }
 
 DEBUG_JOBS = {
-    "Open door":                ("open_door_with_verification", False),
+    "Open door": ("open_door_with_verification", False),
     "Remove plate (door open)": ("remove_buildplate_only", False),
-    "Open door":                ("open_door_with_verification", False),
-    "Open and take plate":      ("open_door_and_take_out_buildplate", False),
-    "Place plate":              ("localize_and_place_buildplate", True),
-    "Drop plate":               ("rack_drop_only", True),
-    "Pickup plate":             ("rack_pickup_only", True),
-    "Close door":               ("close_door", False),
-    "Localize door":            ("localize_printer_door_only", False),
-
+    "Open door": ("open_door_with_verification", False),
+    "Open and take plate": ("open_door_and_take_out_buildplate", False),
+    "Place plate": ("localize_and_place_buildplate", True),
+    "Drop plate": ("rack_drop_only", True),
+    "Pickup plate": ("rack_pickup_only", True),
+    "Close door": ("close_door", False),
+    "Localize door": ("localize_printer_door_only", False),
 }
 
 state = {"busy": False, "proc": None, "editing": False, "printer": next(iter(PRINTERS))}
 # True = occupied, False = empty
 slots = {"pickup": [False] * N_SLOTS, "dropoff": [False] * N_SLOTS}
 selected = {"pickup": None, "dropoff": None}
+
 
 @app.get("/vision/stream")
 async def vision_stream():
@@ -47,9 +48,12 @@ async def vision_stream():
                     async for chunk in r.aiter_raw():
                         yield chunk
         except httpx.HTTPError:
-            return 
+            return
+
     return StreamingResponse(
-        gen(), media_type="multipart/x-mixed-replace; boundary=frame")
+        gen(), media_type="multipart/x-mixed-replace; boundary=frame"
+    )
+
 
 def load_slots():
     try:
@@ -61,30 +65,34 @@ def load_slots():
         pass
     except Exception as e:
         print(f"Could not read {SLOT_FILE}: {e}")
- 
- 
+
+
 def save_slots():
     try:
         SLOT_FILE.write_text(json.dumps(slots))
     except Exception as e:
         ui.notify(f"Could not save slots: {e}", type="negative")
- 
- 
+
+
 load_slots()
+
 
 def fetch_slot_status() -> dict:
     return slots
+
 
 GCODE_DIR = Path("/home/main/Lay3rs_print_farm/gcode")
 
 
 def list_gcode_files() -> list[Path]:
-    return sorted(GCODE_DIR.glob("*.gcode"), key=lambda p: ("start" not in p.name.lower(), p.name))
+    return sorted(
+        GCODE_DIR.glob("*.gcode"), key=lambda p: ("start" not in p.name.lower(), p.name)
+    )
 
 
 async def copy_gcode(path: Path):
     try:
-        text = path.read_text()   # read on click, so edits to the file are picked up
+        text = path.read_text()  # read on click, so edits to the file are picked up
     except Exception as e:  # noqa: BLE001
         ui.notify(f"Could not read {path.name}: {e}", type="negative")
         return
@@ -102,6 +110,7 @@ async def copy_gcode(path: Path):
         }}
     """)
     ui.notify(f"Copied {path.name}", type="positive")
+
 
 ui.colors(primary="#20BCEF", negative="#ef4444", positive="#3fb68b", warning="#f2a93b")
 ui.dark_mode(True)
@@ -221,8 +230,10 @@ def refresh_slots():
         if i is None:
             lbl.set_text(f"{kind.capitalize():<8} none")
         else:
-            lbl.set_text(f"{kind.capitalize():<8} {i + 1:02d} · "
-                         f"{'occupied' if slots[kind][i] else 'empty'}")
+            lbl.set_text(
+                f"{kind.capitalize():<8} {i + 1:02d} · "
+                f"{'occupied' if slots[kind][i] else 'empty'}"
+            )
 
 
 def on_slot_click(kind: str, i: int):
@@ -277,10 +288,12 @@ def validate_slots() -> str | None:
         return f"Dropoff slot {d + 1} is already occupied"
     return None
 
+
 def refresh_mode(_=None):
     live = not dry.value
     mode_badge.set_text("LIVE · ROBOT WILL MOVE" if live else "TEST MODE")
     mark(mode_badge, "live", live)
+
 
 def set_busy(value: bool):
     state["busy"] = value
@@ -296,6 +309,7 @@ def set_busy(value: bool):
     stop_btn.set_visibility(value)
     status.set_text("RUNNING" if value else "IDLE")
     status_dot.classes(replace="sdot run animate-pulse" if value else "sdot idle")
+
 
 async def run(job: str, needs_slots: bool, printer_name: str, dry_run: bool):
     transfer = None
@@ -364,15 +378,16 @@ async def run(job: str, needs_slots: bool, printer_name: str, dry_run: bool):
         ui.notify(f"Job failed (exit code {code})", type="negative")
     await poll_slots()
 
+
 def get_print_height_cm(dropoff: int | None) -> int | None:
     """Returns the max print height in cm, or None to hide the message."""
-    if (dropoff == None): 
+    if dropoff == None:
         return None
     idx = dropoff - 1
     while idx >= 0:
-        if (slots["pickup"][idx] == True):
+        if slots["pickup"][idx] == True:
             return (dropoff - idx - 1) * 7 if ((dropoff - idx - 1) * 7 <= 25) else None
-        if (slots["dropoff"][idx] == True or idx == 0):
+        if slots["dropoff"][idx] == True or idx == 0:
             return 4 + (dropoff - idx) * 7 if (4 + (dropoff - idx) * 7 <= 25) else None
         idx -= 1
     return 4
@@ -381,7 +396,10 @@ def get_print_height_cm(dropoff: int | None) -> int | None:
 def blocked_dropoffs() -> dict[int, int]:
     """dropoff index -> index of the pickup slot blocking it.
     A full pickup slot N blocks dropoff slot N+1 (not the other way round)."""
-    return {i + 1: i for i, occ in enumerate(slots["pickup"]) if occ and i + 1 < N_SLOTS}
+    return {
+        i + 1: i for i, occ in enumerate(slots["pickup"]) if occ and i + 1 < N_SLOTS
+    }
+
 
 async def stop_job():
     proc = state["proc"]
@@ -393,36 +411,46 @@ async def stop_job():
             proc.kill()
         log.push("Job stopped")
 
+
 slot_buttons = {"pickup": [], "dropoff": []}
 printer_buttons = {}
 sel_labels = {}
 job_buttons = []
 
 with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 p-6"):
-
     with ui.row().classes("w-full justify-center items-start gap-5"):
-
         # Printer panel
         with ui.column().classes("w-full max-w-[13rem] gap-5"):
             with ui.column().classes("panel w-full max-w-[13rem] p-5 gap-3"):
                 ui.label("Printers").classes("eyebrow")
                 for name, pos in PRINTERS.items():
-                    with ui.button(on_click=lambda n=name: on_printer_click(n)) \
-                            .props("flat no-caps").classes("printer w-full") as pb:
-                        with ui.row().classes("w-full items-center justify-between no-wrap"):
+                    with (
+                        ui.button(on_click=lambda n=name: on_printer_click(n))
+                        .props("flat no-caps")
+                        .classes("printer w-full") as pb
+                    ):
+                        with ui.row().classes(
+                            "w-full items-center justify-between no-wrap"
+                        ):
                             ui.label(pos).classes("text-sm font-medium")
                     printer_buttons[name] = pb
             with ui.column().classes("panel w-full p-5 gap-3"):
                 ui.label("G-code").classes("eyebrow")
                 files = list_gcode_files()
                 if not files:
-                    ui.label("No .gcode files found").classes("text-xs") \
-                        .style("color:var(--muted)")
+                    ui.label("No .gcode files found").classes("text-xs").style(
+                        "color:var(--muted)"
+                    )
                 for f in files:
-                    with ui.row().classes("w-full items-center justify-between no-wrap gap-2"):
-                        ui.label(f.stem).classes("text-sm truncate flex-1 min-w-0").tooltip(f.name)
-                        ui.button(icon="content_copy", on_click=lambda p=f: copy_gcode(p)) \
-                            .props("flat dense round size=sm").classes("copybtn")
+                    with ui.row().classes(
+                        "w-full items-center justify-between no-wrap gap-2"
+                    ):
+                        ui.label(f.stem).classes(
+                            "text-sm truncate flex-1 min-w-0"
+                        ).tooltip(f.name)
+                        ui.button(
+                            icon="content_copy", on_click=lambda p=f: copy_gcode(p)
+                        ).props("flat dense round size=sm").classes("copybtn")
 
         # Center panel
         with ui.column().classes("w-full max-w-xl gap-5"):
@@ -435,22 +463,32 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                     mode_badge = ui.label("TEST MODE").classes("badge mono")
 
                 with ui.row().classes("w-60 items-center justify-between"):
-                    dry = ui.switch("Test mode", value=True,
-                                    on_change=refresh_mode)
-                    with ui.button(icon="more_horiz").props("flat round dense") \
-                            .classes("morebtn") as more_btn:
+                    dry = ui.switch("Test mode", value=True, on_change=refresh_mode)
+                    with (
+                        ui.button(icon="more_horiz")
+                        .props("flat round dense")
+                        .classes("morebtn") as more_btn
+                    ):
                         with ui.menu():
                             for label, (job, needs) in DEBUG_JOBS.items():
                                 ui.menu_item(
                                     label,
-                                    on_click=lambda j=job, n=needs: run(j, n, state["printer"], dry.value),
+                                    on_click=lambda j=job, n=needs: run(
+                                        j, n, state["printer"], dry.value
+                                    ),
                                 )
 
                 with ui.row().classes("gap-4 justify-center"):
                     for label, (job, needs, icon) in MAIN_JOBS.items():
-                        with ui.button(
-                            on_click=lambda j=job, n=needs: run(j, n, state["printer"], dry.value),
-                        ).props("flat no-caps").classes("jobtile") as btn:
+                        with (
+                            ui.button(
+                                on_click=lambda j=job, n=needs: run(
+                                    j, n, state["printer"], dry.value
+                                ),
+                            )
+                            .props("flat no-caps")
+                            .classes("jobtile") as btn
+                        ):
                             with ui.column().classes("items-center gap-2"):
                                 ui.icon(icon).classes("text-4xl")
                                 ui.label(label).classes("text-xs font-medium")
@@ -458,28 +496,34 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
 
                 job_buttons.append(more_btn)
 
-                stop_btn = ui.button("Stop", on_click=stop_job, color="#ffffff") \
-                    .props("flat no-caps").classes("stop")
+                stop_btn = (
+                    ui.button("Stop", on_click=stop_job, color="#ffffff")
+                    .props("flat no-caps")
+                    .classes("stop")
+                )
                 stop_btn.set_visibility(False)
-            
+
             with ui.column().classes("panel w-full p-4 gap-3"):
                 ui.label("Vision").classes("eyebrow")
-                ui.element("img").props("src=/vision/stream") \
-                    .classes("w-full").style("border-radius:6px; background:var(--bg); min-height:200px")
+                ui.element("img").props("src=/vision/stream").classes("w-full").style(
+                    "border-radius:6px; background:var(--bg); min-height:200px"
+                )
 
             with ui.column().classes("panel w-full p-4 gap-3"):
                 with ui.row().classes("w-full items-center justify-between"):
                     ui.label("Output").classes("eyebrow")
-                    ui.button("Clear", on_click=lambda: log.clear()) \
-                        .props("flat dense no-caps size=sm color=grey-6")
+                    ui.button("Clear", on_click=lambda: log.clear()).props(
+                        "flat dense no-caps size=sm color=grey-6"
+                    )
                 log = ui.log(max_lines=1000).classes("log-box w-full h-32")
-            
 
         # Slot panel
         with ui.column().classes("panel w-full max-w-xs p-6 gap-5    items-center"):
-            
-
-            with ui.row().classes("gap-4 text-xs items-center").style("color:var(--muted)"):
+            with (
+                ui.row()
+                .classes("gap-4 text-xs items-center")
+                .style("color:var(--muted)")
+            ):
                 ui.label("Slots").classes("eyebrow self-start")
                 with ui.row().classes("items-center gap-0"):
                     ui.element("div").classes("legend-dot occ")
@@ -491,31 +535,48 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                     ui.element("div").classes("legend-sel")
                     ui.label("Selected")
 
-            height_msg = ui.label("").classes("w-full text-xs text-center p-2 rounded") \
-                .style("color:rgba(242,169,59,.75); background:rgba(242,169,59,.08); "
-                       "border:1px solid rgba(242,169,59,.35)")
+            height_msg = (
+                ui.label("")
+                .classes("w-full text-xs text-center p-2 rounded")
+                .style(
+                    "color:rgba(242,169,59,.75); background:rgba(242,169,59,.08); "
+                    "border:1px solid rgba(242,169,59,.35)"
+                )
+            )
 
-            with ui.row().classes("w-full justify-center items-start gap-5") as slots_row:
+            with ui.row().classes(
+                "w-full justify-center items-start gap-5"
+            ) as slots_row:
                 for kind in ("pickup", "dropoff"):
                     with ui.column().classes("items-stretch gap-1 w-24"):
                         ui.label(kind.capitalize()).classes("eyebrow mb-1")
                         for i in range(N_SLOTS):
-                            with ui.button(
-                                on_click=lambda k=kind, n=i: on_slot_click(k, n),
-                            ).props("flat dense no-caps").classes("slot") as b:
+                            with (
+                                ui.button(
+                                    on_click=lambda k=kind, n=i: on_slot_click(k, n),
+                                )
+                                .props("flat dense no-caps")
+                                .classes("slot") as b
+                            ):
                                 ui.element("div").classes("dot")
                                 ui.label(f"{i + 1:02d}")
                             slot_buttons[kind].append(b)
-            edit_hint = ui.label("Click a slot to mark it occupied / empty") \
-                .classes("text-xs").style("color:var(--live)")
+            edit_hint = (
+                ui.label("Click a slot to mark it occupied / empty")
+                .classes("text-xs")
+                .style("color:var(--live)")
+            )
             edit_hint.set_visibility(False)
 
-
             with ui.row().classes("w-full items-center justify-between"):
-                clear_btn = ui.button("Clear selection", on_click=clear_selection) \
-                    .props("flat dense no-caps size=sm color=grey-6")
-                edit_btn = ui.button("Edit", on_click=toggle_edit) \
-                    .props("flat dense no-caps size=sm").classes("editbtn")
+                clear_btn = ui.button(
+                    "Clear selection", on_click=clear_selection
+                ).props("flat dense no-caps size=sm color=grey-6")
+                edit_btn = (
+                    ui.button("Edit", on_click=toggle_edit)
+                    .props("flat dense no-caps size=sm")
+                    .classes("editbtn")
+                )
 
 
 refresh_printers()
@@ -524,4 +585,11 @@ refresh_mode()
 ui.timer(SLOT_POLL_S, poll_slots)
 app.on_shutdown(stop_job)
 
-ui.run(host="0.0.0.0", port=8080, title="Lay3rs Print Farm", dark=True, show=False, favicon="https://www.lay3rs.nl/wp-content/uploads/2020/10/beeldmerk-lay3rs-donker.png")
+ui.run(
+    host="0.0.0.0",
+    port=8080,
+    title="Lay3rs Print Farm",
+    dark=True,
+    show=False,
+    favicon="https://www.lay3rs.nl/wp-content/uploads/2020/10/beeldmerk-lay3rs-donker.png",
+)

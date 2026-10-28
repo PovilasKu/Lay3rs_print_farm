@@ -10,9 +10,7 @@ def clamp_percent_int(name: str, value) -> int:
     value = int(round(float(value)))
 
     if value < 0 or value > 100:
-        raise RuntimeError(
-            f"{name} must be from 0 to 100, got: {value}"
-        )
+        raise RuntimeError(f"{name} must be from 0 to 100, got: {value}")
 
     return value
 
@@ -27,10 +25,7 @@ def validate_int_range(
     value = int(value)
 
     if value < minimum or value > maximum:
-        raise RuntimeError(
-            f"{name} must be from {minimum} to {maximum}, "
-            f"got: {value}"
-        )
+        raise RuntimeError(f"{name} must be from {minimum} to {maximum}, got: {value}")
 
     return value
 
@@ -58,9 +53,7 @@ def activate_gripper(
     print(f"ActGripper reset returned: {reset_err}")
 
     if reset_err != 0:
-        raise RuntimeError(
-            f"ActGripper reset failed with error code: {reset_err}"
-        )
+        raise RuntimeError(f"ActGripper reset failed with error code: {reset_err}")
 
     time.sleep(0.5)
 
@@ -69,8 +62,7 @@ def activate_gripper(
 
     if activate_err != 0:
         raise RuntimeError(
-            f"ActGripper activation failed with error code: "
-            f"{activate_err}"
+            f"ActGripper activation failed with error code: {activate_err}"
         )
 
     time.sleep(0.5)
@@ -123,23 +115,17 @@ def move_gripper(
 
     speed = clamp_percent_int(
         "Gripper speed",
-        cfg.GRIPPER_DEFAULT_SPEED
-        if speed is None
-        else speed,
+        cfg.GRIPPER_DEFAULT_SPEED if speed is None else speed,
     )
 
     torque = clamp_percent_int(
         "Gripper torque",
-        cfg.GRIPPER_DEFAULT_TORQUE
-        if torque is None
-        else torque,
+        cfg.GRIPPER_DEFAULT_TORQUE if torque is None else torque,
     )
 
     max_time_ms = validate_int_range(
         "Gripper max_time_ms",
-        cfg.GRIPPER_MAX_TIME_MS
-        if max_time_ms is None
-        else max_time_ms,
+        cfg.GRIPPER_MAX_TIME_MS if max_time_ms is None else max_time_ms,
         0,
         30000,
     )
@@ -210,9 +196,7 @@ def move_gripper(
     print(f"MoveGripper returned: {err}")
 
     if err != 0:
-        raise RuntimeError(
-            f"MoveGripper failed with error code: {err}"
-        )
+        raise RuntimeError(f"MoveGripper failed with error code: {err}")
 
     time.sleep(0.2)
 
@@ -242,11 +226,7 @@ def print_gripper_status(robot):
             print(f"  {method_name}: {result}")
 
         except AttributeError:
-            print(
-                f"  {method_name}: unsupported by installed SDK"
-            )
+            print(f"  {method_name}: unsupported by installed SDK")
 
         except Exception as exc:
-            print(
-                f"  {method_name}: query failed: {exc}"
-            )
+            print(f"  {method_name}: query failed: {exc}")

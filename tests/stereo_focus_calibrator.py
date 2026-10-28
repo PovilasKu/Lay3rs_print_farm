@@ -15,6 +15,7 @@ from picamera2 import Picamera2
 # Focus / image quality metrics
 # ------------------------------------------------------------
 
+
 def center_crop(frame, crop_fraction=0.45):
     """
     Returns the center crop and its rectangle coordinates.
@@ -50,7 +51,7 @@ def calculate_metrics(rgb_frame):
 
     sobel_x = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
     sobel_y = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
-    tenengrad = np.mean(sobel_x ** 2 + sobel_y ** 2)
+    tenengrad = np.mean(sobel_x**2 + sobel_y**2)
 
     brightness = float(np.mean(gray))
     contrast = float(np.std(gray))
@@ -168,16 +169,29 @@ def save_snapshot(left_rgb, right_rgb, output_dir):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Stereo camera focus calibration helper")
+    parser = argparse.ArgumentParser(
+        description="Stereo camera focus calibration helper"
+    )
 
-    parser.add_argument("--width", type=int, default=640, help="Preview width per camera")
-    parser.add_argument("--height", type=int, default=480, help="Preview height per camera")
+    parser.add_argument(
+        "--width", type=int, default=640, help="Preview width per camera"
+    )
+    parser.add_argument(
+        "--height", type=int, default=480, help="Preview height per camera"
+    )
     parser.add_argument("--fps", type=int, default=20, help="Camera FPS")
-    parser.add_argument("--crop", type=float, default=0.45, help="Center crop fraction for focus metrics")
+    parser.add_argument(
+        "--crop",
+        type=float,
+        default=0.45,
+        help="Center crop fraction for focus metrics",
+    )
     parser.add_argument("--left", type=int, default=0, help="Left camera index")
     parser.add_argument("--right", type=int, default=1, help="Right camera index")
     parser.add_argument("--log", action="store_true", help="Log focus metrics to CSV")
-    parser.add_argument("--output-dir", default="focus_output", help="Folder for snapshots/logs")
+    parser.add_argument(
+        "--output-dir", default="focus_output", help="Folder for snapshots/logs"
+    )
 
     args = parser.parse_args()
 
@@ -207,25 +221,27 @@ def main():
         csv_file = open(csv_path, "w", newline="")
         csv_writer = csv.writer(csv_file)
 
-        csv_writer.writerow([
-            "timestamp",
-            "left_laplacian",
-            "right_laplacian",
-            "left_tenengrad",
-            "right_tenengrad",
-            "left_brightness",
-            "right_brightness",
-            "left_contrast",
-            "right_contrast",
-            "left_dark_clip_pct",
-            "right_dark_clip_pct",
-            "left_bright_clip_pct",
-            "right_bright_clip_pct",
-            "left_exposure_us",
-            "right_exposure_us",
-            "left_gain",
-            "right_gain",
-        ])
+        csv_writer.writerow(
+            [
+                "timestamp",
+                "left_laplacian",
+                "right_laplacian",
+                "left_tenengrad",
+                "right_tenengrad",
+                "left_brightness",
+                "right_brightness",
+                "left_contrast",
+                "right_contrast",
+                "left_dark_clip_pct",
+                "right_dark_clip_pct",
+                "left_bright_clip_pct",
+                "right_bright_clip_pct",
+                "left_exposure_us",
+                "right_exposure_us",
+                "left_gain",
+                "right_gain",
+            ]
+        )
 
         print(f"Logging to: {csv_path}")
 
@@ -320,25 +336,27 @@ def main():
             cv2.imshow("Stereo Focus Calibrator", combined)
 
             if csv_writer is not None:
-                csv_writer.writerow([
-                    datetime.now().isoformat(),
-                    left_metrics["laplacian_var"],
-                    right_metrics["laplacian_var"],
-                    left_metrics["tenengrad"],
-                    right_metrics["tenengrad"],
-                    left_metrics["brightness"],
-                    right_metrics["brightness"],
-                    left_metrics["contrast"],
-                    right_metrics["contrast"],
-                    left_metrics["clipped_dark_pct"],
-                    right_metrics["clipped_dark_pct"],
-                    left_metrics["clipped_bright_pct"],
-                    right_metrics["clipped_bright_pct"],
-                    left_metadata.get("ExposureTime", ""),
-                    right_metadata.get("ExposureTime", ""),
-                    left_metadata.get("AnalogueGain", ""),
-                    right_metadata.get("AnalogueGain", ""),
-                ])
+                csv_writer.writerow(
+                    [
+                        datetime.now().isoformat(),
+                        left_metrics["laplacian_var"],
+                        right_metrics["laplacian_var"],
+                        left_metrics["tenengrad"],
+                        right_metrics["tenengrad"],
+                        left_metrics["brightness"],
+                        right_metrics["brightness"],
+                        left_metrics["contrast"],
+                        right_metrics["contrast"],
+                        left_metrics["clipped_dark_pct"],
+                        right_metrics["clipped_dark_pct"],
+                        left_metrics["clipped_bright_pct"],
+                        right_metrics["clipped_bright_pct"],
+                        left_metadata.get("ExposureTime", ""),
+                        right_metadata.get("ExposureTime", ""),
+                        left_metadata.get("AnalogueGain", ""),
+                        right_metadata.get("AnalogueGain", ""),
+                    ]
+                )
 
             key = cv2.waitKey(1) & 0xFF
 

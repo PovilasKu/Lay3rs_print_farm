@@ -52,12 +52,12 @@ OVL = 20.0
 
 # Format: [X, Y, Z, RX, RY, RZ]
 TEST_START_POSE = [
-    400.0,   # X
-    0.0,     # Y
-    350.0,   # Z
-    0.0,     # RX
-    0.0,     # RY
-    0.0,     # RZ
+    400.0,  # X
+    0.0,  # Y
+    350.0,  # Z
+    0.0,  # RX
+    0.0,  # RY
+    0.0,  # RZ
 ]
 
 MOVE_TO_START_POSE = False
@@ -123,7 +123,7 @@ MAX_ROT_STEP_DEG = 1.0
 #   camera tilt Y -> robot RY
 #   image roll    -> robot RZ
 TILT_X_TO_ROBOT_ROT_AXIS = 3
-TILT_Y_TO_ROBOT_ROT_AXIS = 5 # actual tcp z
+TILT_Y_TO_ROBOT_ROT_AXIS = 5  # actual tcp z
 ROLL_TO_ROBOT_ROT_AXIS = 4
 
 # Flip these one by one if that rotation makes the image worse.
@@ -158,6 +158,7 @@ SAFE_LIMITS = None
 # BASIC HELPERS
 # ============================================================
 
+
 def clamp(value, low, high):
     return max(low, min(high, value))
 
@@ -189,6 +190,7 @@ def add_axis_step(pose, axis, step):
 # ============================================================
 # ROBOT FUNCTIONS
 # ============================================================
+
 
 def connect_robot():
     robot = Robot.RPC(ROBOT_IP)
@@ -251,6 +253,7 @@ def move_cart(robot, pose):
 # VISION FUNCTIONS
 # ============================================================
 
+
 def read_tag_once():
     with urllib.request.urlopen(VISION_URL, timeout=1.0) as response:
         return json.loads(response.read().decode("utf-8"))
@@ -279,9 +282,13 @@ def wait_for_fresh_tag():
                 needed += ["tag_tilt_x_deg", "tag_tilt_y_deg", "tag_roll_deg"]
 
             if not all(k in tag for k in needed):
-                print("Tag detected, but some required values are missing from Vision Pi output.")
+                print(
+                    "Tag detected, but some required values are missing from Vision Pi output."
+                )
                 print(f"Missing keys: {[k for k in needed if k not in tag]}")
-                print("Make sure apriltag_server.py sends tag_tilt_x_deg, tag_tilt_y_deg, tag_roll_deg.")
+                print(
+                    "Make sure apriltag_server.py sends tag_tilt_x_deg, tag_tilt_y_deg, tag_roll_deg."
+                )
                 time.sleep(0.2)
                 continue
 
@@ -297,6 +304,7 @@ def wait_for_fresh_tag():
 # ============================================================
 # CENTERING LOGIC
 # ============================================================
+
 
 def build_corrected_pose(current_pose, tag):
     """
@@ -359,9 +367,15 @@ def build_corrected_pose(current_pose, tag):
         tilt_y_error_deg = tag_tilt_y_deg - TARGET_TILT_Y_DEG
         roll_error_deg = tag_roll_deg - TARGET_ROLL_DEG
 
-        tilt_x_step = clamp(GAIN_TILT_X * tilt_x_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG)
-        tilt_y_step = clamp(GAIN_TILT_Y * tilt_y_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG)
-        roll_step = clamp(GAIN_ROLL * roll_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG)
+        tilt_x_step = clamp(
+            GAIN_TILT_X * tilt_x_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG
+        )
+        tilt_y_step = clamp(
+            GAIN_TILT_Y * tilt_y_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG
+        )
+        roll_step = clamp(
+            GAIN_ROLL * roll_error_deg, -MAX_ROT_STEP_DEG, MAX_ROT_STEP_DEG
+        )
 
         robot_rx_step = TILT_X_SIGN * tilt_x_step
         robot_ry_step = TILT_Y_SIGN * tilt_y_step
@@ -371,17 +385,19 @@ def build_corrected_pose(current_pose, tag):
         next_pose = add_axis_step(next_pose, TILT_Y_TO_ROBOT_ROT_AXIS, robot_ry_step)
         next_pose = add_axis_step(next_pose, ROLL_TO_ROBOT_ROT_AXIS, robot_rz_step)
 
-        info.update({
-            "tag_tilt_x_deg": tag_tilt_x_deg,
-            "tag_tilt_y_deg": tag_tilt_y_deg,
-            "tag_roll_deg": tag_roll_deg,
-            "tilt_x_error_deg": tilt_x_error_deg,
-            "tilt_y_error_deg": tilt_y_error_deg,
-            "roll_error_deg": roll_error_deg,
-            "robot_rx_step": robot_rx_step,
-            "robot_ry_step": robot_ry_step,
-            "robot_rz_step": robot_rz_step,
-        })
+        info.update(
+            {
+                "tag_tilt_x_deg": tag_tilt_x_deg,
+                "tag_tilt_y_deg": tag_tilt_y_deg,
+                "tag_roll_deg": tag_roll_deg,
+                "tilt_x_error_deg": tilt_x_error_deg,
+                "tilt_y_error_deg": tilt_y_error_deg,
+                "roll_error_deg": roll_error_deg,
+                "robot_rx_step": robot_rx_step,
+                "robot_ry_step": robot_ry_step,
+                "robot_rz_step": robot_rz_step,
+            }
+        )
 
     return next_pose, info
 
@@ -396,15 +412,9 @@ def is_finished(tag):
 
     distance_error_mm = tag_z_mm - TARGET_DISTANCE_MM
 
-    pose_centered = (
-        abs(tag_x_mm) <= CENTER_TOL_MM and
-        abs(tag_y_mm) <= CENTER_TOL_MM
-    )
+    pose_centered = abs(tag_x_mm) <= CENTER_TOL_MM and abs(tag_y_mm) <= CENTER_TOL_MM
 
-    pixel_centered = (
-        abs(cx - TARGET_U) <= PIXEL_TOL and
-        abs(cy - TARGET_V) <= PIXEL_TOL
-    )
+    pixel_centered = abs(cx - TARGET_U) <= PIXEL_TOL and abs(cy - TARGET_V) <= PIXEL_TOL
 
     distance_ok = abs(distance_error_mm) <= DISTANCE_TOL_MM
 
@@ -414,9 +424,9 @@ def is_finished(tag):
         roll_error = float(tag["tag_roll_deg"]) - TARGET_ROLL_DEG
 
         rotation_ok = (
-            abs(tilt_x_error) <= ROT_TOL_DEG and
-            abs(tilt_y_error) <= ROT_TOL_DEG and
-            abs(roll_error) <= ROT_TOL_DEG
+            abs(tilt_x_error) <= ROT_TOL_DEG
+            and abs(tilt_y_error) <= ROT_TOL_DEG
+            and abs(roll_error) <= ROT_TOL_DEG
         )
     else:
         rotation_ok = True
@@ -427,6 +437,7 @@ def is_finished(tag):
 # ============================================================
 # MAIN PROGRAM
 # ============================================================
+
 
 def main():
     print()
@@ -466,7 +477,9 @@ def main():
         print("--------------------")
         print(f"Tag pixel center:       u={cx:.1f}, v={cy:.1f}")
         print(f"Pixel error:            du={cx - TARGET_U:.1f}, dv={cy - TARGET_V:.1f}")
-        print(f"Camera-space tag pose:  x={tag_x_mm:.1f} mm, y={tag_y_mm:.1f} mm, z={tag_z_mm:.1f} mm")
+        print(
+            f"Camera-space tag pose:  x={tag_x_mm:.1f} mm, y={tag_y_mm:.1f} mm, z={tag_z_mm:.1f} mm"
+        )
         print(f"Target distance error:  {distance_error_mm:.1f} mm")
 
         if ENABLE_ROTATION_3AXIS:
@@ -479,7 +492,9 @@ def main():
 
         if is_finished(tag):
             print()
-            print("Done: AprilTag is centered, at target distance, and rotationally aligned.")
+            print(
+                "Done: AprilTag is centered, at target distance, and rotationally aligned."
+            )
             return
 
         current_pose = get_actual_pose(robot)

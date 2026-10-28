@@ -1,4 +1,5 @@
 import sys
+
 sys.path.insert(0, "/home/fairino/fairino-python-sdk/linux")
 
 from fairino import Robot
