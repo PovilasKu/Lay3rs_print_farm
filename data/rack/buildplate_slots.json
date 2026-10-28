@@ -20,162 +20,162 @@
     "slot_01d": {
       "display_name": "Drop-off slot 1",
       "status": "active",
-      "local_target_delta": [0, 0, -150.0, 0, 0, 0]
+      "local_target_delta": [0, 0, -198.5, 0, 0, 0]
     },
     "slot_01p": {
       "display_name": "Pick-up slot 1",
       "status": "active",
-      "local_target_delta": [0, 0, -230.0, 0, 0, 0]
+      "local_target_delta": [0, 0, -234.5, 0, 0, 0]
     },
     "slot_02d": {
       "display_name": "Drop-off slot 2",
       "status": "active",
-      "local_target_delta": [0, 0, -229.8, 0, 0, 0]
+      "local_target_delta": [0, 0, -278.5, 0, 0, 0]
     },
     "slot_02p": {
       "display_name": "Pick-up slot 2",
       "status": "active",
-      "local_target_delta": [0, 0, -309.8, 0, 0, 0]
+      "local_target_delta": [0, 0, -314.5, 0, 0, 0]
     },
     "slot_03d": {
       "display_name": "Drop-off slot 3",
       "status": "active",
-      "local_target_delta": [0, 0, -309.6, 0, 0, 0]
+      "local_target_delta": [0, 0, -358.5, 0, 0, 0]
     },
     "slot_03p": {
       "display_name": "Pick-up slot 3",
       "status": "active",
-      "local_target_delta": [0, 0, -389.6, 0, 0, 0]
+      "local_target_delta": [0, 0, -394.5, 0, 0, 0]
     },
     "slot_04d": {
       "display_name": "Drop-off slot 4",
       "status": "active",
-      "local_target_delta": [0, 0, -389.4, 0, 0, 0]
+      "local_target_delta": [0, 0, -438.5, 0, 0, 0]
     },
     "slot_04p": {
       "display_name": "Pick-up slot 4",
       "status": "active",
-      "local_target_delta": [0, 0, -469.4, 0, 0, 0]
+      "local_target_delta": [0, 0, -474.5, 0, 0, 0]
     },
     "slot_05d": {
       "display_name": "Drop-off slot 5",
       "status": "active",
-      "local_target_delta": [0, 0, -469.2, 0, 0, 0]
+      "local_target_delta": [0, 0, -518.5, 0, 0, 0]
     },
     "slot_05p": {
       "display_name": "Pick-up slot 5",
       "status": "active",
-      "local_target_delta": [0, 0, -549.2, 0, 0, 0]
+      "local_target_delta": [0, 0, -554.5, 0, 0, 0]
     },
     "slot_06d": {
       "display_name": "Drop-off slot 6",
       "status": "active",
-      "local_target_delta": [0, 0, -549.0, 0, 0, 0]
+      "local_target_delta": [0, 0, -598.5, 0, 0, 0]
     },
     "slot_06p": {
       "display_name": "Pick-up slot 6",
       "status": "active",
-      "local_target_delta": [0, 0, -629.0, 0, 0, 0]
+      "local_target_delta": [0, 0, -634.5, 0, 0, 0]
     },
     "slot_07d": {
       "display_name": "Drop-off slot 7",
       "status": "active",
-      "local_target_delta": [0, 0, -628.8, 0, 0, 0]
+      "local_target_delta": [0, 0, -678.5, 0, 0, 0]
     },
     "slot_07p": {
       "display_name": "Pick-up slot 7",
       "status": "active",
-      "local_target_delta": [0, 0, -708.8, 0, 0, 0]
+      "local_target_delta": [0, 0, -714.5, 0, 0, 0]
     },
     "slot_08d": {
       "display_name": "Drop-off slot 8",
       "status": "active",
-      "local_target_delta": [0, 0, -708.6, 0, 0, 0]
+      "local_target_delta": [0, 0, -758.5, 0, 0, 0]
     },
     "slot_08p": {
       "display_name": "Pick-up slot 8",
       "status": "active",
-      "local_target_delta": [0, 0, -788.6, 0, 0, 0]
+      "local_target_delta": [0, 0, -794.5, 0, 0, 0]
     },
     "slot_09d": {
       "display_name": "Drop-off slot 9",
       "status": "active",
-      "local_target_delta": [0, 0, -788.4, 0, 0, 0]
+      "local_target_delta": [0, 0, -838.5, 0, 0, 0]
     },
     "slot_09p": {
       "display_name": "Pick-up slot 9",
       "status": "active",
-      "local_target_delta": [0, 0, -868.4, 0, 0, 0]
+      "local_target_delta": [0, 0, -874.5, 0, 0, 0]
     },
     "slot_10d": {
       "display_name": "Drop-off slot 10",
       "status": "active",
-      "local_target_delta": [0, 0, -868.2, 0, 0, 0]
+      "local_target_delta": [0, 0, -918.5, 0, 0, 0]
     },
     "slot_10p": {
       "display_name": "Pick-up slot 10",
       "status": "active",
-      "local_target_delta": [0, 0, -948.2, 0, 0, 0]
+      "local_target_delta": [0, 0, -954.5, 0, 0, 0]
     },
     "slot_11d": {
       "display_name": "Drop-off slot 11",
       "status": "active",
-      "local_target_delta": [0, 0, -948.0, 0, 0, 0]
+      "local_target_delta": [0, 0, -998.5, 0, 0, 0]
     },
     "slot_11p": {
       "display_name": "Pick-up slot 11",
       "status": "active",
-      "local_target_delta": [0, 0, -1028.0, 0, 0, 0]
+      "local_target_delta": [0, 0, -1034.5, 0, 0, 0]
     },
     "slot_12d": {
       "display_name": "Drop-off slot 12",
       "status": "active",
-      "local_target_delta": [0, 0, -1027.8, 0, 0, 0]
+      "local_target_delta": [0, 0, -1078.5, 0, 0, 0]
     },
     "slot_12p": {
       "display_name": "Pick-up slot 12",
       "status": "active",
-      "local_target_delta": [0, 0, -1107.8, 0, 0, 0]
+      "local_target_delta": [0, 0, -1114.5, 0, 0, 0]
     },
     "slot_13d": {
       "display_name": "Drop-off slot 13",
       "status": "active",
-      "local_target_delta": [0, 0, -1107.6, 0, 0, 0]
+      "local_target_delta": [0, 0, -1158.5, 0, 0, 0]
     },
     "slot_13p": {
       "display_name": "Pick-up slot 13",
       "status": "active",
-      "local_target_delta": [0, 0, -1187.6, 0, 0, 0]
+      "local_target_delta": [0, 0, -1194.5, 0, 0, 0]
     },
     "slot_14d": {
       "display_name": "Drop-off slot 14",
       "status": "active",
-      "local_target_delta": [0, 0, -1187.4, 0, 0, 0]
+      "local_target_delta": [0, 0, -1238.5, 0, 0, 0]
     },
     "slot_14p": {
       "display_name": "Pick-up slot 14",
       "status": "active",
-      "local_target_delta": [0, 0, -1267.4, 0, 0, 0]
+      "local_target_delta": [0, 0, -1274.5, 0, 0, 0]
     },
     "slot_15d": {
       "display_name": "Drop-off slot 15",
       "status": "active",
-      "local_target_delta": [0, 0, -1267.2, 0, 0, 0]
+      "local_target_delta": [0, 0, -1318.5, 0, 0, 0]
     },
     "slot_15p": {
       "display_name": "Pick-up slot 15",
       "status": "active",
-      "local_target_delta": [0, 0, -1347.2, 0, 0, 0]
+      "local_target_delta": [0, 0, -1354.5, 0, 0, 0]
     },
     "slot_16d": {
       "display_name": "Drop-off slot 16",
       "status": "active",
-      "local_target_delta": [0, 0, -1347.0, 0, 0, 0]
+      "local_target_delta": [0, 0, -1398.5, 0, 0, 0]
     },
     "slot_16p": {
       "display_name": "Pick-up slot 16",
       "status": "active",
-      "local_target_delta": [0, 0, -1427.0, 0, 0, 0]
+      "local_target_delta": [0, 0, -1434.5, 0, 0, 0]
     }
   }
 }
