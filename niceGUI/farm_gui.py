@@ -8,6 +8,10 @@ from config import VISION_PI_IP, VISION_PORT
 from fastapi.responses import StreamingResponse
 import httpx
 
+BUILT_BY = "Akvilė Mačiulytė"
+VERSION = "v1.2"
+VERSION_DATE = "11.11.26"
+
 VISION_URL = f"http://{VISION_PI_IP}:{VISION_PORT}"
 RUN_JOB_SCRIPT = Path("/home/main/Lay3rs_print_farm/run_job.py")
 PRINTERS = {"printer_03": "X1C-4", "printer_04": "X1C-2", "printer_05": "X1C-1"}
@@ -17,21 +21,21 @@ JOB_TIMEOUT_S = 600
 SLOT_FILE = Path(__file__).with_name("slots.json")
 
 MAIN_JOBS = {
-    "Change plate": ("full_buildplate_change", True, True, "sym_r_stack"),
-    "Home": ("go_home", False, False, "sym_r_home"),
-    "Transfer": ("transfer_buildplate", True, True, "sym_r_swap_vert"),
+    "Change plate": ("full_buildplate_change", "both", "sym_r_stack"),
+    "Home": ("go_home", None, "sym_r_home"),
+    "Transfer": ("transfer_buildplate", "both", "sym_r_swap_vert"),
 }
 
 DEBUG_JOBS = {
-    "Open door": ("open_door_with_verification", False, False),
-    "Remove plate (door open)": ("remove_buildplate_only", False, False),
-    "Open door": ("open_door_with_verification", False, False),
-    "Open and take plate": ("open_door_and_take_out_buildplate", False, False),
-    "Place plate (printer)": ("localize_and_place_buildplate", False, False),
-    "Drop plate": ("rack_drop_only", False, True),
-    "Pickup plate (rack)": ("rack_pickup_only", True, False),
-    "Close door": ("close_door", False, False),
-    "Localize door": ("localize_printer_door_only", False, False),
+    "Open door": ("open_door_with_verification", None),
+    "Remove plate (door open)": ("remove_buildplate_only", None),
+    "Open door": ("open_door_with_verification", None),
+    "Open and take plate": ("open_door_and_take_out_buildplate", None),
+    "Place plate (printer)": ("localize_and_place_buildplate", None),
+    "Drop plate": ("rack_drop_only", "dropoff"),
+    "Pickup plate (rack)": ("rack_pickup_only", "pickup"),
+    "Close door": ("close_door", None),
+    "Localize door": ("localize_printer_door_only", None),
 }
 
 state = {"busy": False, "proc": None, "editing": False, "printer": next(iter(PRINTERS))}
@@ -290,14 +294,20 @@ async def poll_slots():
         log.push(f"Slot status error: {e}")
 
 
-def validate_slots(needs_slot: bool, slot_type: str) -> str | None:
-    p = selected[slot_type]
-    if p is None:
-        return f"Select a {slot_type} slot"
-    if slot_type == "pickup" and not slots["pickup"][p]:
-        return f"Pickup slot {p + 1} is empty"
-    if slot_type == "dropoff" and slots["dropoff"][p]:
-        return f"Dropoff slot {p + 1} is already occupied"
+def validate_slots(needs: str | None) -> str | None:
+    p, d = selected["pickup"], selected["dropoff"]
+    if needs in ("pickup", "both"):
+        if p is None:
+            return "Select a pickup slot first"
+        if not slots["pickup"][p]:
+            return f"Pickup slot {p + 1} is empty"
+    if needs in ("dropoff", "both"):
+        if d is None:
+            return "Select a dropoff slot first"
+        if slots["dropoff"][d]:
+            return f"Dropoff slot {d + 1} is already occupied"
+        if d in blocked_dropoffs():
+            return f"Dropoff slot {d + 1} is blocked by pickup slot {d}"
     return None
 
 
@@ -323,7 +333,7 @@ def set_busy(value: bool):
     status_dot.classes(replace="sdot run animate-pulse" if value else "sdot idle")
 
 
-async def run(job: str, needs_drop_slot: bool, needs_pick_slot: bool, printer_name: str, dry_run: bool):
+async def run(job: str, needs: str | None, printer_name: str, dry_run: bool):
     transfer = None
     if state["busy"]:
         ui.notify("A job is already running", type="warning")
@@ -335,15 +345,22 @@ async def run(job: str, needs_drop_slot: bool, needs_pick_slot: bool, printer_na
 
     cmd = [sys.executable, str(RUN_JOB_SCRIPT), "--job", job, "--printer", printer_name]
     desc = f"{job} on {printer_name}"
-    if needs_drop_slot or needs_pick_slot:
-        err = validate_slots(needs_drop_slot, "dropoff") or validate_slots(needs_pick_slot, "pickup")
+    uses_pick = needs in ("pickup", "both")
+    uses_drop = needs in ("dropoff", "both")
+    used = (None, None) 
+    if needs:
+        err = validate_slots(needs)
         if err:
             ui.notify(err, type="warning")
             return
-        p, d = selected["pickup"] + 1, selected["dropoff"] + 1
-        transfer = (selected["pickup"], selected["dropoff"])
-        cmd += ["--pick-slot", f"slot_{p:02d}p", "--drop-slot", f"slot_{d:02d}d"]
-        desc += f", pickup {p} → dropoff {d}"
+        used = (selected["pickup"] if uses_pick else None,
+                selected["dropoff"] if uses_drop else None)
+        if uses_pick:
+            cmd += ["--pick-slot", f"slot_{used[0] + 1:02d}p"]
+            desc += f", pickup {used[0] + 1}"
+        if uses_drop:
+            cmd += ["--drop-slot", f"slot_{used[1] + 1:02d}d"]
+            desc += f", dropoff {used[1] + 1}"
     if dry_run:
         cmd.append("--dry-run")
 
@@ -379,10 +396,11 @@ async def run(job: str, needs_drop_slot: bool, needs_pick_slot: bool, printer_na
     if code == 0:
         log.push("Finished successfully")
         ui.notify("Job finished", type="positive")
-        if transfer and not dry_run:
-            pi, di = transfer
-            slots["pickup"][pi] = False
-            slots["dropoff"][di] = True
+        if not dry_run and (used[0] is not None or used[1] is not None):
+            if used[0] is not None:
+                slots["pickup"][used[0]] = False   # plate left the pickup slot
+            if used[1] is not None:
+                slots["dropoff"][used[1]] = True   # plate now sits in the dropoff slot
             save_slots()
             clear_selection()
     else:
@@ -482,20 +500,20 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                         .classes("morebtn") as more_btn
                     ):
                         with ui.menu():
-                            for label, (job, needs_drop_slot, needs_pick_slot) in DEBUG_JOBS.items():
+                            for label, (job, needs) in DEBUG_JOBS.items():
                                 ui.menu_item(
                                     label,
-                                    on_click=lambda j=job, n_d=needs_drop_slot, n_p=needs_pick_slot: run(
-                                        j, n_d, n_p, state["printer"], dry.value
+                                    on_click=lambda j=job, n=needs: run(
+                                        j, n, state["printer"], dry.value
                                     ),
                                 )
 
                 with ui.row().classes("gap-4 justify-center"):
-                    for label, (job, needs_drop_slot, needs_pick_slot, icon) in MAIN_JOBS.items():
+                    for label, (job, needs, icon) in MAIN_JOBS.items():
                         with (
                             ui.button(
-                                on_click=lambda j=job, n_d=needs_drop_slot, n_p=needs_pick_slot: run(
-                                    j, n_d, n_p, state["printer"], dry.value
+                                on_click=lambda j=job, n=needs: run(
+                                    j, n, state["printer"], dry.value
                                 ),
                             )
                             .props("flat no-caps")
@@ -587,6 +605,9 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
                     .props("flat dense no-caps size=sm")
                     .classes("editbtn")
                 )
+    with ui.row().classes("w-full items-center justify-between px-6 py-4 mono").style("color:var(--muted); font-size:11px; border-top:1px solid var(--line)"):
+        ui.label(f"Built by {BUILT_BY}")
+        ui.label(f"{VERSION} - {VERSION_DATE}")
 
 
 refresh_printers()
