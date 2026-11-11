@@ -1,6 +1,7 @@
 import asyncio, sys, json
 from nicegui import app, ui
 from pathlib import Path
+from fastapi import Response
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from config import VISION_PI_IP, VISION_PORT
@@ -38,21 +39,18 @@ state = {"busy": False, "proc": None, "editing": False, "printer": next(iter(PRI
 slots = {"pickup": [False] * N_SLOTS, "dropoff": [False] * N_SLOTS}
 selected = {"pickup": None, "dropoff": None}
 
+vision_client = httpx.AsyncClient(timeout=3.0)
 
-@app.get("/vision/stream")
-async def vision_stream():
-    async def gen():
-        try:
-            async with httpx.AsyncClient(timeout=None) as client:
-                async with client.stream("GET", f"{VISION_URL}/stream") as r:
-                    async for chunk in r.aiter_raw():
-                        yield chunk
-        except httpx.HTTPError:
-            return
-
-    return StreamingResponse(
-        gen(), media_type="multipart/x-mixed-replace; boundary=frame"
-    )
+@app.get("/vision/snapshot")
+async def vision_snapshot():
+    try:
+        r = await vision_client.get(f"{VISION_URL}/snapshot")
+        if r.status_code == 200:
+            return Response(content=r.content, media_type="image/jpeg",
+                            headers={"Cache-Control": "no-store"})
+    except httpx.HTTPError:
+        pass
+    return Response(status_code=204)
 
 
 def load_slots():
@@ -114,6 +112,20 @@ async def copy_gcode(path: Path):
 
 ui.colors(primary="#20BCEF", negative="#ef4444", positive="#3fb68b", warning="#f2a93b")
 ui.dark_mode(True)
+ui.add_head_html("""
+<script>
+(function loop() {
+  const img = document.getElementById('visionimg');
+  if (!img || document.hidden) { setTimeout(loop, 500); return; }
+  let called = false;
+  const next = (ms) => { if (called) return; called = true; clearTimeout(guard); setTimeout(loop, ms); };
+  const guard = setTimeout(() => next(0), 5000);   // give up on a stalled request
+  img.onload = () => next(100);
+  img.onerror = () => next(1000);
+  img.src = '/vision/snapshot?t=' + Date.now();
+})();
+</script>
+""")
 ui.add_css("""
 :root {
     --bg: #0a0c10; --surface: #0f1218; --raised: #151a22;
@@ -505,9 +517,7 @@ with ui.column().classes("w-full min-h-screen items-center justify-center gap-8 
 
             with ui.column().classes("panel w-full p-4 gap-3"):
                 ui.label("Vision").classes("eyebrow")
-                ui.element("img").props("src=/vision/stream").classes("w-full").style(
-                    "border-radius:6px; background:var(--bg); min-height:200px"
-                )
+                ui.element("img").props("id=visionimg").classes("w-full").style("border-radius:6px; background:var(--bg); min-height:200px")
 
             with ui.column().classes("panel w-full p-4 gap-3"):
                 with ui.row().classes("w-full items-center justify-between"):
